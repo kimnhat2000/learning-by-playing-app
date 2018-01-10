@@ -1,7 +1,7 @@
 import React from 'react';
 
-export const Card =({cardClick, card, deleteCard, editCard})=>{
-    const onCardClick=()=>cardClick(card)
+export const Card =({cardClick, card})=>{
+    const onCardClick=()=>cardClick && cardClick(card)
     const variants=card.variants&&card.variants.map((v,i)=>(
         <li key={i}>{v}</li>
     ))

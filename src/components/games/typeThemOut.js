@@ -48,7 +48,7 @@ class TypeThemOut extends React.Component{
             scoreTrack=scoreTrack+1;
             console.log(scoreTrack);
             if(scoreTrack===5){
-                this.setState({warning:'congrat you have a token'})
+                this.setState({warning:'congrat you have a token', playButton:'play again?'})
             }
             return;
         }else{       
