@@ -1,0 +1,9 @@
+.cards{
+    display: flex;
+    align-self: center;
+}
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    
+}
