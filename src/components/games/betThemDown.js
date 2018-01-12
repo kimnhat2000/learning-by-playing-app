@@ -56,7 +56,6 @@ class BetThemDown extends React.Component{
         const {playerCard}=this.state
         const newCard={...playerCard,showInfo:!playerCard.showInfo}
         this.setState({playerCard:newCard})
-        console.log('big card: ',newCard)
     }
 
     onComBigCardClick=()=>{
@@ -74,48 +73,80 @@ class BetThemDown extends React.Component{
         let comScoreTrack=this.state.comScore
         const comCards=this.state.comCards.filter(c=>c.id !== comCard.id)
         const playerCards=this.state.playerCards.filter(c=>c.id !== playerCard.id)
+
         if(playerScoreTrack <= 0){
             this.setState({warning:'you lose the game'})
+            this.setState({showingButtons:false})
             return;
         }else if(playerScoreTrack >= 10){
             this.setState({warning:'you win the game'})
+            this.setState({showingButtons:false})
             return;
         }
+
         if(action){
             if(playerCard.cardValue > comCard.cardValue){
-                this.setState({warning:`you win, your component card value is ${comCard.cardValue}`, playerScore:playerScoreTrack+1, comScore:comScoreTrack-1, comCards, playerCards, showingButtons})
-                if(playerCards.length===0){
-                    this.randomComCards()
-                    this.randomPlayerCards()
-                    return
-                }
-                return;
+                playerScoreTrack++
+                this.setState({
+                    warning:`you win, your component card value is ${comCard.cardValue}`, 
+                    playerScore:playerScoreTrack, 
+                    comScore:comScoreTrack-1, 
+                    comCards, 
+                    playerCards, 
+                    showingButtons
+                })
+
             }else if (playerCard.cardValue === comCard.cardValue){
-                this.setState({warning:`it is a draw, your card has the same value as computer's card`, playerScore:playerScoreTrack, comScore:comScoreTrack, comCards, playerCards, showingButtons})
-                if(playerCards.length===0){
-                    this.randomComCards()
-                    this.randomPlayerCards()
-                    return
-                }
-                return
+                playerScoreTrack
+                this.setState({
+                    warning:`it is a draw, your card has the same value as computer's card`, 
+                    playerScore:playerScoreTrack, 
+                    comScore:comScoreTrack, 
+                    comCards, 
+                    playerCards, 
+                    showingButtons
+                })
+
             }else if (playerCard.cardValue < comCard.cardValue){
-                this.setState({warning:`you lose, your component card value is ${comCard.cardValue}`, playerScore:playerScoreTrack-1, comScore:comScoreTrack+1, comCards, playerCards, showingButtons})
-                if(playerCards.length===0){
-                    this.randomComCards()
-                    this.randomPlayerCards()
-                    return
-                }
-                return
+                playerScoreTrack--
+                this.setState({
+                    warning:`you lose, your component card value is ${comCard.cardValue}`, 
+                    playerScore:playerScoreTrack, 
+                    comScore:comScoreTrack+1, 
+                    comCards, 
+                    playerCards, 
+                    showingButtons
+                })
             }
+
         }else {
-            this.setState({warning:`your component card value is ${comCard.cardValue}`, playerScore:playerScoreTrack-0.5, comScore:comScoreTrack+0.5, comCards, playerCards, showingButtons})
-            if(playerCards.length===0){
-                this.randomComCards()
-                this.randomPlayerCards()
-                return;
-            }
-            return
+            playerScoreTrack-0.5
+            this.setState({
+                warning:`your component card value is ${comCard.cardValue}`, 
+                playerScore:playerScoreTrack-0.5, 
+                comScore:comScoreTrack+0.5, 
+                comCards, 
+                playerCards, 
+                showingButtons
+            })
         }
+
+        if(playerScoreTrack <= 0){
+            this.setState({warning:'you lose the game'})
+            this.setState({showingButtons:false})
+            return;
+        }else if(playerScoreTrack >= 10){
+            this.setState({warning:'you win the game'})
+            this.setState({showingButtons:false})
+            return;
+        }
+
+        if(playerCards.length===0){
+            this.randomComCards()
+            this.randomPlayerCards()
+            return;
+        }
+        return
     }
 
     test=()=>{

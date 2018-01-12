@@ -8,6 +8,9 @@ import TypeThemOut from '../components/games/typeThemOut';
 import PairThemUp from '../components/games/pairThemUp';
 import MultibleChoices from '../components/games/multibleChoices';
 import BetThemDown from '../components/games/betThemDown';
+import WackACard from '../components/games/WackACard';
+import Cookcoo from '../components/games/cookcoo';
+import CatchMe from '../components/games/catchMe';
 
 const FlashCardAppRouter =()=>(
     <BrowserRouter>
@@ -20,6 +23,9 @@ const FlashCardAppRouter =()=>(
             <Route path='/pairThemUp' component={PairThemUp}/>
             <Route path='/multibleChoices' component={MultibleChoices}/>
             <Route path='/betThemDown' component={BetThemDown}/>
+            <Route path='/wackACard' component={WackACard}/>
+            <Route path='/cookcoo' component={Cookcoo}/>
+            <Route path='/catchMe' component={CatchMe}/>
         </Switch>
     </BrowserRouter>
 )
