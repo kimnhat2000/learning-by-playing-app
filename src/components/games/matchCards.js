@@ -31,7 +31,6 @@ class WackACard extends React.Component{
         let noClick=false;
         let cards=this.state.cards.map(c=>c.showingId===card.showingId?c={...c,showCard:true}:c)
         const showingCards=cards.filter(c=>c.showCard===true && c.match===false);
-        const ids = showingCards.map(c=>c.showingId);
 
         if(showingCards.length===2 && showingCards[0].id === showingCards[1].id) {          
             cards=cards.map(c=>c.id===card.id?c={...c,showCard:true, match:true}:c)
