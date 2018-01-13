@@ -20,7 +20,10 @@ export const gotHit =[
     'I bet you cant do it again',
     'no way you can be that fast',
     'agggg, I am angry now',
-    'how could you do that?'
+    'how could you do that?',
+    'ouch...',
+    'stop it',
+    'you got me this time'
 ]
 
 export const miss =[

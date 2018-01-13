@@ -29,7 +29,7 @@ class FlashCard extends React.Component{
         this.setState({
             warning:true, 
             cardToDelete:card,
-            showWarning:`ARE YOU SURE YOU WANT TO DELETE ${card.name.toUpperCase()} CARD?`,   
+            showWarning:`ARE YOU SURE YOU WANT TO DELETE ${card.name.toUpperCase()} CARD?`,  
         })
 
     }
@@ -39,10 +39,10 @@ class FlashCard extends React.Component{
     }
     onSaveEdit=(editedCard)=>{
         const id=this.props.cardToEdit.id
-        const newCard={id,...editedCard}
+        const newCard={id,...editedCard, showInfo:false, selected:false, showCard:true}
         this.props.dispatch(editCard(newCard))
         this.props.dispatch(cardToEditInfo({}))
-        this.setState({showEditForm:false})
+        this.setState({showEditForm:false, bigCard:newCard})
     }
     cardToEdit=(card)=>{
         this.setState({showEditForm:true})
@@ -50,7 +50,9 @@ class FlashCard extends React.Component{
     }
     test=()=>{
         // this.props.cards.map(c=>console.log(c.selected))
-        console.log(this.state.bigCard.showInfo)
+        // console.log(this.state.bigCard.showInfo)
+        console.log(this.props.cards)
+        console.log(this.props.cardToEdit)
     }
     checkPass=(pass)=>{
         if(pass){
@@ -151,11 +153,6 @@ class FlashCard extends React.Component{
     }
  
 }
-
-// const FlashCard =(props)=>{
-//     console.log(props)
-//     return <div>test</div>
-// }
 
 const mapStateToProps=(state)=>({
     cards:state.flashCardReducer.cards,

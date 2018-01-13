@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {shuffle} from '../../tools/tools';
 import {BigCard} from '../card';
+import {Link} from 'react-router-dom';
 import '../../style/pairThemUp.css'
 
 class PairThemUp extends React.Component{
@@ -98,6 +99,7 @@ class PairThemUp extends React.Component{
                 <div>
                     <button onClick={this.shuffleCards}>{this.state.playButton}</button>
                     <button onClick={this.test}>test</button>
+                    <Link to='/selectCard'>return to select cards page</Link>
                 </div>
 
                 <div>
