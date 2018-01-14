@@ -12,6 +12,12 @@ export const addCard=({name='', description='', variants=[], img=''})=>({
     }
 })
 
+//add many cards
+export const addCards=(cards)=>({
+    type:'ADD_CARDS',
+    cards
+})
+
 //remove card
 export const removeCard=(id)=>({
     type:'REMOVE_CARD',

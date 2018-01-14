@@ -13,10 +13,16 @@ export const Card =({cardClick, card})=>{
                 className='card'
                 onClick={onCardClick}
             >
+            {card.img?
                 <div className='img'>
                     <img src={card.img}/>
                     <h3>{card.name}</h3>
                 </div>
+
+            :   <div className='img'>
+                    <h3>{card.name}</h3>
+                </div>}
+                
             </div>:
             <div 
                 className='card'

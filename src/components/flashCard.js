@@ -2,7 +2,7 @@ import React from 'react';
 import CardList from './cardList';
 import {BigCard} from './card';
 import {connect} from 'react-redux';
-import {addCard, removeCard, cardToEditInfo, editCard, removeAllCards, filteredCards} from '../actions/flashCardActions';
+import {addCard,addCards, removeCard, cardToEditInfo, editCard, removeAllCards, filteredCards} from '../actions/flashCardActions';
 import FlashCardForm from './form';
 import {Link} from 'react-router-dom';
 import '../style/flashCardStyle.css'
@@ -22,6 +22,27 @@ class FlashCard extends React.Component{
             bigCard:''
         }
     }
+
+    // componentDidUpdate(prevProps, prevState){
+    //     if (prevProps.cards !== this.props.cards) {
+    //         const json =JSON.stringify(this.props.cards);
+    //         localStorage.setItem('cards', json);
+    //     }
+    // }
+
+    // componentDidMount(){
+    //     try{
+    //         const json=localStorage.getItem('cards');
+    //         const cards= JSON.parse(json);
+    //         if(cards){
+    //             this.props.dispatch(addCards(cards))
+    //         }
+    //     }catch(error){
+    //         //do nothing
+    //     }
+    // }
+
+
     onCardClick=(card)=>{
         console.log(card)
         this.setState({bigCard:card})
@@ -32,7 +53,6 @@ class FlashCard extends React.Component{
             cardToDelete:card,
             showWarning:`ARE YOU SURE YOU WANT TO DELETE ${card.name.toUpperCase()} CARD?`,  
         })
-
     }
     onSaveCard=(newCard)=>{
         this.props.dispatch(addCard(newCard))
@@ -54,6 +74,7 @@ class FlashCard extends React.Component{
         console.log('big card: ',this.state.bigCard)
         console.log(this.state.confirmDeleteAll)
         console.log('card to delete: ',this.state.cardToDelete)
+        localStorage.clear();
     }
     checkPass=(pass)=>{
         if(pass){

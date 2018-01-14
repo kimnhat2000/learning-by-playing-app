@@ -16,6 +16,11 @@ export const flashCardReducer =(state=defaultState, action)=>{
             cards:[...state.cards,{id:state.newId,...action.card}],
             newId:state.newId+1
         }
+        case 'ADD_CARDS':
+        return {
+            ...state,
+            cards:action.cards
+        }
         case 'REMOVE_CARD':
         return {
             ...state,
