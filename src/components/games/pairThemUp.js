@@ -121,7 +121,7 @@ class PairThemUp extends React.Component{
 }
 
 const mapStateToProps=(state)=>({
-    selectedCards:state.flashCardReducer.cards
+    selectedCards:state.selectCardsReducer.cards
 })
 
 export default connect(mapStateToProps)(PairThemUp) 

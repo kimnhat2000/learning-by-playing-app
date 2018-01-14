@@ -13,7 +13,10 @@ class WackACard extends React.Component{
             cards:[],
             score:5,
             text:'',
-            timeControl:null
+            countDown:5,
+            timeControl:null,
+            countDownControl:null,
+            playButton:'play'
         }
     }
 
@@ -26,8 +29,27 @@ class WackACard extends React.Component{
     }
 
     onPlay=()=>{
-        clearTimeout(this.state.timeControl)
+        
+        this.state.timeControl;
+        this.state.countDownControl;
+        clearTimeout(this.state.timeControl);
+        clearInterval(this.state.countDownControl);
+        this.setState({score:5, countDown:5})
+
+        let countDown=5;
+        this.state.countDownControl=setInterval(()=>{
+            countDown--;
+            this.setState({countDown})
+            if(countDown===0){
+                this.setState({text:'sorry, time is up', playButton:'play again?'});
+                clearInterval(this.state.countDownControl)
+                clearTimeout(this.state.timeControl)
+            }
+            return;
+        }, 1000)
+
         this.randomCards()
+        this.setState({playButton:'restart'})
         let that=this;
         (function loop(){
             that.state.timeControl=setTimeout(()=>{
@@ -39,13 +61,18 @@ class WackACard extends React.Component{
 
     onCarkClick=(card)=>{
         let score=this.state.score
+        let countDown=this.state.countDown
         const text=gotHit[randomNum(gotHit.length-1)]
 
         if(score===10){
-            this.setState({text:'congrat, you win the game'})
+            clearTimeout(this.state.timeControl)
+            this.setState({text:'congrat, you win the game', playButton:'play again?'})
             return;
         }else if(score===0){
-            this.setState({text:'sorry, you lose the game'})
+            clearTimeout(this.state.timeControl)
+            this.setState({text:'sorry, you lose the game', playButton:'play again?'})
+            return;
+        }else if (countDown===0){
             return;
         }
 
@@ -80,11 +107,13 @@ class WackACard extends React.Component{
         return(
             <div>
                 <div>
-                    <button onClick={this.onPlay}>play</button>
+                    <button onClick={this.onPlay}>{this.state.playButton}</button>
                     <button onClick={this.test}>test</button>
+                    <Link to='/selectCard'>return to select cards page</Link>
                 </div>
 
-                <h3>{this.state.score}</h3>
+                <h3>time: {this.state.countDown}</h3>
+                <h3>your score is: {this.state.score}</h3>
 
                 <div className='cards'>
                     {cards}
@@ -98,7 +127,7 @@ class WackACard extends React.Component{
 }
 
 const mapStateToPtops=state=>({
-    selectedCards:state.flashCardReducer.cards
+    selectedCards:state.selectCardsReducer.cards
 })
 
 export default connect(mapStateToPtops)(WackACard) 

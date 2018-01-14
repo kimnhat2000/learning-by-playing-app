@@ -23,6 +23,7 @@ class FlashCard extends React.Component{
         }
     }
     onCardClick=(card)=>{
+        console.log(card)
         this.setState({bigCard:card})
     }
     onDeleteCard=(card)=>{
@@ -50,21 +51,21 @@ class FlashCard extends React.Component{
     }
     test=()=>{
         // this.props.cards.map(c=>console.log(c.selected))
-        // console.log(this.state.bigCard.showInfo)
-        console.log(this.props.cards)
-        console.log(this.props.cardToEdit)
+        console.log('big card: ',this.state.bigCard)
+        console.log(this.state.confirmDeleteAll)
+        console.log('card to delete: ',this.state.cardToDelete)
     }
     checkPass=(pass)=>{
         if(pass){
             if(this.state.confirmDeleteAll){
-                this.setState({warning:false})
+                this.setState({warning:false, confirmDeleteAll:false})
                 this.props.dispatch(removeAllCards())
             }else{
                 this.setState({warning:false, bigCard:''})
                 this.props.dispatch(removeCard(this.state.cardToDelete.id))
             }
         }else {
-            this.setState({warning:false})
+            this.setState({warning:false, confirmDeleteAll:false})
         }
     }
 
@@ -96,9 +97,12 @@ class FlashCard extends React.Component{
                         value = {this.state.cardFilter}
                         onChange= {this.onFilterTextChange}
                     />
-
                     <Link to='/selectCard'>
                         <button>play games</button>
+                    </Link>
+
+                    <Link to='/test'>
+                        <button>test page</button>
                     </Link>
                     
                 </div>

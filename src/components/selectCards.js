@@ -12,13 +12,11 @@ const SelectCards =({cards, selectCards, dispatch})=>{
         dispatch(editCard({...card,selected:!card.selected}))
         dispatch(multibleSelection(card))
     }
-    const SelectedCardClick=(card)=>{
-    }
 
     const test=()=>{
         console.log(selectCards.length)
     }
-
+        
     const allCards=cards.map((c,i)=>(
         <Card
             key={i}
@@ -26,48 +24,59 @@ const SelectCards =({cards, selectCards, dispatch})=>{
             cardClick={onCardClick}
         />
     ))
-    const selectedCards= selectCards.map((c,i)=>(
+
+    const selectedCards=selectCards && selectCards.map((c,i)=>(
         <Card
             key={i}
             card={c}
-            cardClick={SelectedCardClick}
+            cardClick={false}
         />
     ))
-    const grammarCheck = selectCards.length===1? 'card': 'cards'
+
+    const grammarCheck=selectCards.length===1?'card':'cards'
+
+    const buttonGrammar=4-selectCards.length === 1? 'card': 'cards'
+
+    const buttonsShow = selectCards.length < 4? 
+        <h3>you need to select {4-selectCards.length} {buttonGrammar} to play games</h3> : 
+        <div>
+            <h3>what games do you want to play?</h3>
+
+            <div className='buttons'>
+                <Link to='/luckCheck'><button>luck check</button></Link>
+                <Link to='/matchCards'><button>match cards</button></Link>
+                <Link to='/typeThemOut'><button>type them out</button></Link>
+                <Link to='/pairThemUp'><button>pair them up</button></Link>
+                <Link to='/multibleChoices'><button>mutible choices</button></Link>
+                <Link to='/betThemDown'><button>bet them down</button></Link>
+                <Link to='/wackACard'><button>wack a card</button></Link>
+                <Link to='/catchMe'><button>catch me</button></Link>
+                <Link to='/cookcoo'><button>cookcoo</button></Link>
+            </div>
+
+        </div> 
+
     return (
         <div>
             <Link to='/'>return to flashCard</Link>
             <button onClick={test}>test</button>
             <div className='cards'>{allCards}</div>
-            {selectCards &&
-                <div>
-                    <h3>you have selected {selectCards.length}{grammarCheck}</h3>
-                    <div className='cards'>{selectedCards}</div>
-                </div>             
+
+            {grammarCheck &&
+                <h3>you have selected {selectCards.length} {grammarCheck}</h3>
             }
 
-            {selectCards &&
-            <div>
-                <h3>what games do you want to play?</h3>
+            <div className='cards'>{selectedCards}</div>
 
-                <div className='buttons'>
-                    <Link to='/luckCheck'><button>luck check</button></Link>
-                    <Link to='/matchCards'><button>match cards</button></Link>
-                    <Link to='/typeThemOut'><button>type them out</button></Link>
-                    <Link to='/pairThemUp'><button>pair them up</button></Link>
-                    <Link to='/multibleChoices'><button>mutible choices</button></Link>
-                    <Link to='/betThemDown'><button>bet them down</button></Link>
-                    <Link to='/wackACard'><button>wack a card</button></Link>
-                    <Link to='/catchMe'><button>catch me</button></Link>
-                    <Link to='/cookcoo'><button>cookcoo</button></Link>
-                </div>
-
-            </div> 
+            {cards.length < 4? 
+                <h3>you need at least 4 cards to play games</h3>:
+                <div>{buttonsShow}</div>
             }  
+            </div> 
+    )
+}
 
-        </div> 
-)}
-
+    
 const mapStateToProps=(state)=>({
     cards:state.flashCardReducer.cards,
     selectCards:state.selectCardsReducer.cards

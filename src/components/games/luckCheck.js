@@ -11,7 +11,7 @@ class LuckCheck extends React.Component{
         this.state={
             targetCard:'',
             cards:[],
-            cardsShow:2,
+            cardsShow:1,
             warning:'',
             score:5,
             noClick:false,
@@ -24,7 +24,12 @@ class LuckCheck extends React.Component{
         this.targetCard()
     }
 
+    cardNum=(e)=>{
+        this.setState({cardsShow:Number(e.target.value)})
+    }
+
     targetCard=()=>{
+
         const {selectedCards}=this.props
         //the winning card
         const targetCard=selectedCards[randomNum(selectedCards.length)]
@@ -96,9 +101,19 @@ class LuckCheck extends React.Component{
     render(){
         return(
             <div>
-                <button onClick={this.onPlayClick}>{this.state.playButton?'Play':'restart'}</button>
-                <Link to='/'><div>LuckCheck game</div></Link>
-                <button onClick={this.test}>test</button>
+                <div>
+                    <button onClick={this.onPlayClick}>{this.state.playButton?'Play':'restart'}</button>
+                    <Link to='/'><div>LuckCheck game</div></Link>
+                    <button onClick={this.test}>test</button>
+                    <label>how many cards do you want to play?</label>
+                    <select onChange={this.cardNum}>
+                        <option value="1" autoFocus>2 'normal'</option>
+                        <option value="2">3 'I feel lucky'</option>
+                        <option value="3">4 'today is my day'</option>
+                        <option value="4">5 'I am very lucky'</option>
+                        <option value="5">6 'Luck god is smiling'</option>
+                    </select>
+                </div> 
                 <h2>your score is {this.state.score}</h2>
                 {this.state.targetCard&&
                 <div>
@@ -130,7 +145,7 @@ class LuckCheck extends React.Component{
 }
 
 const mapStateToProps=(state)=>({
-    selectedCards:state.flashCardReducer.cards
+    selectedCards:state.selectCardsReducer.cards
 })
 
 export default connect(mapStateToProps)(LuckCheck) 
