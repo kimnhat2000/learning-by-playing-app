@@ -1,4 +1,5 @@
 import React from 'react';
+import '../style/form.css';
 
 class FlashCardForm extends React.Component{
     constructor(props){
@@ -61,6 +62,7 @@ class FlashCardForm extends React.Component{
     render(){
         const addVariant=this.state.variants.map((v,i)=>(
             <div
+                className='variants'
                 key={i}
             >{i+1}. 
                 <input
@@ -70,7 +72,8 @@ class FlashCardForm extends React.Component{
                     onChange={this.variantInput}
                     autoCorrect='off'
                 />
-                <button
+                <button 
+                    className='delete-button'
                     type='button'
                     onClick={()=>this.removeVariant(i)}
                 >-</button> 
@@ -78,47 +81,47 @@ class FlashCardForm extends React.Component{
         ))
         return(
             <div className='form-container'>
-
+            
             <form
+                className='form-border'
                 onSubmit={this.onSubmit}
                 
             >
-                <div>
-                    <button
-                        type='button'
-                        onClick={this.props.onCloseForm}
-                    >X</button>
-                </div>
-                <div>
-                    <label>name</label>
-                    <input
-                        type='text'
-                        name='name'
-                        placeholder='enter card name'
-                        value={this.state.name}
-                        onChange={this.onChange}
-                    />
-                </div>
                 
-                <div>
-                    <label>description</label>
-                    <textarea
-                        name='description'
-                        rows='8'
-                        cols='50'
-                        autoComplete='off'
-                        value={this.state.description}
-                        onChange={this.onChange}
-                    />
-                </div>
+                <button
+                    className='buttons'
+                    type='button'
+                    onClick={this.props.onCloseForm}
+                >X</button>
+                
+                <label>name</label>
+                <input
+                    type='text'
+                    name='name'
+                    placeholder='enter card name'
+                    value={this.state.name}
+                    onChange={this.onChange}
+                />
+                
+                <label>description</label>
+                <textarea
+                    name='description'
+                    rows='8'
+                    cols='40'
+                    autoComplete='off'
+                    value={this.state.description}
+                    onChange={this.onChange}
+                />
+                
 
                 <div>
                     <label>add variant</label>
                     <button
+                        className='buttons'
                         type='button'
                         onClick={this.addVariant}
                     >+</button>
-                    <div>{addVariant}</div>
+                    <div className='variants'>{addVariant}</div>
                 </div>
 
                 <div>
@@ -131,7 +134,7 @@ class FlashCardForm extends React.Component{
                     />
                 </div>
                 {this.state.error}
-                <button>save</button>
+                <button className='buttons'>save</button>
             </form>
                 
             </div>

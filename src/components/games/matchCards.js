@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {Card} from '../card';
 import {shuffle} from '../../tools/tools';
 import {Link} from 'react-router-dom';
-import '../../style/matchCards.css';
 
 class WackACard extends React.Component{
     constructor(props){

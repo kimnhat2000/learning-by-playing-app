@@ -14,3 +14,9 @@ export const randomNum=(num)=>{
     const r=Math.floor(Math.random()*num)
     return r
 }
+
+//random colors
+export const randomColor=()=>{
+    const c=Math.floor(Math.random()*256);
+    return c
+}

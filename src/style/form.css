@@ -1,0 +1,23 @@
+.form-container{
+    display: flex;
+    justify-content: center;
+    background-repeat: no-repeat;
+}
+
+.form-border{
+    background-image: url('https://image.freepik.com/free-vector/abstract-background-with-a-watercolor-texture_1048-2144.jpg');
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    border: none;
+    box-shadow:  4px 1px 20px 3px rgba(0,0,0,0.82);
+}
+
+.buttons{
+    background: black;
+    border: none;
+    color: white;
+    font-size: 1.1em;
+    display: flex;
+    flex-direction: row;
+}

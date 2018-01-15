@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {shuffle} from '../../tools/tools';
 import {BigCard} from '../card';
 import {Link} from 'react-router-dom';
-import '../../style/pairThemUp.css'
 
 class PairThemUp extends React.Component{
     constructor(props){

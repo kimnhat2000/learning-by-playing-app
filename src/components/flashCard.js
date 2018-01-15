@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {addCard,addCards, removeCard, cardToEditInfo, editCard, removeAllCards, filteredCards} from '../actions/flashCardActions';
 import FlashCardForm from './form';
 import {Link} from 'react-router-dom';
-import '../style/flashCardStyle.css'
+import '../style/flashCard.css';
 
 class FlashCard extends React.Component{
     constructor(props){
@@ -24,24 +24,24 @@ class FlashCard extends React.Component{
         }
     }
 
-    componentDidUpdate(prevProps, prevState){
-        if (prevProps.cards !== this.props.cards) {
-            const json =JSON.stringify(this.props.cards);
-            localStorage.setItem('cards', json);
-        }
-    }
+    // componentDidUpdate(prevProps, prevState){
+    //     if (prevProps.cards !== this.props.cards) {
+    //         const json =JSON.stringify(this.props.cards);
+    //         localStorage.setItem('cards', json);
+    //     }
+    // }
 
-    componentDidMount(){
-        try{
-            const json=localStorage.getItem('cards');
-            const cards= JSON.parse(json);
-            if(cards){
-                this.props.dispatch(addCards(cards))
-            }
-        }catch(error){
-            //do nothing
-        }
-    }
+    // componentDidMount(){
+    //     try{
+    //         const json=localStorage.getItem('cards');
+    //         const cards= JSON.parse(json);
+    //         if(cards){
+    //             this.props.dispatch(addCards(cards))
+    //         }
+    //     }catch(error){
+    //         //do nothing
+    //     }
+    // }
 
     onCardClick=(card)=>{
         console.log(card)
@@ -51,7 +51,7 @@ class FlashCard extends React.Component{
         this.setState({
             warning:true, 
             cardToDelete:card,
-            showWarning:`ARE YOU SURE YOU WANT TO DELETE ${card.name.toUpperCase()} CARD?`,  
+            showWarning:`ARE YOU SURE YOU WANT TO DELETE '${card.name.toUpperCase()}' CARD?`,  
         })
     }
     onSaveCard=(newCard)=>{
@@ -80,9 +80,18 @@ class FlashCard extends React.Component{
         // console.log('big card: ',this.state.bigCard)
         // console.log(this.state.confirmDeleteAll)
         // console.log('card to delete: ',this.state.cardToDelete)
-        console.log(this.props.cards)
-        // localStorage.clear();
+        console.log(this.randomColor().r)
+        localStorage.clear();
     }
+
+    randomColor=()=>{
+        const r=Math.floor(Math.random()*256);
+        const g=Math.floor(Math.random()*256);
+        const b=Math.floor(Math.random()*256);
+        const rgb={r,g,b}
+        return {r, g, b}
+    }
+
     checkPass=(pass)=>{
         if(pass){
             if(this.state.confirmDeleteAll){
@@ -111,7 +120,7 @@ class FlashCard extends React.Component{
         const cardCheck=this.props.cards.length===1?'card':'cards'
         return (
             <div>
-                <div>
+                <div className='header'>
                     <button
                         onClick={()=>this.setState({showForm:true})}
                     >add a card</button>
@@ -119,12 +128,6 @@ class FlashCard extends React.Component{
                     <button
                         onClick={this.onDeleteAll}
                     >delete all</button>
-                    <input
-                        type='text'
-                        placeholder='find cards by name'
-                        value = {this.state.cardFilter}
-                        onChange= {this.onFilterTextChange}
-                    />
                     <Link to='/selectCard'>
                         <button>play games</button>
                     </Link>
@@ -132,19 +135,30 @@ class FlashCard extends React.Component{
                     <Link to='/test'>
                         <button>test page</button>
                     </Link>
+                    <input
+                        type='text'
+                        placeholder='find cards by name'
+                        value = {this.state.cardFilter}
+                        onChange= {this.onFilterTextChange}
+                    />
                     
                 </div>
 
-                <div>
+                <div className='text'>
                     {this.state.text && this.state.text}
                     {this.props.cards.length > 0 && 
                     <h3>You have {this.props.cards.length} {cardCheck}</h3>
                     }
+                </div>
+
+                <div>
                     {this.state.warning && 
-                    <div>
+                    <div className='warning'>
                         <h3>{this.state.showWarning}</h3>
-                        <button onClick={()=>this.checkPass(true)}>yes</button>
-                        <button onClick={()=>this.checkPass(false)}>no</button>
+                        <div className='warning-buttons'>
+                            <button onClick={()=>this.checkPass(true)}>yes</button>
+                            <button onClick={()=>this.checkPass(false)}>no</button>
+                        </div>
                     </div>
                     }
                 </div>

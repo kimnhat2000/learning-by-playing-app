@@ -4,7 +4,6 @@ import {BigCard} from '../card';
 import {randomNum} from '../../tools/tools';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import '../../style/cookcoo.css';
 
 class Cookcoo extends React.Component{
     constructor(props){

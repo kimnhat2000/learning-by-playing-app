@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {shuffle, randomNum} from '../../tools/tools';
 import {BigCard} from '../card';
 import {Link} from 'react-router-dom';
-import '../../style/multibleChoices.css';
 
 class MultibleChoices extends React.Component{
     constructor(props){

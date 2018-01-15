@@ -4,7 +4,6 @@ import {shuffle, randomNum} from '../../tools/tools'
 import {gotHit} from '../../tools/cookcooproms';
 import {Link} from 'react-router-dom';
 import {Card} from '../card';
-import '../../style/wackACard.css';
 
 class WackACard extends React.Component{
     constructor(props){

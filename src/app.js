@@ -14,10 +14,10 @@ const reducers=combineReducers({
 
 const store =createStore(reducers)
 
-// store.dispatch(addCard({name:'card 1a', description:' card 1 description', variants:['var1', 'var2'], img:'pictures/lagi.png'}))
-// store.dispatch(addCard({name:'card 2a', description:' card 2 description', variants:['var 2a', 'var2a'], img:'pictures/narga.png'}))
-// store.dispatch(addCard({name:'card 3b', description:' card 3 description', variants:['var3b', 'var3b'], img:'pictures/akan.png'}))
-// store.dispatch(addCard({name:'card 4b', description:' card 4 description', variants:['var4b', 'var4b', 'var4b'], img:'pictures/ukan.png'}))
+store.dispatch(addCard({name:'card 1a', description:' card 1 description', variants:['var1', 'var2'], img:'pictures/lagi.png'}))
+store.dispatch(addCard({name:'card 2a', description:' card 2 description', variants:['var 2a', 'var2a'], img:'pictures/narga.png'}))
+store.dispatch(addCard({name:'card 3b', description:' card 3 description', variants:['var3b', 'var3b'], img:'pictures/akan.png'}))
+store.dispatch(addCard({name:'card 4b', description:' card 4 description', variants:['var4b', 'var4b', 'var4b'], img:'pictures/ukan.png'}))
 
 const Jsx =()=>(
     <Provider store={store}>

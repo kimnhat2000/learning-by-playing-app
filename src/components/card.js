@@ -1,6 +1,7 @@
 import React from 'react';
+import '../style/card.css';
 
-export const Card =({cardClick, card})=>{
+export const Card =({cardClick, card, style})=>{
     const onCardClick=()=>cardClick && cardClick(card)
     const variants=card.variants&&card.variants.map((v,i)=>(
         <li key={i}>{v}</li>
@@ -9,26 +10,24 @@ export const Card =({cardClick, card})=>{
         <div>
             {card.showCard?
             
-            <div 
+            <div
                 className='card'
+                style={style}
                 onClick={onCardClick}
             >
-            {card.img?
-                <div className='img'>
+                <div className='card-contents'>
                     <img src={card.img}/>
                     <h3>{card.name}</h3>
                 </div>
-
-            :   <div className='img'>
-                    <h3>{card.name}</h3>
-                </div>}
                 
             </div>:
+
             <div 
-                className='card'
+                className='card-contents'
+                style={style}
                 onClick={onCardClick}
             >
-                <div className='img'>
+                <div className='card-contents'>
                 </div>
             </div>
             }
@@ -41,17 +40,16 @@ export const BigCard =({card, deleteCard, editCard, bigCardClick, showButtons})=
         <li key={i}>{v}</li>
     ))
     return (
-        <div 
-            className='big-card-container'
+        <div className='big-card-container'
             >
             {card.showInfo?
             <div 
                 className='big-card'
                 onClick={bigCardClick}
             >
-                <h3>{card.name}</h3>
-                <p>{card.description}</p>
-                <ul>{variants}</ul>
+                <h3 className='info'>{card.name}</h3>
+                <p className='info'>{card.description}</p>
+                <ul className='info'>{variants}</ul>
             </div>
             :
             <div 
@@ -65,7 +63,7 @@ export const BigCard =({card, deleteCard, editCard, bigCardClick, showButtons})=
             </div>}
 
             {showButtons &&
-                <div>
+                <div className='card-buttons'>
                     <button
                         onClick={()=>deleteCard(card)}
                     >delete</button>

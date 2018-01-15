@@ -3,8 +3,9 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {Card, BigCard} from './card';
 import {editCard} from '../actions/flashCardActions';
+import {randomColor} from '../tools/tools';
 import {multibleSelection, storeSelectedCards} from '../actions/selectCardsActions';
-import '../style/selectCards.css'
+import '../style/selectCards.css';
 
 // class SelectCards extends React.Component{
 //     constructor(props){
@@ -114,10 +115,16 @@ const SelectCards =({cards, selectCards, dispatch})=>{
         console.log(selectCards.length)
         // localStorage.clear('selectCards');
     }
+
+    const r1=randomColor();
+    const r2=randomColor();
+    const r3=randomColor();
+    const style={backgroundColor:`rgb(${r1}, ${r2}, ${r3})`}
         
     const allCards=cards.map((c,i)=>(
         <Card
             key={i}
+            style={style}
             card={c}
             cardClick={onCardClick}
         />
@@ -126,6 +133,7 @@ const SelectCards =({cards, selectCards, dispatch})=>{
     const selectedCards=selectCards && selectCards.map((c,i)=>(
         <Card
             key={i}
+            style={style}
             card={c}
             cardClick={false}
         />
@@ -170,7 +178,7 @@ const SelectCards =({cards, selectCards, dispatch})=>{
                 <h3>you need at least 4 cards to play games</h3>:
                 <div>{buttonsShow}</div>
             }  
-            </div> 
+        </div> 
     )
 }
     
