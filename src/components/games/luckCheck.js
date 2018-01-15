@@ -30,11 +30,11 @@ class LuckCheck extends React.Component{
 
     targetCard=()=>{
 
-        const {selectedCards}=this.props
+        const {selectCards}=this.props
         //the winning card
-        const targetCard=selectedCards[randomNum(selectedCards.length)]
+        const targetCard=selectCards[randomNum(selectCards.length)]
         //the cards in the array, without the winning card
-        const remainCards=selectedCards.filter(c=>c.id !== targetCard.id)
+        const remainCards=selectCards.filter(c=>c.id !== targetCard.id)
         //the number of cards to play in the game
         const randomOddCards=new Array(this.state.cardsShow).fill().map(()=>remainCards[randomNum(remainCards.length)])
         //shuffle all the cards
@@ -94,8 +94,9 @@ class LuckCheck extends React.Component{
     }
 
     test=()=>{
-        console.log(this.state.cards)
-        console.log('the target cards is: ', this.state.targetCard.showInfo)
+        // console.log(this.state.cards)
+        console.log(this.props.selectCards)
+        // console.log('the target cards is: ', this.state.targetCard.showInfo)
     }
 
     render(){
@@ -145,7 +146,7 @@ class LuckCheck extends React.Component{
 }
 
 const mapStateToProps=(state)=>({
-    selectedCards:state.selectCardsReducer.cards
+    selectCards:state.selectCardsReducer.cards
 })
 
 export default connect(mapStateToProps)(LuckCheck) 

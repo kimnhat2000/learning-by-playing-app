@@ -11,6 +11,11 @@ export const selectCardsReducer = (state=defaultSelectCardsReducerState, action)
                 state.cards.filter((c)=>c.id !== action.card.id):
                 [...state.cards,action.card]
         }
+        case 'STORE_SELECTED_CARDS':
+        return {
+            ...state,
+            cards:action.cards
+        }
         default:
             return state
     }

@@ -19,29 +19,29 @@ class FlashCard extends React.Component{
             cardToDelete:'',
             confirmDeleteAll:false,
             cardFilter:'',
-            bigCard:''
+            bigCard:'',
+            text:''
         }
     }
 
-    // componentDidUpdate(prevProps, prevState){
-    //     if (prevProps.cards !== this.props.cards) {
-    //         const json =JSON.stringify(this.props.cards);
-    //         localStorage.setItem('cards', json);
-    //     }
-    // }
+    componentDidUpdate(prevProps, prevState){
+        if (prevProps.cards !== this.props.cards) {
+            const json =JSON.stringify(this.props.cards);
+            localStorage.setItem('cards', json);
+        }
+    }
 
-    // componentDidMount(){
-    //     try{
-    //         const json=localStorage.getItem('cards');
-    //         const cards= JSON.parse(json);
-    //         if(cards){
-    //             this.props.dispatch(addCards(cards))
-    //         }
-    //     }catch(error){
-    //         //do nothing
-    //     }
-    // }
-
+    componentDidMount(){
+        try{
+            const json=localStorage.getItem('cards');
+            const cards= JSON.parse(json);
+            if(cards){
+                this.props.dispatch(addCards(cards))
+            }
+        }catch(error){
+            //do nothing
+        }
+    }
 
     onCardClick=(card)=>{
         console.log(card)
@@ -55,6 +55,12 @@ class FlashCard extends React.Component{
         })
     }
     onSaveCard=(newCard)=>{
+        const cardsID=this.props.cards.map(c=>c.name)
+        const card=newCard.name
+        if(cardsID.includes(card)){
+            this.setState({text:'This card already existed'})
+            return;
+        }
         this.props.dispatch(addCard(newCard))
         this.setState({showForm:false})
     }
@@ -71,10 +77,11 @@ class FlashCard extends React.Component{
     }
     test=()=>{
         // this.props.cards.map(c=>console.log(c.selected))
-        console.log('big card: ',this.state.bigCard)
-        console.log(this.state.confirmDeleteAll)
-        console.log('card to delete: ',this.state.cardToDelete)
-        localStorage.clear();
+        // console.log('big card: ',this.state.bigCard)
+        // console.log(this.state.confirmDeleteAll)
+        // console.log('card to delete: ',this.state.cardToDelete)
+        console.log(this.props.cards)
+        // localStorage.clear();
     }
     checkPass=(pass)=>{
         if(pass){
@@ -101,7 +108,7 @@ class FlashCard extends React.Component{
 
     render(){   
         const {cards, filteredCards}=this.props
-        const cardCkeck=this.props.cards.length===1?'card':'cards'
+        const cardCheck=this.props.cards.length===1?'card':'cards'
         return (
             <div>
                 <div>
@@ -129,8 +136,9 @@ class FlashCard extends React.Component{
                 </div>
 
                 <div>
+                    {this.state.text && this.state.text}
                     {this.props.cards.length > 0 && 
-                    <h3>You have {this.props.cards.length} {cardCkeck}</h3>
+                    <h3>You have {this.props.cards.length} {cardCheck}</h3>
                     }
                     {this.state.warning && 
                     <div>
@@ -143,7 +151,7 @@ class FlashCard extends React.Component{
 
                 {this.state.showForm &&
                     <FlashCardForm
-                        onCloseForm={()=>this.setState({showForm:false})}
+                        onCloseForm={()=>this.setState({showForm:false, text:''})}
                         saveCard={(newCard)=>this.onSaveCard(newCard)}
                     />
                 }    
@@ -182,7 +190,6 @@ class FlashCard extends React.Component{
 const mapStateToProps=(state)=>({
     cards:state.flashCardReducer.cards,
     cardToEdit:state.flashCardReducer.cardToEdit,
-    selectedCards:state.flashCardReducer.selectedCards,
     filteredCards:state.flashCardReducer.filteredCards
 })
 
