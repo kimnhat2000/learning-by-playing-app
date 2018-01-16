@@ -11,10 +11,9 @@ class SelectCards extends React.Component{
     constructor(props){
         super(props);
         const cards=this.props.cards;
-        const selectCards=this.props.selectCards ? this.props.selectCards: [];
         this.state={
             cards,
-            selectCards,
+            selectCards:[],
             showcards:[],  
         }
     }
@@ -54,7 +53,7 @@ class SelectCards extends React.Component{
     }
 
     test=()=>{
-        console.log(this.props.selectCards)
+        console.log(this.props.cards, this.props.selectCards)
         // localStorage.clear('selectCards');
     }
         
@@ -82,7 +81,7 @@ class SelectCards extends React.Component{
 
         const buttonGrammar=4-this.state.selectCards.length === 1? 'card': 'cards';
     
-        const buttonsShow = this.state.selectCards.length < 4? 
+        const buttonsShow = this.state.selectCards.length < 1  ? 
             <h3>you need to select {4-this.state.selectCards.length} {buttonGrammar} to play games</h3> : 
             <div>
                 <h3>what games do you want to play?</h3>

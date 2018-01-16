@@ -3,6 +3,7 @@ import {connect} from  'react-redux';
 import {Card, BigCard} from '../card';
 import {shuffle, randomNum, randomColor} from '../../tools/tools';
 import {Link} from 'react-router-dom';
+import '../../style/luckCheck.css'
 
 class LuckCheck extends React.Component{
     constructor(props){
@@ -105,44 +106,55 @@ class LuckCheck extends React.Component{
         const style={backgroundColor:`rgb(${r1}, ${r2}, ${r3})`}
         return(
             <div>
-                <div>
-                    <button onClick={this.onPlayClick}>{this.state.playButton?'Play':'restart'}</button>
-                    <Link to='/'><div>LuckCheck game</div></Link>
-                    <button onClick={this.test}>test</button>
-                    <label>how many cards do you want to play?</label>
-                    <select onChange={this.cardNum}>
-                        <option value="1" autoFocus>2 'normal'</option>
-                        <option value="2">3 'I feel lucky'</option>
-                        <option value="3">4 'today is my day'</option>
-                        <option value="4">5 'I am very lucky'</option>
-                        <option value="5">6 'Luck god is smiling'</option>
-                    </select>
-                </div> 
-                <h2>your score is {this.state.score}</h2>
-                {this.state.targetCard&&
-                <div>
-                    <h2>the winning card is</h2>
-                    <div><BigCard 
-                        card={this.state.targetCard}
-                        showButton={false}
-                        bigCardClick={this.onBigCardClick}
-                    /></div>
-                </div>}
+                <div className='luckCheck-menu'>
+                
+                    <div className='cards-select'>
+                        <select onChange={this.cardNum}>
+                            <option value="1" autoFocus>cards to play</option>
+                            <option value="1" >2 'normal'</option>
+                            <option value="2">3 'I feel lucky'</option>
+                            <option value="3">4 'today is my day'</option>
+                            <option value="4">5 'I am very lucky'</option>
+                            <option value="5">6 'Luck god is smiling'</option>
+                        </select>
+                    </div>
 
-                <h2>{this.state.warning}</h2>
-            
-                <div className='luck-card'>
-                    {this.state.cards &&
-                    this.state.cards.map((c,i)=>(
-                        <div key={i} className='hide-card'>
-                            <Card
-                                style={style}  
-                                card={c}
-                                cardClick={this.onCardClick}
-                            />
-                        </div>
-                        ))}
+                    <div className='luckCheck-buttons'>
+                        <button onClick={this.onPlayClick}>{this.state.playButton?'Play':'restart'}</button>
+                    </div>
+
+                    <Link to='/selectCard'><div>return to selectCard page</div></Link>
+
                 </div> 
+
+                <button onClick={this.test}>test</button>
+                    
+                <div className='luck-card-info'>
+                    <h2 className='score'>your score is {this.state.score}</h2>
+                    <h2 className='warning'>the winning card is</h2>
+                    <h2 className='warning'>{this.state.warning}</h2>
+                </div>
+
+                    {this.state.targetCard&&
+                        <div className='winning-card'><BigCard 
+                            card={this.state.targetCard}
+                            showButton={false}
+                            bigCardClick={this.onBigCardClick}
+                        /></div>
+                    }
+                
+                    <div className='random-cards'>
+                        {this.state.cards &&
+                        this.state.cards.map((c,i)=>(
+                            <div key={i} className='hide-card'>
+                                <Card
+                                    style={style}  
+                                    card={c}
+                                    cardClick={this.onCardClick}
+                                />
+                            </div>
+                            ))}
+                    </div> 
 
             </div>
         )
@@ -154,3 +166,4 @@ const mapStateToProps=(state)=>({
 })
 
 export default connect(mapStateToProps)(LuckCheck) 
+
