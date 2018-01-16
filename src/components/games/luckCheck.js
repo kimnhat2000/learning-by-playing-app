@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from  'react-redux';
 import {Card, BigCard} from '../card';
-import {shuffle, randomNum} from '../../tools/tools';
+import {shuffle, randomNum, randomColor} from '../../tools/tools';
 import {Link} from 'react-router-dom';
 
 class LuckCheck extends React.Component{
@@ -93,12 +93,16 @@ class LuckCheck extends React.Component{
     }
 
     test=()=>{
-        // console.log(this.state.cards)
-        console.log(this.props.selectedCards)
+        console.log(this.state.cards)
+        // console.log(this.props.selectedCards)
         // console.log('the target cards is: ', this.state.targetCard.showInfo)
     }
 
     render(){
+        const r1=randomColor();
+        const r2=randomColor();
+        const r3=randomColor();
+        const style={backgroundColor:`rgb(${r1}, ${r2}, ${r3})`}
         return(
             <div>
                 <div>
@@ -131,7 +135,8 @@ class LuckCheck extends React.Component{
                     {this.state.cards &&
                     this.state.cards.map((c,i)=>(
                         <div key={i} className='hide-card'>
-                            <Card  
+                            <Card
+                                style={style}  
                                 card={c}
                                 cardClick={this.onCardClick}
                             />

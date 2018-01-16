@@ -23,7 +23,7 @@ export const Card =({cardClick, card, style})=>{
             </div>:
 
             <div 
-                className='card-contents'
+                className='card'
                 style={style}
                 onClick={onCardClick}
             >

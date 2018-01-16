@@ -1,5 +1,5 @@
 const defaultSelectCardsReducerState={
-    cards:[]
+    cards:[],
 }
 
 export const selectCardsReducer = (state=defaultSelectCardsReducerState, action)=>{
@@ -11,7 +11,7 @@ export const selectCardsReducer = (state=defaultSelectCardsReducerState, action)
                 state.cards.filter((c)=>c.id !== action.card.id):
                 [...state.cards,action.card]
         }
-        case 'STORE_SELECTED_CARDS':
+        case 'SELECT_OTHER_APPROACH':
         return {
             ...state,
             cards:action.cards

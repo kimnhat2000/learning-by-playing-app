@@ -4,7 +4,7 @@ export const multibleSelection =(card)=>({
     card
 })
 
-export const storeSelectedCards =(cards)=>({
-    type: 'STORE_SELECTED_CARDS',
+export const selectOtherApproach =(cards)=>({
+    type:'SELECT_OTHER_APPROACH',
     cards
 })
