@@ -23,7 +23,7 @@ class WackACard extends React.Component{
         const hideCards=this.props.selectedCards.map((c,i)=>c={...c,showCard:false,match:false});
         const doubleCards=shuffle(hideCards.concat(hideCards));
         const cards=doubleCards.map((c,i)=>c={showingId:i,...c})
-        this.setState({cards, playButton:'restart'})
+        this.setState({cards, playButton:'restart', countDown:Math.round(this.props.selectedCards.length*3.5)})
     }
 
     onCardClick=(card)=>{

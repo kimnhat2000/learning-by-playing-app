@@ -93,8 +93,8 @@ class SelectCards extends React.Component{
 
         const buttonGrammar=4-this.state.selectCards.length === 1? 'card': 'cards';
     
-        const buttonsShow = this.state.selectCards.length < 1  ? 
-            <h3>you need to select {4-this.state.selectCards.length} {buttonGrammar} to play games</h3> : 
+        const buttonsShow = this.state.selectCards.length < 4  ? 
+            <h3>you need to select at least {4-this.state.selectCards.length} {buttonGrammar} to play games</h3> : 
             <div>
                 <h3>what games do you want to play?</h3>
     

@@ -1,8 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {shuffle} from '../../tools/tools';
-import {BigCard} from '../card';
+import {BigCard, BigCardResize} from '../card';
 import {Link} from 'react-router-dom';
+import '../../style/pairThemUp.css';
 
 class PairThemUp extends React.Component{
     constructor(props){
@@ -19,98 +20,102 @@ class PairThemUp extends React.Component{
     }
 
     shuffleCards=()=>{
-        const {score, text, playButton}=this.state
+        const {text, playButton}=this.state
         const cards=this.props.selectedCards.slice(0,this.state.cardplay)
         const cards1=shuffle(cards.map(c=>c={...c,match:false, line:1}))
         const cards2=shuffle(cards.map(c=>c={...c,match:false, line:2}))
-        this.setState({cards1, cards2, playButton:'restart', score, text})
+        this.setState({cards1, cards2, playButton:'restart', text})
     }
 
-    onCardClick=(card, line)=>{
-        let scoreTrack=this.state.score
+    onPlay=()=>{
+        this.shuffleCards()
+        this.setState({text:'', score:5})
+    }
+
+    onCardClick=(card)=>{
+        let score=this.state.score;
         let cards1=this.state.cards1;
         let cards2=this.state.cards2;
-        const array=this.state.cardsCheck;
-        let cardsCheck=[...array,card];
+
+        const cardsCheck=[...this.state.cardsCheck, card]
         this.setState({cardsCheck})
+        console.log(cards1.filter(c=>c.id !== card.id))
 
-        if(scoreTrack===10){
-            this.setState({text:'you win the game', playButton:'play gain?'})
-            return;
-        }else if(scoreTrack===0){
-            this.setState({text:'you lose the game', playButton:'play again?'})
+        if(score===10 || score === 0){
             return;
         }
 
-        if(card.match===true){
-            return;
-        }
-        console.log(cardsCheck)
-        if (cardsCheck.length===2){
-            if(cardsCheck[0].line===cardsCheck[1].line){
-                this.setState({cardsCheck:[]})
-                return;
-            }else if(cardsCheck[0].id===cardsCheck[1].id){
-                cards1=cards1.map(c=>c.id===cardsCheck[0].id?c={...c,match:true}:c)
-                cards2=cards2.map(c=>c.id===cardsCheck[0].id?c={...c,match:true}:c)
-                scoreTrack++
-                this.setState({cards1,cards2, score:scoreTrack, cardsCheck:[], text:'correct'})
-                setTimeout(()=>{
-                    this.setState({text:''})
-                },1500)
-                console.log(scoreTrack)
+        if(cardsCheck.length===2){
+            if(cardsCheck[0].id===cardsCheck[1].id){
+                score++
+                cards1 = cards1.filter(c=>c.id !== card.id)
+                cards2 = cards2.filter(c=>c.id !== card.id)
+                this.setState({text:'correct', score, cards1, cards2, cardsCheck:[]})
+                if(cards1.length===0){
+                    this.shuffleCards()
+                    return;
+                }else if(score===10){
+                    this.setState({text:'you win the game', playButton:'play again?'})
+                    return;
+                }
                 return;
             }else {
-                scoreTrack--
-                this.setState({score:scoreTrack, text:'wrong, try again', cardsCheck:[]})
-                setTimeout(()=>{
-                    this.setState({text:''})
-                },1500)
+                score--
+                this.setState({text:'wrong', score, cardsCheck:[]})
+                if(score===0){
+                    this.setState({text:'sorry, you lose the game', playButton:'play again?'})
+                    return;
+                }
                 return;
             }
-        }
-    }
+            return;
+        }}
 
     test=()=>{
         const {cards1, cards2, score}= this.state
-        console.log(cards1, cards2, score)
+        const {selectedCards}=this.props
+        console.log(selectedCards)
     }
 
     render(){
         const cardSet1= this.state.cards1.map((c,i)=>(
-            <BigCard
-                key={i}
-                card={c}
-                showButtons={false}
-                bigCardClick={()=>this.onCardClick(c, c.line)}
-            />
+            <div 
+                className='card1'
+                key={i}>
+                <BigCardResize
+                    card={c}
+                    bigCardClick={()=>this.onCardClick(c, c.line)}
+                />
+            </div> 
         ))
         const cardSet2= this.state.cards2.map((c,i)=>(
-            <BigCard
-                key={i}
-                card={{...c,showInfo:true}}
-                showButtons={false}
-                bigCardClick={()=>this.onCardClick(c, c.line)}
-            />
+            <div 
+                className='card2'
+                key={i}>
+                <BigCardResize
+                    card={{...c,showInfo:true}}
+                    bigCardClick={()=>this.onCardClick(c, c.line)}
+                />
+            </div>
         ))
         return(
             <div>
                 <div>
-                    <button onClick={this.shuffleCards}>{this.state.playButton}</button>
+                    <button onClick={this.onPlay}>{this.state.playButton}</button>
                     <button onClick={this.test}>test</button>
                     <Link to='/selectCard'>return to select cards page</Link>
                 </div>
 
                 <div>
-                    <h3>{this.state.score}</h3>
+                    <h3>your score is {this.state.score}</h3>
                     <h2>{this.state.text}</h2> 
                 </div>
 
-                <div className='card1'>
+                <div className='cards1'>
                     {cardSet1}
                 </div>
 
-                <div className='card1'>
+                <div className='cards2'>
                     {cardSet2}
                 </div>
 
