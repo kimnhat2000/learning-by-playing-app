@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {shuffle, randomNum} from '../../tools/tools';
-import {BigCard} from '../card';
+import {BigCardResize, BigCard} from '../card';
 import {Link} from 'react-router-dom';
 
 class MultibleChoices extends React.Component{
@@ -53,10 +53,9 @@ class MultibleChoices extends React.Component{
     render(){
         const {cards}=this.state
         const allCards=cards.map((c,i)=>(
-            <BigCard
+            <BigCardResize
                 key={i}
                 card={c}
-                showButtons={false}
                 bigCardClick={()=>this.onCardClick(c)}
             />
         ))
@@ -68,7 +67,10 @@ class MultibleChoices extends React.Component{
                     <Link to='/selectCard'>return to select card page</Link>
                 </div>
 
-                <div>{this.state.score}</div>
+                <div>
+                    <h3>your score is: {this.state.score}</h3>
+                    <h3>{this.state.text}</h3>
+                </div>
 
                 <div>
                     <BigCard
@@ -77,8 +79,6 @@ class MultibleChoices extends React.Component{
                         bigCardClick={false}
                     />
                 </div>
-
-                <div>{this.state.text}</div>
 
                 <div className='cards'>
                     {allCards}

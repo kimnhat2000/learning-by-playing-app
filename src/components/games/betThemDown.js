@@ -1,8 +1,10 @@
 import React from 'react';
-import {randomNum, shuffle} from '../../tools/tools';
+import {randomNum, shuffle, randomColor} from '../../tools/tools';
 import {connect} from 'react-redux';
 import {Card, BigCard} from '../card';
 import {Link} from 'react-router-dom';
+import '../../style/betThemDown.css';
+
 
 class BetThemDown extends React.Component{
     constructor(props){
@@ -27,13 +29,9 @@ class BetThemDown extends React.Component{
     }
 
     onCardClick=(card)=>{
-
         const comCard=this.state.comCards[randomNum(this.state.comCards.length)]
         const playerCard=card
-        this.setState({comCard, playerCard, showingButtons:true})
-        console.log('com card: ',comCard)
-        console.log('player Card:', card)
-
+        this.setState({comCard, playerCard, showingButtons:true, warning:''})
     }
 
     randomComCards=()=>{
@@ -46,7 +44,7 @@ class BetThemDown extends React.Component{
     randomPlayerCards=()=>{
         const valueNum=randomNum(this.props.selectedCards.length*5)
         const addValue=this.props.selectedCards.map(c=>c={cardValue:randomNum(this.props.selectedCards.length*5),...c})
-        const newCards=addValue .map(c=>c={...c,name:`your card value is ${c.cardValue}`})
+        const newCards=addValue .map(c=>c={...c,name:`power ${c.cardValue}`})
         const playerCards=shuffle(newCards)
         this.setState({playerCards})
     }
@@ -61,7 +59,6 @@ class BetThemDown extends React.Component{
         const {comCard}=this.state
         const newCard={...comCard,showInfo:!comCard.showInfo}
         this.setState({comCard:newCard})
-        console.log('big card: ',newCard)
     }
 
     onBattleClick=(action)=>{
@@ -87,7 +84,7 @@ class BetThemDown extends React.Component{
             if(playerCard.cardValue > comCard.cardValue){
                 playerScoreTrack++
                 this.setState({
-                    warning:`you win, your component card value is ${comCard.cardValue}`, 
+                    warning:`you win, your rival card power is ${comCard.cardValue}`, 
                     playerScore:playerScoreTrack, 
                     comScore:comScoreTrack-1, 
                     comCards, 
@@ -98,7 +95,7 @@ class BetThemDown extends React.Component{
             }else if (playerCard.cardValue === comCard.cardValue){
                 playerScoreTrack
                 this.setState({
-                    warning:`it is a draw, your card has the same value as computer's card`, 
+                    warning:`it is a draw, your card has the same power as computer's card`, 
                     playerScore:playerScoreTrack, 
                     comScore:comScoreTrack, 
                     comCards, 
@@ -109,7 +106,7 @@ class BetThemDown extends React.Component{
             }else if (playerCard.cardValue < comCard.cardValue){
                 playerScoreTrack--
                 this.setState({
-                    warning:`you lose, your component card value is ${comCard.cardValue}`, 
+                    warning:`you lose, your rival card power is ${comCard.cardValue}`, 
                     playerScore:playerScoreTrack, 
                     comScore:comScoreTrack+1, 
                     comCards, 
@@ -121,7 +118,7 @@ class BetThemDown extends React.Component{
         }else {
             playerScoreTrack-0.5
             this.setState({
-                warning:`your component card value is ${comCard.cardValue}`, 
+                warning:`your rival card power is ${comCard.cardValue}`, 
                 playerScore:playerScoreTrack-0.5, 
                 comScore:comScoreTrack+0.5, 
                 comCards, 
@@ -153,9 +150,14 @@ class BetThemDown extends React.Component{
     }
 
     render(){
+        const r1=randomColor();
+        const r2=randomColor();
+        const r3=randomColor();
+        const style={backgroundColor:`rgb(${r1}, ${r2}, ${r3})`}
 
         const comCards=this.state.comCards.map((c,i)=>(
             <Card 
+                style={style}
                 key={i}
                 card={c}
             />
@@ -163,6 +165,7 @@ class BetThemDown extends React.Component{
 
         const playerCards=this.state.playerCards.map((c,i)=>(
             <Card 
+                style={style}
                 key={i}
                 card={c}
                 cardClick={this.onCardClick}
@@ -177,46 +180,48 @@ class BetThemDown extends React.Component{
                     <Link to='/selectCard'>return to selected cards page</Link>
                 </div>
 
-                <div>
-                    <label>computer cards</label>
-                    <div  className='comcard'>{comCards}</div>
-                </div>
+                <div className='bet-game-container'>
 
-                {this.state.playerCard && 
-                <div>
-                <h3>your score is {this.state.playerScore}</h3>
-                <h3>computer score is {this.state.comScore}</h3>
-                    <div className='battle-card'>
-                        <BigCard
-                            card={this.state.playerCard}
-                            bigCardClick={this.onBigCardClick}
-                            showButtons={false}
-                        />
-                        <h1>VS</h1>
-                        <BigCard
-                            card={this.state.comCard}
-                            bigCardClick={this.onComBigCardClick}
-                            showButtons={false}
-                        />
+                    <div className='player-cards'>
+                        <label>player cards</label>
+                        <div  className='playerCards'>{playerCards}</div>
                     </div>
-                    <h3>{this.state.warning}</h3>
-                    {this.state.showingButtons &&
-                        <div>
-                            <button onClick={()=>this.onBattleClick(true)}>ATTACT</button>
-                            <button onClick={()=>this.onBattleClick(false)}>DEFEND</button>
-                        </div>  
+
+                    {this.state.playerCard && 
+                    <div className='battlefield'>
+                        <h3>your score is {this.state.playerScore}</h3>
+                        <h3>computer score is {this.state.comScore}</h3>
+                        <div className='battle-card'>
+                            <BigCard
+                                card={this.state.playerCard}
+                                bigCardClick={this.onBigCardClick}
+                                showButtons={false}
+                            />
+                            <h1>VS</h1>
+                            <BigCard
+                                card={this.state.comCard}
+                                bigCardClick={this.onComBigCardClick}
+                                showButtons={false}
+                            />
+                        </div>
+                        <h3>{this.state.warning}</h3>
+                        {this.state.showingButtons &&
+                            <div>
+                                <button onClick={()=>this.onBattleClick(true)}>ATTACT</button>
+                                <button onClick={()=>this.onBattleClick(false)}>DEFEND</button>
+                            </div>  
+                        }
+                        
+                    </div>   
                     }
+
+                    <div className='computer-cards'>
+                        <label>computer cards</label>
+                        <div  className='comcard'>{comCards}</div>
+                    </div>
                     
                 </div>
-                    
-                }
-
-                <div>
-                    <label>player cards</label>
-                    <div  className='playerCards'>{playerCards}</div>
-                </div>
-
-                <div>bet them down game</div>
+            
             </div>
         )
     }   

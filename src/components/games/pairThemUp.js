@@ -22,8 +22,8 @@ class PairThemUp extends React.Component{
     shuffleCards=()=>{
         const {text, playButton}=this.state
         const cards=this.props.selectedCards.slice(0,this.state.cardplay)
-        const cards1=shuffle(cards.map(c=>c={...c,match:false, line:1}))
-        const cards2=shuffle(cards.map(c=>c={...c,match:false, line:2}))
+        const cards1=shuffle(cards.map(c=>c={...c, line:1}))
+        const cards2=shuffle(cards.map(c=>c={...c,name:'this card name is hiden', line:2}))
         this.setState({cards1, cards2, playButton:'restart', text})
     }
 
@@ -108,7 +108,7 @@ class PairThemUp extends React.Component{
 
                 <div>
                     <h3>your score is {this.state.score}</h3>
-                    <h2>{this.state.text}</h2> 
+                    <h3>{this.state.text}</h3> 
                 </div>
 
                 <div className='cards1'>
