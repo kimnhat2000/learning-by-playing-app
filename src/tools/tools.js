@@ -20,3 +20,16 @@ export const randomColor=()=>{
     const c=Math.floor(Math.random()*256);
     return c
 }
+
+//random picture from picture folder
+export const randomPics=()=>{
+    const totalPics=54
+    let array=[]
+    const randomNum=Math.floor(Math.random()*totalPics);
+    let num;
+    for (num=1; num<=totalPics; num++) {
+        array=[...array, `pictures/randomPics/${num}.jpg`]
+    }
+    const r=array[randomNum];
+    return r;
+}

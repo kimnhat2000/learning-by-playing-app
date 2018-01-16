@@ -2,29 +2,34 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import './test.css'
 
-const test=(e)=>{
-    console.log(Number (e.target.value))
-    console.log(typeof e.target.value)
+const array=new Array(39).fill('')
 
+const cardNum=()=>{
+    let num;
+    let arrayCard=[];
+    for (num=1; num<=39; num++){
+        arrayCard=[...arrayCard, `pictures/randomPics/randomPic${num}.jpg` ]
+    }
+    return arrayCard;
 }
 
-const style={
-    backgroundSize: '200px 250px',
-    height:'250px',
-    width:'200px',
-    backgroundColor:'grey'
+const arrayCard=cardNum()
+
+const randomPic=()=>{
+    const i=Math.floor(Math.random()*arrayCard.length);
+    const r=arrayCard[i]
+    return r;
 }
 
+const t=()=>{
+    console.log(randomPic())
+}
 const Test =()=>(
     <div>
-        <div className='test' style={style}/>
+        <div className='test'/>
         <div>
-            <select name="cars" onChange={test}>
-                <option value="1">Volvo</option>
-                <option value="2">Saab</option>
-                <option value="3">Fiat</option>
-                <option value="4">Audi</option>
-            </select>
+            <img/>
+            <button onClick={t}>test</button>
             <Link to='/'>retrun to main page</Link>
         </div>
     </div> 

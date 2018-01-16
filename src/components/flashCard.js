@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {addCard,addCards, removeCard, cardToEditInfo, editCard, removeAllCards, filteredCards} from '../actions/flashCardActions';
 import FlashCardForm from './form';
 import {Link} from 'react-router-dom';
+import {randomPics} from '../tools/tools';
 import '../style/flashCard.css';
 
 class FlashCard extends React.Component{
@@ -77,11 +78,8 @@ class FlashCard extends React.Component{
     }
     test=()=>{
         // this.props.cards.map(c=>console.log(c.selected))
-        // console.log('big card: ',this.state.bigCard)
-        // console.log(this.state.confirmDeleteAll)
-        // console.log('card to delete: ',this.state.cardToDelete)
-        console.log(this.randomColor().r)
-        localStorage.clear();
+        console.log(randomPics())
+        // localStorage.clear();
     }
 
     randomColor=()=>{

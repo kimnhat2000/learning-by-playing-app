@@ -1,4 +1,5 @@
 import React from 'react';
+import {randomPics} from '../tools/tools';
 import '../style/form.css';
 
 class FlashCardForm extends React.Component{
@@ -10,6 +11,8 @@ class FlashCardForm extends React.Component{
             description:editCardInfo?editCardInfo.description:'',
             variants:editCardInfo?editCardInfo.variants:[],
             img:editCardInfo?editCardInfo.img:'',
+            imgInput:true,
+            text:'',
             error:''
         }
     }
@@ -46,12 +49,17 @@ class FlashCardForm extends React.Component{
     }
 
     onSubmit=(e)=>{
+        const img=randomPics()
+        const imgInput=false
         e.preventDefault()
         if(!this.state.name){
             this.setState({error:'please enter card name'})
         }else if (!this.state.description){
             this.setState({error:'please enter card description'})
-        }else{
+        }else if (!this.state.img){
+            this.setState({img, imgInput, text:'a random img was set for your card'})
+        }
+        else{
             this.props.editCardInfo ?
             this.props.saveEditCard(this.state):
             this.props.saveCard(this.state)  
@@ -126,12 +134,15 @@ class FlashCardForm extends React.Component{
 
                 <div>
                     <label>image</label>
+                    <div>{this.state.text}</div>
+                    {this.state.imgInput&&
                     <input
                         name='img'
                         type='text'
+                        placeholder='enter a img url'
                         value={this.state.img}
                         onChange={this.onChange}
-                    />
+                    />}
                 </div>
                 {this.state.error}
                 <button className='buttons'>save</button>

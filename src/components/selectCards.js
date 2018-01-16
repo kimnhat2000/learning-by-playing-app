@@ -106,7 +106,6 @@ class SelectCards extends React.Component{
                     <Link to='/multibleChoices'><button>mutible choices</button></Link>
                     <Link to='/betThemDown'><button>bet them down</button></Link>
                     <Link to='/wackACard'><button>wack a card</button></Link>
-                    <Link to='/catchMe'><button>catch me</button></Link>
                     <Link to='/cookcoo'><button>cookcoo</button></Link>
                 </div>
     
