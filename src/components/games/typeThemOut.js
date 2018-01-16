@@ -3,12 +3,14 @@ import {randomNum} from '../../tools/tools'
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {BigCard} from '../card';
+import '../../style/typeThemOut.css';
 
 class TypeThemOut extends React.Component{
     constructor(props){
         super(props);
         this.state={
             card:'',
+            showCard:'',
             playButton:'play',
             input:'',
             warning:'',
@@ -17,7 +19,10 @@ class TypeThemOut extends React.Component{
     }
 
     onPlayClick=()=>{
-        this.setState({playButton:'restart', card:this.randomCard(), score:2, input:''})
+        const randomCard=this.randomCard()
+        const card=randomCard
+        const showCard={...randomCard, name:'this card name is hidden'}
+        this.setState({playButton:'restart', card, showCard, score:2, input:''})
     }
     
     onInputChange=(e)=>{
@@ -46,7 +51,6 @@ class TypeThemOut extends React.Component{
         if(text===cardName){       
             this.setState({warning:'congrat', score:score+1, warning:'', card:this.randomCard(), input:''})
             scoreTrack=scoreTrack+1;
-            console.log(scoreTrack);
             if(scoreTrack===5){
                 this.setState({warning:'congrat you have a token', playButton:'play again?'})
             }
@@ -62,8 +66,9 @@ class TypeThemOut extends React.Component{
     }
 
     test=()=>{
-        const {card, input}=this.state
-        console.log(input)
+        const {card, input, showCard}=this.state
+        console.log(card, showCard)
+        console.log(this.randomCard())
     }
 
     render(){
@@ -72,27 +77,36 @@ class TypeThemOut extends React.Component{
                 <Link to='/selectCard'>return to select cards page</Link>
                 <button onClick={this.onPlayClick}>{this.state.playButton}</button>
                 <button onClick={this.test}>test</button>
-                <h3>your score is {this.state.score}</h3>
-                <div>
-                    <BigCard
-                        card={this.state.card}
-                        showButtons={false}
-                    />
-                    <div><h3>{this.state.warning}</h3></div>
 
-                    <form>
-                        <input
-                            type='text'
-                            placeholder='what card is it?'
-                            value={this.state.input}
-                            onChange={this.onInputChange}
+            {this.state.card &&
+                <div>
+                    <div>
+                        <h3>your score is {this.state.score}</h3>
+                        <h3>{this.state.warning}</h3>
+                    </div>
+
+                    <div className='type-game'>
+                        <BigCard
+                            card={this.state.showCard}
+                            showButtons={false}
                         />
-                        <button
-                            onClick={this.onSubmit}
-                        >done</button>
-                    </form>
-                    
+
+                        <form>
+                            <div className='type-game-form'>
+                                <input
+                                    type='text'
+                                    placeholder='what card is it?'
+                                    value={this.state.input}
+                                    onChange={this.onInputChange}
+                                />
+                                <button
+                                    onClick={this.onSubmit}
+                                >done</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
+            }
             </div>
         )
     }

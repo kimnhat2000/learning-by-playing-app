@@ -14,7 +14,6 @@ class SelectCards extends React.Component{
         this.state={
             cards,
             selectCards:[],
-            showcards:[],  
         }
     }
 
@@ -50,6 +49,19 @@ class SelectCards extends React.Component{
         this.setState({selectCards, cards})
         this.props.dispatch(selectOtherApproach(selectCards))
         console.log(this.state.cards)
+    }
+
+    selectAll=(pass)=>{
+        if(pass){
+            const selectedCards=this.props.cards;
+            this.setState({selectCards:this.props.cards, cards:[]})
+            this.props.dispatch(selectOtherApproach(selectedCards))
+            return;
+        }else{
+            this.setState({selectCards:[], cards:this.props.cards})
+            this.props.dispatch(selectOtherApproach([]))
+            return;
+        }
     }
 
     test=()=>{
@@ -103,6 +115,8 @@ class SelectCards extends React.Component{
             <div>
             <Link to='/'>return to flashCard</Link>
             <button onClick={this.test}>test</button>
+            <button onClick={()=>this.selectAll(true)}>select all cards</button>
+            <button onClick={()=>this.selectAll(false)}>unselect all cards</button>
             <div className='cards'>{allCards}</div>
 
             {grammarCheck &&

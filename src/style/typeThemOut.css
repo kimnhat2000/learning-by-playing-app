@@ -1,0 +1,12 @@
+.type-game{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.type-game-form{
+    display: flex;
+    flex-direction: row;
+    margin: 15px
+}
