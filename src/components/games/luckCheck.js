@@ -128,33 +128,38 @@ class LuckCheck extends React.Component{
                 </div> 
 
                 <button onClick={this.test}>test</button>
-                    
-                <div className='luck-card-info'>
-                    <h2 className='score'>your score is {this.state.score}</h2>
-                    <h2 className='warning'>the winning card is</h2>
-                    <h2 className='warning'>{this.state.warning}</h2>
-                </div>
-
-                    {this.state.targetCard&&
-                        <div className='winning-card'><BigCard 
-                            card={this.state.targetCard}
-                            showButton={false}
-                            bigCardClick={this.onBigCardClick}
-                        /></div>
-                    }
                 
-                    <div className='random-cards'>
-                        {this.state.cards &&
-                        this.state.cards.map((c,i)=>(
-                            <div key={i} className='hide-card'>
-                                <Card
-                                    style={style}  
-                                    card={c}
-                                    cardClick={this.onCardClick}
-                                />
-                            </div>
-                            ))}
-                    </div> 
+                {this.state.targetCard&&
+                <div>
+
+                    <div className='luck-card-info'>
+                        <h2 className='score'>your score is {this.state.score}</h2>
+                        <h2 className='warning'>the winning card is</h2>
+                        <h2 className='warning'>{this.state.warning}</h2>
+                    </div>
+
+                    <div className='winning-card'><BigCard 
+                        card={this.state.targetCard}
+                        showButton={false}
+                        bigCardClick={this.onBigCardClick}
+                    /></div>
+                    
+                </div>
+                } 
+                
+            
+                <div className='random-cards'>
+                    {this.state.cards &&
+                    this.state.cards.map((c,i)=>(
+                        <div key={i} className='hide-card'>
+                            <Card
+                                style={style}  
+                                card={c}
+                                cardClick={this.onCardClick}
+                            />
+                        </div>
+                        ))}
+                </div> 
 
             </div>
         )
