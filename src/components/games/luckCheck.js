@@ -4,6 +4,7 @@ import {Card, BigCard} from '../card';
 import {shuffle, randomNum, randomColor, reziseAndStyleBigCard} from '../../tools/tools';
 import {Link} from 'react-router-dom';
 import '../../style/luckCheck.css'
+import { addToken } from '../../actions/tokenActions';
 
 class LuckCheck extends React.Component{
     constructor(props){
@@ -15,17 +16,18 @@ class LuckCheck extends React.Component{
             warning:'',
             score:5,
             noClick:false,
-            playButton:true
+            playButton:'play'
         }
     }
 
     onPlayClick=()=>{
-        this.setState({playButton:false, score:5, warning:''})
+        this.setState({playButton:'restart', score:5, warning:''})
         this.targetCard()
     }
 
     cardNum=(e)=>{
-        this.setState({cardsShow:Number(e.target.value)})
+        const cardsShow=Number(e.target.value)
+        this.setState({cardsShow, warning:`you will get ${cardsShow*29-26} tokens if you win, click restart to apply new cards set`})
     }
 
     targetCard=()=>{
@@ -40,14 +42,14 @@ class LuckCheck extends React.Component{
         //shuffle all the cards
         const allCards=shuffle([...randomOddCards,targetCard])
         //turn the state of the cards to hide
-        const cards=allCards.map(c=>({...c,showCard:false}))
+        const cards=allCards.map(c=>({...c,showCard:true}))
         this.setState({targetCard, cards})
     }
 
     onCardClick=(card)=>{
         const {targetCard, warning, score, cards, noClick}=this.state
         const scoreTrack=score
-        const showCard=cards.map(c=>c.id===card.id?{...c,showCard:true}:c)
+        const showCard=cards.map(c=>c.id===card.id?{...c,showCard:false}:c)
         this.setState({cards:showCard})
 
         if(score===10 || score===0 || noClick){
@@ -57,7 +59,8 @@ class LuckCheck extends React.Component{
         if(card.id===targetCard.id){
             this.setState({warning:'YOU WIN', score:scoreTrack+1})
             if(score===9){
-                this.setState({warning:'YOU WIN A TOKEN'})
+                this.setState({warning:`YOU WIN ${this.state.cardsShow*29-26} TOKENS, play again?`, playButton:'play again?'})
+                this.props.dispatch(addToken(this.state.cardsShow*29-26))
                 return;
             }
             this.setState({cards:this.state.cards.map(c=>c={...c,showCard:true})})
@@ -73,7 +76,7 @@ class LuckCheck extends React.Component{
         }else if (card.id !== targetCard.id){
             this.setState({warning:'sorry, try again', score:scoreTrack-1})
             if(score===1){
-                this.setState({warning:'sorry, you lose the game, try again?'})
+                this.setState({warning:'sorry, you lose the game, try again?', playButton:'play again?'})
                 return;
             }
             this.setState({cards:this.state.cards.map(c=>c={...c,showCard:true})})
@@ -94,7 +97,8 @@ class LuckCheck extends React.Component{
     }
 
     test=()=>{
-        console.log(this.state.cards)
+        const {tokens}=this.props
+        console.log(tokens)
         // console.log(this.props.selectedCards)
         // console.log('the target cards is: ', this.state.targetCard.showInfo)
     }
@@ -118,7 +122,7 @@ class LuckCheck extends React.Component{
                         <option value="5">6 'Luck god is smiling'</option>
                     </select>
 
-                    <button onClick={this.onPlayClick}>{this.state.playButton?'Play':'restart'}</button>
+                    <button onClick={this.onPlayClick}>{this.state.playButton}</button>
                     <button onClick={this.test}>test</button>
                     <Link to='/selectCard'><button>return</button></Link>
 
@@ -126,9 +130,15 @@ class LuckCheck extends React.Component{
      
                 {this.state.targetCard&&
                 <div>
-                    <h3>your score is {this.state.score}</h3>
-                    <h3>the winning card is</h3>
-                    <h3>{this.state.warning}</h3>
+
+                    <div className='game-info'>
+                        <h3>your score is {this.state.score}</h3>
+                        <div>
+                            <h3>the winning card is</h3>
+                            <h3>{this.state.warning}</h3>
+                        </div>
+                        <h3>your have {this.props.tokens} tokens</h3>
+                    </div>
 
                     <BigCard 
                         style={bigCardStyle}
@@ -158,7 +168,8 @@ class LuckCheck extends React.Component{
 }
 
 const mapStateToProps=(state)=>({
-    selectedCards:state.selectCardsReducer.cards
+    selectedCards:state.selectCardsReducer.cards,
+    tokens:state.tokenReducer.totalTokens
 })
 
 export default connect(mapStateToProps)(LuckCheck) 

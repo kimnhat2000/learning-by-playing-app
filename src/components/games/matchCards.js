@@ -4,6 +4,7 @@ import {Card} from '../card';
 import {shuffle} from '../../tools/tools';
 import {Link} from 'react-router-dom';
 import {randomColor} from '../../tools/tools';
+import { addToken } from '../../actions/tokenActions';
 import '../../style/matchCards.css';
 
 class WackACard extends React.Component{
@@ -31,12 +32,13 @@ class WackACard extends React.Component{
         const clickedCard=this.state.cards.find(c=>c.showingId===card.showingId)
         let countDown=this.state.countDown;
         const winCheck=this.state.cards.map(c=>c.showCard===false?1:0)
-        const text='you win the game';
+        const text=`you win the game, you have ${countDown} ${countDown===1?'token':'tokens'}`;
         
         if(winCheck.includes(1)){
 
         }else {
             this.setState({text, playButton:'play again?'})
+            this.props.dispatch(addToken(countDown))
             return;
         }
         
@@ -71,9 +73,9 @@ class WackACard extends React.Component{
 
     test=()=>{
         const {cards, selectedCard}=this.state
-        const {selectedCards}=this.props
+        const {selectedCards, tokens}=this.props
         // this.props.gameCards.map(c=>console.log(c.showCard))
-        console.log(selectedCards)
+        console.log(tokens)
     }
 
     render(){
@@ -99,12 +101,14 @@ class WackACard extends React.Component{
                         <Link to = '/selectCard'><button>return</button></Link>
                 </div>
 
-                <div className='matchCard-info'>
-                    {this.state.countDown&&
+                {this.state.countDown&&
+                    <div className='game-info'>
                         <h3>you can click {this.state.countDown} {grammarCheck}</h3>
-                    }
+                        <h3>you have {this.props.tokens} tokens</h3>
+                    </div>
+                }
                     <h3>{this.state.text}</h3>
-                </div>
+                
 
                 <div className='match-cards'>
                     {cards}
@@ -115,7 +119,8 @@ class WackACard extends React.Component{
 }
 
 const mapStateToProps=(state)=>({
-    selectedCards:state.selectCardsReducer.cards
+    selectedCards:state.selectCardsReducer.cards,
+    tokens:state.tokenReducer.totalTokens
 })
 
 export default connect(mapStateToProps)(WackACard) 

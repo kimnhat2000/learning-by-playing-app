@@ -4,12 +4,14 @@ import {shuffle, randomNum, randomColor} from '../../tools/tools'
 import {gotHit} from '../../tools/cookcooproms';
 import {Link} from 'react-router-dom';
 import {Card} from '../card';
+import { addToken } from '../../actions/tokenActions';
 import '../../style/wackACard.css'
 
 class WackACard extends React.Component{
     constructor(props){
         super(props);
         this.state={
+            showinfo:false,
             cards:[],
             score:5,
             text:'',
@@ -34,7 +36,7 @@ class WackACard extends React.Component{
         this.state.countDownControl;
         clearTimeout(this.state.timeControl);
         clearInterval(this.state.countDownControl);
-        this.setState({score:5, countDown:5})
+        this.setState({score:5, countDown:5, showinfo:true})
 
         let countDown=5;
         this.state.countDownControl=setInterval(()=>{
@@ -71,7 +73,8 @@ class WackACard extends React.Component{
 
         if(score===10){
             clearTimeout(this.state.timeControl)
-            this.setState({text:'congrat, you win the game', playButton:'play again?'})
+            this.setState({text:'congrat, you win the game with 2 tokens', playButton:'play again?'})
+            this.props.dispatch(addToken(2))
             return;
         }else if(score===0){
             clearTimeout(this.state.timeControl)
@@ -124,10 +127,17 @@ class WackACard extends React.Component{
                     <Link to='/selectCard'><button>return</button></Link>
                 </div>
 
-                <h3>time: {this.state.countDown}</h3>
-                <h3>your score is: {this.state.score}</h3>
-                <h3>{this.state.text}</h3>
-
+                {this.state.showinfo &&
+                <div className='game-info'>
+                    <h3>your score is: {this.state.score}</h3>
+                    <div>
+                        <h3>time: {this.state.countDown}</h3>
+                        <h3>{this.state.text}</h3>
+                    </div>
+                    <h3>you have {this.props.tokens} tokens</h3>
+                </div>
+                }
+                
                 <div className='wack-game-cards'>
                     {cards}
                 </div>
@@ -138,7 +148,8 @@ class WackACard extends React.Component{
 }
 
 const mapStateToPtops=state=>({
-    selectedCards:state.selectCardsReducer.cards
+    selectedCards:state.selectCardsReducer.cards,
+    tokens:state.tokenReducer.totalTokens
 })
 
 export default connect(mapStateToPtops)(WackACard) 

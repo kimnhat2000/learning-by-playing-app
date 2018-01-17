@@ -3,12 +3,14 @@ import {randomNum, shuffle, randomColor, reziseAndStyleBigCard} from '../../tool
 import {connect} from 'react-redux';
 import {Card, BigCard} from '../card';
 import {Link} from 'react-router-dom';
+import { addToken } from '../../actions/tokenActions';
 import '../../style/betThemDown.css';
 
 class BetThemDown extends React.Component{
     constructor(props){
         super(props);
         this.state={
+            showinfo:false,
             comCards:[],
             playerCards:[],
             comCard:'',
@@ -24,7 +26,7 @@ class BetThemDown extends React.Component{
     onPlayClick=()=>{
         this.randomComCards()
         this.randomPlayerCards()
-        this.setState({playButton:'restart'})
+        this.setState({playButton:'restart', showinfo:true})
     }
 
     onCardClick=(card)=>{
@@ -78,6 +80,7 @@ class BetThemDown extends React.Component{
         }else if(playerScoreTrack >= 10){
             this.setState({warning:'you win the game'})
             this.setState({showingButtons:false})
+            this.props.dispatch(addToken(5))
             return;
         }
 
@@ -133,8 +136,9 @@ class BetThemDown extends React.Component{
             this.setState({showingButtons:false})
             return;
         }else if(playerScoreTrack >= 10){
-            this.setState({warning:'you win the game'})
+            this.setState({warning:'you win the game, you earn 5 tokens'})
             this.setState({showingButtons:false})
+            this.props.dispatch(addToken(5))
             return;
         }
 
@@ -186,14 +190,19 @@ class BetThemDown extends React.Component{
                 <div className='bet-game-container'>
 
                     <div className='player-cards'>
+                        {this.state.showinfo &&
                         <h3>player cards</h3>
+                        }
                         <div  className='playerCards'>{playerCards}</div>
                     </div>
 
                     {this.state.playerCard && 
                     <div className='battlefield'>
-                        <h3>your score is {this.state.playerScore}</h3>
-                        <h3>computer score is {this.state.comScore}</h3>
+                        <div className='game-info'>
+                            <h3>your score is {this.state.playerScore}</h3>
+                            <h3>computer score is {this.state.comScore}</h3>
+                            <h3>you have {this.props.tokens} tokens</h3>
+                        </div>
                         <div className='battle-card'>
                             <BigCard
                                 style={cardstyle}
@@ -221,7 +230,9 @@ class BetThemDown extends React.Component{
                     }
 
                     <div className='computer-cards'>
+                        {this.state.showinfo &&
                         <h3>computer cards</h3>
+                        }
                         <div  className='comCards'>{comCards}</div>
                     </div>
                     
@@ -233,7 +244,8 @@ class BetThemDown extends React.Component{
 }
 
 const mapStateToProps=(state)=>({
-    selectedCards:state.selectCardsReducer.cards
+    selectedCards:state.selectCardsReducer.cards,
+    tokens:state.tokenReducer.totalTokens
 })
 
 export default connect(mapStateToProps)(BetThemDown)

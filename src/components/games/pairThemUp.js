@@ -3,12 +3,14 @@ import {connect} from 'react-redux';
 import {shuffle, reziseAndStyleBigCard} from '../../tools/tools';
 import {BigCard} from '../card';
 import {Link} from 'react-router-dom';
+import { addToken } from '../../actions/tokenActions';
 import '../../style/pairThemUp.css';
 
 class PairThemUp extends React.Component{
     constructor(props){
         super(props);
         this.state={
+            showinfo:false,
             cardplay:4,
             cards1:[],
             cards2:[],
@@ -29,7 +31,7 @@ class PairThemUp extends React.Component{
 
     onPlay=()=>{
         this.shuffleCards()
-        this.setState({text:'', score:5})
+        this.setState({text:'', score:5, showinfo:true})
     }
 
     onCardClick=(card)=>{
@@ -54,7 +56,8 @@ class PairThemUp extends React.Component{
                     this.shuffleCards()
                     return;
                 }else if(score===10){
-                    this.setState({text:'you win the game', playButton:'play again?'})
+                    this.setState({text:'you win the game, you earn 2 tokens', playButton:'play again?'})
+                    this.props.dispatch(addToken(2))
                     return;
                 }
                 return;
@@ -108,10 +111,13 @@ class PairThemUp extends React.Component{
                     <Link to='/selectCard'><button>return</button></Link>
                 </div>
 
-                <div>
+                {this.state.showinfo &&
+                <div className='game-info'>
                     <h3>your score is {this.state.score}</h3>
                     <h3>{this.state.text}</h3> 
+                    <h3>you have {this.props.tokens} tokens</h3>
                 </div>
+                }
 
                 <div className='cards1'>
                     {cardSet1}
@@ -127,7 +133,8 @@ class PairThemUp extends React.Component{
 }
 
 const mapStateToProps=(state)=>({
-    selectedCards:state.selectCardsReducer.cards
+    selectedCards:state.selectCardsReducer.cards,
+    tokens:state.tokenReducer.totalTokens
 })
 
 export default connect(mapStateToProps)(PairThemUp) 

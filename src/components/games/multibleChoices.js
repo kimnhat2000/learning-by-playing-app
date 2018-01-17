@@ -3,11 +3,13 @@ import {connect} from 'react-redux';
 import {shuffle, randomNum, reziseAndStyleBigCard} from '../../tools/tools';
 import {BigCard} from '../card';
 import {Link} from 'react-router-dom';
+import { addToken } from '../../actions/tokenActions';
 
 class MultibleChoices extends React.Component{
     constructor(props){
         super(props);
         this.state={
+            showinfo:false,
             cards:[],
             card:{},
             score:5,
@@ -22,8 +24,8 @@ class MultibleChoices extends React.Component{
         //this line is to select randomly 3 cards and concat them with the random chosen card
         const newCards=allCards.slice(0,3)
         const addCards=shuffle([...allCards,card])
-        const cards=addCards.map(c=>c={...c,showInfo:true})
-        this.setState({card, cards})
+        const cards=addCards.map(c=>c={...c,showInfo:true, name:'this card name is hidden'})
+        this.setState({card, cards, showinfo:true})
     }
 
     onCardClick=(card)=>{
@@ -31,7 +33,8 @@ class MultibleChoices extends React.Component{
         let scoreTract=score
 
         if(scoreTract===10) {
-            this.setState({playButton:'play again', text:'you win the game'})
+            this.setState({playButton:'play again', text:'you win the game, you earn 2 tokens'})
+            this.props.dispatch(addToken(2))
             return;
         }else if (scoreTract===0){
             this.setState({playButton:'play again', text:'you lose the game'})
@@ -69,11 +72,15 @@ class MultibleChoices extends React.Component{
                     <Link to='/selectCard'><button>return</button></Link>
                 </div>
 
-                <div>
+                {this.state.showinfo &&
+                <div className='game-info'>
                     <h3>your score is: {this.state.score}</h3>
                     <h3>{this.state.text}</h3>
+                    <h3>you have {this.props.tokens} tokens</h3>
                 </div>
+                }
 
+                {this.state.showinfo &&
                 <div>
                     <BigCard
                         style={style}
@@ -82,6 +89,7 @@ class MultibleChoices extends React.Component{
                         bigCardClick={false}
                     />
                 </div>
+                }
 
                 <div className='cards'>
                     {allCards}
@@ -92,7 +100,8 @@ class MultibleChoices extends React.Component{
 }
 
 const mapStateToProps=(state)=>({
-    selectedCards:state.selectCardsReducer.cards
+    selectedCards:state.selectCardsReducer.cards,
+    tokens:state.tokenReducer.totalTokens
 })
 
 export default connect(mapStateToProps)(MultibleChoices)

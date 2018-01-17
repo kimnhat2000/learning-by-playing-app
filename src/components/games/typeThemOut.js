@@ -3,6 +3,7 @@ import {randomNum, reziseAndStyleBigCard} from '../../tools/tools'
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {BigCard} from '../card';
+import { addToken } from '../../actions/tokenActions';
 import '../../style/typeThemOut.css';
 
 class TypeThemOut extends React.Component{
@@ -54,7 +55,9 @@ class TypeThemOut extends React.Component{
             this.setState({warning:'congrat', score:score+1, warning:'', card:setCard, showCard:setShowCard, input:''})
             scoreTrack=scoreTrack+1;
             if(scoreTrack===5){
-                this.setState({warning:'congrat you have a token', playButton:'play again?'})
+                this.setState({warning:'congrat you win 2 tokens', playButton:'play again?'})
+                this.props.dispatch(addToken(2))
+
             }
             return;
         }else{       
@@ -85,9 +88,10 @@ class TypeThemOut extends React.Component{
 
             {this.state.card &&
                 <div>
-                    <div>
+                    <div className='game-info'>
                         <h3>your score is {this.state.score}</h3>
                         <h3>{this.state.warning}</h3>
+                        <h3>you have {this.props.tokens} tokens</h3>
                     </div>
 
                     <div className='type-game'>
@@ -119,7 +123,8 @@ class TypeThemOut extends React.Component{
 }
 
 const mapStateToProps =(state)=>({
-    selectedCards:state.selectCardsReducer.cards
+    selectedCards:state.selectCardsReducer.cards,
+    tokens:state.tokenReducer.totalTokens
 })
 
 export default connect(mapStateToProps)(TypeThemOut)

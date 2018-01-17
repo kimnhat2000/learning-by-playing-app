@@ -4,12 +4,14 @@ import {BigCard} from '../card';
 import {randomNum, reziseAndStyleBigCard} from '../../tools/tools';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
+import { addToken } from '../../actions/tokenActions';
 import '../../style/cookcoo.css';
 
 class Cookcoo extends React.Component{
     constructor(props){
         super(props);
         this.state={
+            showinfo:false,
             card:{},
             cardCatched:[],
             score:5,
@@ -33,7 +35,7 @@ class Cookcoo extends React.Component{
     }
 
     onPlay=()=>{
-        this.setState({card:{}, cardCatched:[], score:5, show: false, text:'', showCard:true, playButton:'restart'})
+        this.setState({card:{}, cardCatched:[], score:5, show: false, text:'', showCard:true, playButton:'restart', showinfo:true})
         clearTimeout(this.state.test)
         let that=this;
         (function loop() {
@@ -57,7 +59,8 @@ class Cookcoo extends React.Component{
         let scoreTrack = score;
 
         if(scoreTrack===10){
-            this.setState({text:'Congrat, you win the game'})
+            this.setState({text:'Congrat, you win the game and 3 tokens'})
+            this.props.dispatch(addToken(3))
             return;
 
         }else if(scoreTrack===0){
@@ -108,9 +111,15 @@ class Cookcoo extends React.Component{
                     <Link to='/selectCard'><button>return</button></Link>
                 </div>
 
-                <h3>score: {this.state.score}</h3>
+                {this.state.showinfo &&
+                <div className='game-info'>
+                    <h3>score: {this.state.score}</h3>
+                    <h3>{this.state.text}</h3>
+                    <h3>you have {this.props.tokens} tokens</h3>
+                </div>
+                }
             
-            {this.state.showCard &&
+                {this.state.showCard &&
                 <div className='next-card'>
                     {this.state.show?
                     <BigCard
@@ -135,13 +144,13 @@ class Cookcoo extends React.Component{
                         />
                     </div>
                 </div>
-            }
-            
-            <div><h3>{this.state.text}</h3></div>
+                }
             
             {this.state.cardCatched &&
                 <div>
+                    {this.state.showinfo &&
                     <h3>cards you catched</h3>
+                    }
                     <div>
                         <div className='cards-catched'  >{cards}</div>
                     </div>
@@ -154,7 +163,8 @@ class Cookcoo extends React.Component{
 }
     
 const mapStateToProps =(state)=>({
-    selectedCards:state.selectCardsReducer.cards
+    selectedCards:state.selectCardsReducer.cards,
+    tokens:state.tokenReducer.totalTokens
 })
 
 export default connect(mapStateToProps)(Cookcoo)

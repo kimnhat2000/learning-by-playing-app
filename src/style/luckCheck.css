@@ -20,3 +20,9 @@
     align-items: center;
 }
 
+.game-info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+

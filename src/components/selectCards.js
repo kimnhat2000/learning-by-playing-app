@@ -5,15 +5,26 @@ import {Card, BigCard} from './card';
 import {editCard} from '../actions/flashCardActions';
 import {randomColor} from '../tools/tools';
 import {selectOtherApproach, storeSelectedCards} from '../actions/selectCardsActions';
+import { buyAGame } from '../actions/tokenActions';
 import '../style/selectCards.css';
+
 
 class SelectCards extends React.Component{
     constructor(props){
         super(props);
         const cards=this.props.cards;
+        const tokens=this.props.tokens.totalTokens;
+        const selectGames=this.props.tokens.gamesRemain;
+        const buyGames=this.props.tokens.gamesBought
         this.state={
             cards,
+            tokens,
+            selectGames,
+            buyGames,
             selectCards:[],
+            warning:false,
+            text:'',
+            dicisionCard:''
         }
     }
 
@@ -63,11 +74,39 @@ class SelectCards extends React.Component{
         }
     }
 
+    onGameClick=(game)=>{
+        this.setState({
+            text:`are you sure you want to buy this ${game.name} game for 100 tokens?`, 
+            warning:true,
+            dicisionCard:game
+        })
+    }
+
+    makeDesicion=(pass)=>{
+        if(pass){
+            const tokens=this.state.tokens-100
+            const dicisionCard=this.state.dicisionCard
+            const selectGames=this.state.selectGames.filter(g=>g.id!==dicisionCard.id)
+            const buyGames=[...this.state.buyGames, {...dicisionCard,buy:true}]
+            this.setState({tokens, warning:false, buyGames, selectGames})
+            this.props.dispatch(buyAGame(dicisionCard))
+            return;
+        }else {
+            this.setState({warning:false})
+            return;
+        }
+    }
+
     test=()=>{
-        console.log(this.props.cards, this.props.selectCards)
+        const {totalTokens, games, gamesBought, gamesRemain}= this.props.tokens
+        const {buyGames}= this.state
+        console.log('games: ',games)
+        console.log('tokens: ',totalTokens)
+        console.log('gamesBought: ',gamesBought)
+        console.log('gamesRemain: ',gamesRemain)
+
         // localStorage.clear('selectCards');
     }
-        
 
     render(){
         const r1=randomColor();
@@ -93,27 +132,30 @@ class SelectCards extends React.Component{
         ))
 
         const grammarCheck=this.state.selectCards.length===1?'card':'cards';
-        const grammarCheckReverse=this.state.cards.length===1?'card':'cards';
 
         const buttonGrammar=4-this.state.selectCards.length === 1? 'card': 'cards';
+
+        const boughtGames=this.state.buyGames.map((g,i)=>(
+            <div key={i}>
+                <Link to ={g.path}><button>{g.name}</button></Link>
+            </div>
+        ))
     
         const buttonsShow = this.state.selectCards.length < 4  ? 
-            <h3>you need to select at least {4-this.state.selectCards.length} {buttonGrammar} to play games</h3> : 
+            <h3>you need to select at least {4-this.state.selectCards.length} more {buttonGrammar} to play games</h3> : 
             <div>
                 <h3>what games do you want to play?</h3>
-    
-                <div className='buttons'>
-                    <Link to='/luckCheck'><button>luck check</button></Link>
-                    <Link to='/matchCards'><button>match cards</button></Link>
-                    <Link to='/typeThemOut'><button>type them out</button></Link>
-                    <Link to='/pairThemUp'><button>pair them up</button></Link>
-                    <Link to='/multibleChoices'><button>mutible choices</button></Link>
-                    <Link to='/betThemDown'><button>bet them down</button></Link>
-                    <Link to='/wackACard'><button>wack a card</button></Link>
-                    <Link to='/cookcoo'><button>cookcoo</button></Link>
-                </div>
+
+                <div  className='buttons'>{boughtGames}</div>
     
             </div> 
+        
+        const games=this.state.selectGames.map((g,i)=>(
+            <div key={i} className='buttons'>
+                <button onClick={()=>this.onGameClick(g)}>{g.name}</button>
+            </div>
+        ))
+
         return(
             <div>
                 
@@ -124,108 +166,45 @@ class SelectCards extends React.Component{
                     <Link to='/'><button>return home</button></Link>
                 </div>
 
-                <div className='cards'>{allCards}</div>
-
-                {grammarCheck &&
-                    <h3>you have selected {this.state.selectCards.length} {grammarCheck}</h3>
+                <div className='game-info'> 
+                    {grammarCheck &&
+                        <h3>you have selected {this.state.selectCards.length} {grammarCheck}</h3>
+                    }
+                    <h3>you have {this.state.tokens} tokens</h3>
+                </div>
+             
+                {this.state.warning && 
+                    <div>
+                        <h3>{this.state.text}</h3>
+                        <div className='warning-buttons'>
+                            <button onClick={()=>this.makeDesicion(true)}>YES</button>
+                            <button onClick={()=>this.makeDesicion(false)}>NO</button>
+                        </div>
+                    </div>
                 }
+
+                <div className='cards'>{allCards}</div>
 
                 <div className='cards'>{selectedCards}</div>
 
-                <div>{buttonsShow}</div>
+                <div className='buttons'>{buttonsShow}</div>
               
+                {this.state.tokens >= 100 &&
+                <div>
+                    <h3>do you want to buy a card for 100 tokens?</h3>
+                    <div className='games-select'>{games}</div>
+                </div>
+                }
+
             </div> 
         )
     }
 }
-
-// const SelectCards =({cards, selectCards, dispatch})=>{
-
-//     const onCardClick=(card)=>{
-//         dispatch(editCard({...card,selected:true, showCard:false}))
-//         dispatch(multibleSelection(card))
-//     }
-
-//     const onSelectedCardClick=(card)=>{
-//         const unselectCard={...card, selected:true, showCard:true}
-//         dispatch(multibleSelection(unselectCard))
-//         dispatch(editCard({...card, showCard:true}))
-//     }
-
-//     const test=()=>{
-//         console.log(selectCards.length)
-//         // localStorage.clear('selectCards');
-//     }
-
-//     const r1=randomColor();
-//     const r2=randomColor();
-//     const r3=randomColor();
-//     const style={backgroundColor:`rgb(${r1}, ${r2}, ${r3})`}
-        
-//     const allCards=cards.map((c,i)=>(
-//         <Card
-//             key={i}
-//             style={style}
-//             card={c}
-//             cardClick={onCardClick}
-//         />
-//     ))
-
-//     const selectedCards=selectCards && selectCards.map((c,i)=>(
-//         <Card
-//             key={i}
-//             style={style}
-//             card={c}
-//             cardClick={onSelectedCardClick}
-//         />
-//     ))
-
-//     const grammarCheck=selectCards.length===1?'card':'cards'
-
-//     const buttonGrammar=4-selectCards.length === 1? 'card': 'cards'
-
-//     const buttonsShow = selectCards.length < 4? 
-//         <h3>you need to select {4-selectCards.length} {buttonGrammar} to play games</h3> : 
-//         <div>
-//             <h3>what games do you want to play?</h3>
-
-//             <div className='buttons'>
-//                 <Link to='/luckCheck'><button>luck check</button></Link>
-//                 <Link to='/matchCards'><button>match cards</button></Link>
-//                 <Link to='/typeThemOut'><button>type them out</button></Link>
-//                 <Link to='/pairThemUp'><button>pair them up</button></Link>
-//                 <Link to='/multibleChoices'><button>mutible choices</button></Link>
-//                 <Link to='/betThemDown'><button>bet them down</button></Link>
-//                 <Link to='/wackACard'><button>wack a card</button></Link>
-//                 <Link to='/catchMe'><button>catch me</button></Link>
-//                 <Link to='/cookcoo'><button>cookcoo</button></Link>
-//             </div>
-
-//         </div> 
-
-//     return (
-//         <div>
-//             <Link to='/'>return to flashCard</Link>
-//             <button onClick={test}>test</button>
-//             <div className='cards'>{allCards}</div>
-
-//             {grammarCheck &&
-//                 <h3>you have selected {selectCards.length} {grammarCheck}</h3>
-//             }
-
-//             <div className='cards'>{selectedCards}</div>
-
-//             {cards.length < 4? 
-//                 <h3>you need at least 4 cards to play games</h3>:
-//                 <div>{buttonsShow}</div>
-//             }  
-//         </div> 
-//     )
-// }
     
 const mapStateToProps=(state)=>({
     cards:state.flashCardReducer.cards,
-    selectCards:state.selectCardsReducer.cards
+    selectCards:state.selectCardsReducer.cards,
+    tokens:state.tokenReducer
 })
 
 export default connect(mapStateToProps)(SelectCards)
