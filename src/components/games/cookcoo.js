@@ -1,7 +1,7 @@
 import React from 'react';
 import {teasing, gotHit, miss} from '../../tools/cookcooproms';
-import {BigCardResize} from '../card';
-import {randomNum} from '../../tools/tools';
+import {BigCard} from '../card';
+import {randomNum, reziseAndStyleBigCard} from '../../tools/tools';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import '../../style/cookcoo.css';
@@ -83,12 +83,17 @@ class Cookcoo extends React.Component{
         console.log(cardCatched)
     }
     render(){
+        const style1=reziseAndStyleBigCard('200px', '150px', 17, 'pictures/backgroundPics/', 'jpg')
+        const style2=reziseAndStyleBigCard('300px', '200px', 17, 'pictures/backgroundPics/', 'jpg')
+
         const {cardCatched} = this.state
         const cards = cardCatched.map((c,i)=>(
-            <BigCardResize
+            <BigCard
+                style={style2}
                 key={i}
                 card={c}
                 bigCardClick={()=>this.catchedCardClick(c)}
+                showButtons={false}
             />
         ))
         return(
@@ -104,9 +109,11 @@ class Cookcoo extends React.Component{
             {this.state.showCard &&
                 <div className='next-card'>
                     {this.state.show?
-                    <BigCardResize
+                    <BigCard
+                        style={style1}
                         bigCardClick={this.onCardClick}
                         card={this.state.card}
+                        showButtons={false}
                     />:
                     <div 
                         className='empty-card'
@@ -116,9 +123,11 @@ class Cookcoo extends React.Component{
                     </div>}
                     <div>
                         <h3>It is me that appears</h3>
-                        <BigCardResize
+                        <BigCard
+                            style={style1}
                             bigCardClick={false}
                             card={this.state.card}
+                            showButtons={false}
                         />
                     </div>
                 </div>

@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {addCard,addCards, removeCard, cardToEditInfo, editCard, removeAllCards, filteredCards} from '../actions/flashCardActions';
 import FlashCardForm from './form';
 import {Link} from 'react-router-dom';
-import {randomPics} from '../tools/tools';
+import {randomPics, reziseAndStyleBigCard} from '../tools/tools';
 import '../style/flashCard.css';
 
 class FlashCard extends React.Component{
@@ -77,7 +77,9 @@ class FlashCard extends React.Component{
     }
     test=()=>{
         // this.props.cards.map(c=>console.log(c.selected))
-        console.log(randomPics())
+        const test=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
+
+        console.log(test.width)
         // localStorage.clear();
     }
 
@@ -112,7 +114,8 @@ class FlashCard extends React.Component{
         this.props.dispatch(filteredCards(e.target.value))
     }
 
-    render(){   
+    render(){
+        const style=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
         const {cards, filteredCards}=this.props
         const cardCheck=this.props.cards.length===1?'card':'cards'
         return (
@@ -184,6 +187,7 @@ class FlashCard extends React.Component{
                 />
                 {this.state.bigCard &&
                     <BigCard
+                        style={style}
                         bigCardClick={()=>this.setState({bigCard:{...this.state.bigCard,showInfo:!this.state.bigCard.showInfo}})}
                         card={this.state.bigCard}
                         deleteCard={this.onDeleteCard}

@@ -37,12 +37,7 @@ export const Card =({cardClick, card, style})=>{
 )}
 
 
-export const BigCard =({card, deleteCard, editCard, bigCardClick, showButtons})=>{
-    const img= randomPics(17, 'pictures/backgroundPics/', 'jpg')
-    const style={
-        backgroundImage: `url(${img})`,
-        backgroundSize:'350px 250px',
-    }
+export const BigCard =({card, deleteCard, editCard, bigCardClick, showButtons, style})=>{
     const variants=card.variants && card.variants.map((v,i)=>(
         <li key={i}>{v}</li>
     ))

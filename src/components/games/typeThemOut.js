@@ -1,5 +1,5 @@
 import React from 'react';
-import {randomNum} from '../../tools/tools'
+import {randomNum, reziseAndStyleBigCard} from '../../tools/tools'
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {BigCard} from '../card';
@@ -74,6 +74,7 @@ class TypeThemOut extends React.Component{
     }
 
     render(){
+        const style=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
         return(
             <div>
                 <Link to='/selectCard'>return to select cards page</Link>
@@ -89,6 +90,7 @@ class TypeThemOut extends React.Component{
 
                     <div className='type-game'>
                         <BigCard
+                            style={style}
                             card={this.state.showCard}
                             showButtons={false}
                         />

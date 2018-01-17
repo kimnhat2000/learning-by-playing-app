@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from  'react-redux';
 import {Card, BigCard} from '../card';
-import {shuffle, randomNum, randomColor} from '../../tools/tools';
+import {shuffle, randomNum, randomColor, reziseAndStyleBigCard} from '../../tools/tools';
 import {Link} from 'react-router-dom';
 import '../../style/luckCheck.css'
 
@@ -104,6 +104,7 @@ class LuckCheck extends React.Component{
         const r2=randomColor();
         const r3=randomColor();
         const style={backgroundColor:`rgb(${r1}, ${r2}, ${r3})`}
+        const bigCardStyle=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
         return(
             <div>
                 <div className='luckCheck-menu'>
@@ -138,11 +139,14 @@ class LuckCheck extends React.Component{
                         <h2 className='warning'>{this.state.warning}</h2>
                     </div>
 
-                    <div className='winning-card'><BigCard 
-                        card={this.state.targetCard}
-                        showButton={false}
-                        bigCardClick={this.onBigCardClick}
-                    /></div>
+                    <div className='winning-card'>
+                        <BigCard 
+                            style={bigCardStyle}
+                            card={this.state.targetCard}
+                            showButton={false}
+                            bigCardClick={this.onBigCardClick}
+                        />
+                    </div>
                     
                 </div>
                 } 

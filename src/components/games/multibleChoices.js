@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {shuffle, randomNum} from '../../tools/tools';
-import {BigCardResize, BigCard} from '../card';
+import {shuffle, randomNum, reziseAndStyleBigCard} from '../../tools/tools';
+import {BigCard} from '../card';
 import {Link} from 'react-router-dom';
 
 class MultibleChoices extends React.Component{
@@ -52,9 +52,11 @@ class MultibleChoices extends React.Component{
 
     render(){
         const {cards}=this.state
+        const style=reziseAndStyleBigCard('250px', '150px', 17, 'pictures/backgroundPics/', 'jpg', '0.8em', '10px')
         const allCards=cards.map((c,i)=>(
-            <BigCardResize
+            <BigCard
                 key={i}
+                style={style}
                 card={c}
                 bigCardClick={()=>this.onCardClick(c)}
             />
@@ -74,6 +76,7 @@ class MultibleChoices extends React.Component{
 
                 <div>
                     <BigCard
+                        style={style}
                         card={this.state.card}
                         showButtons={false}
                         bigCardClick={false}

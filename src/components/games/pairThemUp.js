@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {shuffle} from '../../tools/tools';
-import {BigCard, BigCardResize} from '../card';
+import {shuffle, reziseAndStyleBigCard} from '../../tools/tools';
+import {BigCard} from '../card';
 import {Link} from 'react-router-dom';
 import '../../style/pairThemUp.css';
 
@@ -77,11 +77,13 @@ class PairThemUp extends React.Component{
     }
 
     render(){
+        const style=reziseAndStyleBigCard('250px', '200px', 17, 'pictures/backgroundPics/', 'jpg', '0.8em', '15px', 'hidden')
         const cardSet1= this.state.cards1.map((c,i)=>(
             <div 
                 className='card1'
                 key={i}>
-                <BigCardResize
+                <BigCard
+                    style={style}
                     card={c}
                     bigCardClick={()=>this.onCardClick(c, c.line)}
                 />
@@ -91,7 +93,8 @@ class PairThemUp extends React.Component{
             <div 
                 className='card2'
                 key={i}>
-                <BigCardResize
+                <BigCard
+                    style={style}
                     card={{...c,showInfo:true}}
                     bigCardClick={()=>this.onCardClick(c, c.line)}
                 />

@@ -116,19 +116,22 @@ class SelectCards extends React.Component{
             </div> 
         return(
             <div>
-            <Link to='/'>return to flashCard</Link>
-            <button onClick={this.test}>test</button>
-            <button onClick={()=>this.selectAll(true)}>select all cards</button>
-            <button onClick={()=>this.selectAll(false)}>unselect all cards</button>
-            <div className='cards'>{allCards}</div>
+                <div className='header'>
+                    <Link to='/'><button>return to flashCard</button></Link>
+                    <button onClick={this.test}>test</button>
+                    <button onClick={()=>this.selectAll(true)}>select all cards</button>
+                    <button onClick={()=>this.selectAll(false)}>unselect all cards</button>
+                </div>
 
-            {grammarCheck &&
-                <h3>you have selected {this.state.selectCards.length} {grammarCheck}</h3>
-            }
+                <div className='cards'>{allCards}</div>
 
-            <div className='cards'>{selectedCards}</div>
+                {grammarCheck &&
+                    <h3>you have selected {this.state.selectCards.length} {grammarCheck}</h3>
+                }
 
-            <div>{buttonsShow}</div>
+                <div className='cards'>{selectedCards}</div>
+
+                <div>{buttonsShow}</div>
               
             </div> 
         )

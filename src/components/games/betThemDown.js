@@ -1,10 +1,9 @@
 import React from 'react';
-import {randomNum, shuffle, randomColor} from '../../tools/tools';
+import {randomNum, shuffle, randomColor, reziseAndStyleBigCard} from '../../tools/tools';
 import {connect} from 'react-redux';
 import {Card, BigCard} from '../card';
 import {Link} from 'react-router-dom';
 import '../../style/betThemDown.css';
-
 
 class BetThemDown extends React.Component{
     constructor(props){
@@ -155,6 +154,8 @@ class BetThemDown extends React.Component{
         const r3=randomColor();
         const style={backgroundColor:`rgb(${r1}, ${r2}, ${r3})`}
 
+        const cardstyle=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
+
         const comCards=this.state.comCards.map((c,i)=>(
             <Card 
                 style={style}
@@ -174,16 +175,16 @@ class BetThemDown extends React.Component{
 
         return (
             <div>
-                <div>
+                <div className='header'>
+                    <Link to='/selectCard'><button>return to selected cards page</button></Link>
                     <button onClick={this.onPlayClick}>{this.state.playButton}</button>
                     <button onClick={this.test}>test</button>
-                    <Link to='/selectCard'>return to selected cards page</Link>
                 </div>
 
                 <div className='bet-game-container'>
 
                     <div className='player-cards'>
-                        <label>player cards</label>
+                        <h3>player cards</h3>
                         <div  className='playerCards'>{playerCards}</div>
                     </div>
 
@@ -193,12 +194,14 @@ class BetThemDown extends React.Component{
                         <h3>computer score is {this.state.comScore}</h3>
                         <div className='battle-card'>
                             <BigCard
+                                style={cardstyle}
                                 card={this.state.playerCard}
                                 bigCardClick={this.onBigCardClick}
                                 showButtons={false}
                             />
                             <h1>VS</h1>
                             <BigCard
+                                style={cardstyle}
                                 card={this.state.comCard}
                                 bigCardClick={this.onComBigCardClick}
                                 showButtons={false}
@@ -216,7 +219,7 @@ class BetThemDown extends React.Component{
                     }
 
                     <div className='computer-cards'>
-                        <label>computer cards</label>
+                        <h3>computer cards</h3>
                         <div  className='comcard'>{comCards}</div>
                     </div>
                     

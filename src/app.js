@@ -17,7 +17,6 @@ const store =createStore(reducers)
 
 store.subscribe(()=>{
     const state=store.getState()
-    console.log(state.selectCardsReducer.cards);
 })
 
 store.dispatch(addCard({name:'card 1a', description:' card 1 description', variants:['var1', 'var2'], img:'pictures/lagi.png'}))
