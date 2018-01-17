@@ -115,7 +115,7 @@ class FlashCard extends React.Component{
     }
 
     render(){
-        const style=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
+        const style=reziseAndStyleBigCard('400px', '300px', 17, 'pictures/backgroundPics/', 'jpg', '1em', '15px', 'auto')
         const {cards, filteredCards}=this.props
         const cardCheck=this.props.cards.length===1?'card':'cards'
         return (
@@ -168,24 +168,26 @@ class FlashCard extends React.Component{
                     />
 
                 }
-                       
-                <CardList
-                    cards={this.state.cardFilter?filteredCards:cards}
-                    cardClick={this.onCardClick}
-                    deleteCard={this.onDeleteCard}
-                    showEditForm={()=>this.setState({showEditForm:true})}
-                    editCard={this.cardToEdit}
-                />
-                {this.state.bigCard &&
-                    <BigCard
-                        style={style}
-                        bigCardClick={()=>this.setState({bigCard:{...this.state.bigCard,showInfo:!this.state.bigCard.showInfo}})}
-                        card={this.state.bigCard}
+
+                <div className='all-cards'>
+                    <CardList
+                        cards={this.state.cardFilter?filteredCards:cards}
+                        cardClick={this.onCardClick}
                         deleteCard={this.onDeleteCard}
+                        showEditForm={()=>this.setState({showEditForm:true})}
                         editCard={this.cardToEdit}
-                        showButtons={true}
                     />
-                }
+                    {this.state.bigCard &&
+                        <BigCard
+                            style={style}
+                            bigCardClick={()=>this.setState({bigCard:{...this.state.bigCard,showInfo:!this.state.bigCard.showInfo}})}
+                            card={this.state.bigCard}
+                            deleteCard={this.onDeleteCard}
+                            editCard={this.cardToEdit}
+                            showButtons={true}
+                        />
+                    }
+                </div>      
 
             </div>
         )

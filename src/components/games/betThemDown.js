@@ -34,15 +34,17 @@ class BetThemDown extends React.Component{
     }
 
     randomComCards=()=>{
-        const valueNum=randomNum(this.props.selectedCards.length*5)
-        const addValue=this.props.selectedCards.map(c=>c={cardValue:randomNum(this.props.selectedCards.length*5),...c})
+        const allCards=shuffle(this.props.selectedCards)
+        const selectCards=allCards.slice(0,8)
+        const addValue=selectCards.map(c=>c={cardValue:randomNum(selectCards.length*6),...c})
         const comCards=shuffle(addValue)
         this.setState({comCards})
     }
 
     randomPlayerCards=()=>{
-        const valueNum=randomNum(this.props.selectedCards.length*5)
-        const addValue=this.props.selectedCards.map(c=>c={cardValue:randomNum(this.props.selectedCards.length*5),...c})
+        const allCards=shuffle(this.props.selectedCards)
+        const selectCards=allCards.slice(0,8)
+        const addValue=selectCards.map(c=>c={cardValue:randomNum(selectCards.length*6),...c})
         const newCards=addValue .map(c=>c={...c,name:`power ${c.cardValue}`})
         const playerCards=shuffle(newCards)
         this.setState({playerCards})
@@ -154,7 +156,7 @@ class BetThemDown extends React.Component{
         const r3=randomColor();
         const style={backgroundColor:`rgb(${r1}, ${r2}, ${r3})`}
 
-        const cardstyle=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
+        const cardstyle=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg', '1em', '20px', 'hidden')
 
         const comCards=this.state.comCards.map((c,i)=>(
             <Card 
@@ -199,7 +201,6 @@ class BetThemDown extends React.Component{
                                 bigCardClick={this.onBigCardClick}
                                 showButtons={false}
                             />
-                            <h1>VS</h1>
                             <BigCard
                                 style={cardstyle}
                                 card={this.state.comCard}
@@ -207,11 +208,12 @@ class BetThemDown extends React.Component{
                                 showButtons={false}
                             />
                         </div>
+                        <h1>VS</h1>
                         <h3>{this.state.warning}</h3>
                         {this.state.showingButtons &&
-                            <div>
-                                <button onClick={()=>this.onBattleClick(true)}>ATTACT</button>
-                                <button onClick={()=>this.onBattleClick(false)}>DEFEND</button>
+                            <div className='buttons'>
+                                <button className='attact' onClick={()=>this.onBattleClick(true)}>ATTACT</button>
+                                <button className='defend' onClick={()=>this.onBattleClick(false)}>DEFEND</button>
                             </div>  
                         }
                         
@@ -220,7 +222,7 @@ class BetThemDown extends React.Component{
 
                     <div className='computer-cards'>
                         <h3>computer cards</h3>
-                        <div  className='comcard'>{comCards}</div>
+                        <div  className='comCards'>{comCards}</div>
                     </div>
                     
                 </div>

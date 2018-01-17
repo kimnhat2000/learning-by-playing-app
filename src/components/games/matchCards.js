@@ -9,21 +9,22 @@ import '../../style/matchCards.css';
 class WackACard extends React.Component{
     constructor(props){
         super(props);
-        const countDown=Math.round(this.props.selectedCards.length*3.5)
         this.state={
             cards:[],
             noClick:false,
-            countDown,
+            countDown:'',
             text:'',
             playButton:'play',
         }
     }
 
     play=()=>{
-        const hideCards=this.props.selectedCards.map((c,i)=>c={...c,showCard:false,match:false});
+        const allCards=shuffle(this.props.selectedCards);
+        const selectCards=allCards.slice(0,18)
+        const hideCards=selectCards.map((c,i)=>c={...c,showCard:false,match:false});
         const doubleCards=shuffle(hideCards.concat(hideCards));
         const cards=doubleCards.map((c,i)=>c={showingId:i,...c})
-        this.setState({cards, playButton:'restart', countDown:Math.round(this.props.selectedCards.length*3.5)})
+        this.setState({cards, playButton:'restart', countDown:Math.round(selectCards.length*3.5)})
     }
 
     onCardClick=(card)=>{
@@ -91,6 +92,7 @@ class WackACard extends React.Component{
         ))
         return(
             <div className='matchCard'>
+
                 <div className='header'>
                         <button onClick={this.play}>{this.state.playButton}</button>
                         <button onClick={this.test}>test</button>
@@ -98,7 +100,9 @@ class WackACard extends React.Component{
                 </div>
 
                 <div className='matchCard-info'>
-                    <h3>you can click {this.state.countDown} {grammarCheck}</h3>
+                    {this.state.countDown&&
+                        <h3>you can click {this.state.countDown} {grammarCheck}</h3>
+                    }
                     <h3>{this.state.text}</h3>
                 </div>
 
