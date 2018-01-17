@@ -120,28 +120,19 @@ class FlashCard extends React.Component{
         const cardCheck=this.props.cards.length===1?'card':'cards'
         return (
             <div>
+                
                 <div className='header'>
-                    <button
-                        onClick={()=>this.setState({showForm:true})}
-                    >add a card</button>
+                    <Link to='/test'><button>test page</button></Link>
                     <button onClick={this.test}>test</button>
-                    <button
-                        onClick={this.onDeleteAll}
-                    >delete all</button>
-                    <Link to='/selectCard'>
-                        <button>play games</button>
-                    </Link>
-
-                    <Link to='/test'>
-                        <button>test page</button>
-                    </Link>
+                    <Link to='/selectCard'><button>play games</button></Link>
+                    <button onClick={this.onDeleteAll}>delete all</button>
+                    <button onClick={()=>this.setState({showForm:true})}>add a card</button>
                     <input
                         type='text'
                         placeholder='find cards by name'
                         value = {this.state.cardFilter}
                         onChange= {this.onFilterTextChange}
                     />
-                    
                 </div>
 
                 <div className='text'>

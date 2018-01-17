@@ -63,10 +63,10 @@ class MultibleChoices extends React.Component{
         ))
         return(
             <div>
-                <div>
+                <div className='header'>
                     <button onClick={this.randomCard}>{this.state.playButton}</button>
                     <button onClick={this.test}>test</button>
-                    <Link to='/selectCard'>return to select card page</Link>
+                    <Link to='/selectCard'><button>return</button></Link>
                 </div>
 
                 <div>

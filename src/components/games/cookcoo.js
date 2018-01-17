@@ -21,6 +21,10 @@ class Cookcoo extends React.Component{
         }
     }
 
+    componentWillUnmount(){
+        clearTimeout(this.state.test)
+    }
+
     randomCard=()=>{
         const {appear}=this.state
         const {selectedCards} =this.props
@@ -39,7 +43,7 @@ class Cookcoo extends React.Component{
             if (scoreTrack===0||scoreTrack===10){
                 return;
             }
-            let randomTime = Math.round(Math.random() * randomNum(4000)) + 500;
+            let randomTime = Math.round(Math.random() * randomNum(4000)) + 1000;
             that.state.test=setTimeout(()=> {
                 that.setState({show:true});
                 setTimeout(()=>{that.setState({show:false, text:teasing[randomNum(teasing.length)]})},500)
@@ -83,8 +87,8 @@ class Cookcoo extends React.Component{
         console.log(cardCatched)
     }
     render(){
-        const style1=reziseAndStyleBigCard('200px', '150px', 17, 'pictures/backgroundPics/', 'jpg')
-        const style2=reziseAndStyleBigCard('300px', '200px', 17, 'pictures/backgroundPics/', 'jpg')
+        const style1=reziseAndStyleBigCard('200px', '150px', 17, 'pictures/backgroundPics/', 'jpg', '0.8em', '0', 'hidden')
+        const style2=reziseAndStyleBigCard('300px', '200px', 17, 'pictures/backgroundPics/', 'jpg', '0.8em', '10px', 'hidden')
 
         const {cardCatched} = this.state
         const cards = cardCatched.map((c,i)=>(
@@ -98,10 +102,10 @@ class Cookcoo extends React.Component{
         ))
         return(
             <div>
-                <div>
+                <div className='header'>
                     <button onClick={this.onPlay }>{this.state.playButton}</button>
                     <button onClick={this.test}>test</button>
-                    <Link to= '/selectCard'>return to select card page </Link>
+                    <Link to='/selectCard'><button>return</button></Link>
                 </div>
 
                 <h3>score: {this.state.score}</h3>

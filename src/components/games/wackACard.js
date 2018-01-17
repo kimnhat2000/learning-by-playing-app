@@ -28,7 +28,7 @@ class WackACard extends React.Component{
         this.setState({cards})
     }
 
-    onPlay=()=>{
+    gameStart=()=>{
         
         this.state.timeControl;
         this.state.countDownControl;
@@ -57,6 +57,11 @@ class WackACard extends React.Component{
                 loop()
             },700)
         })()
+    }
+
+    onPlay=()=>{
+        this.setState({text:''})
+        this.gameStart()
     }
 
     onCarkClick=(card)=>{
@@ -113,10 +118,10 @@ class WackACard extends React.Component{
         ))
         return(
             <div>
-                <div>
+                <div className='header'>
                     <button onClick={this.onPlay}>{this.state.playButton}</button>
                     <button onClick={this.test}>test</button>
-                    <Link to='/selectCard'>return to select cards page</Link>
+                    <Link to='/selectCard'><button>return</button></Link>
                 </div>
 
                 <h3>time: {this.state.countDown}</h3>

@@ -116,11 +116,12 @@ class SelectCards extends React.Component{
             </div> 
         return(
             <div>
-                <div className='header'>
-                    <Link to='/'><button>return to flashCard</button></Link>
+                
+                <div className='header'>     
                     <button onClick={this.test}>test</button>
-                    <button onClick={()=>this.selectAll(true)}>select all cards</button>
                     <button onClick={()=>this.selectAll(false)}>unselect all cards</button>
+                    <button onClick={()=>this.selectAll(true)}>select all cards</button>
+                    <Link to='/'><button>return home</button></Link>
                 </div>
 
                 <div className='cards'>{allCards}</div>

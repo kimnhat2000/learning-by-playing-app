@@ -77,9 +77,11 @@ class TypeThemOut extends React.Component{
         const style=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
         return(
             <div>
-                <Link to='/selectCard'>return to select cards page</Link>
-                <button onClick={this.onPlayClick}>{this.state.playButton}</button>
-                <button onClick={this.test}>test</button>
+                <div className='header'>
+                    <button onClick={this.onPlayClick}>{this.state.playButton}</button>
+                    <button onClick={this.test}>test</button>
+                    <Link to='/selectCard'><button>return</button></Link>
+                </div>
 
             {this.state.card &&
                 <div>

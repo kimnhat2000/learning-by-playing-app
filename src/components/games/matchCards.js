@@ -91,13 +91,10 @@ class WackACard extends React.Component{
         ))
         return(
             <div className='matchCard'>
-                <div className='matchCard-buttons'>
+                <div className='header'>
                         <button onClick={this.play}>{this.state.playButton}</button>
                         <button onClick={this.test}>test</button>
-
-                    <div>
-                        <Link to = '/selectCard'>return to select game page</Link>
-                    </div>
+                        <Link to = '/selectCard'><button>return</button></Link>
                 </div>
 
                 <div className='matchCard-info'>

@@ -107,51 +107,38 @@ class LuckCheck extends React.Component{
         const bigCardStyle=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
         return(
             <div>
-                <div className='luckCheck-menu'>
+                <div className='header'>
                 
-                    <div className='cards-select'>
-                        <select onChange={this.cardNum}>
-                            <option value="1" autoFocus>cards to play</option>
-                            <option value="1" >2 'normal'</option>
-                            <option value="2">3 'I feel lucky'</option>
-                            <option value="3">4 'today is my day'</option>
-                            <option value="4">5 'I am very lucky'</option>
-                            <option value="5">6 'Luck god is smiling'</option>
-                        </select>
-                    </div>
+                    <select onChange={this.cardNum}>
+                        <option value="1" autoFocus>cards to play</option>
+                        <option value="1" >2 'normal'</option>
+                        <option value="2">3 'I feel lucky'</option>
+                        <option value="3">4 'today is my day'</option>
+                        <option value="4">5 'I am very lucky'</option>
+                        <option value="5">6 'Luck god is smiling'</option>
+                    </select>
 
-                    <div className='luckCheck-buttons'>
-                        <button onClick={this.onPlayClick}>{this.state.playButton?'Play':'restart'}</button>
-                    </div>
-
-                    <Link to='/selectCard'><div>return to selectCard page</div></Link>
+                    <button onClick={this.onPlayClick}>{this.state.playButton?'Play':'restart'}</button>
+                    <button onClick={this.test}>test</button>
+                    <Link to='/selectCard'><button>return</button></Link>
 
                 </div> 
-
-                <button onClick={this.test}>test</button>
-                
+     
                 {this.state.targetCard&&
                 <div>
+                    <h3>your score is {this.state.score}</h3>
+                    <h3>the winning card is</h3>
+                    <h3>{this.state.warning}</h3>
 
-                    <div className='luck-card-info'>
-                        <h2 className='score'>your score is {this.state.score}</h2>
-                        <h2 className='warning'>the winning card is</h2>
-                        <h2 className='warning'>{this.state.warning}</h2>
-                    </div>
-
-                    <div className='winning-card'>
-                        <BigCard 
-                            style={bigCardStyle}
-                            card={this.state.targetCard}
-                            showButton={false}
-                            bigCardClick={this.onBigCardClick}
-                        />
-                    </div>
-                    
+                    <BigCard 
+                        style={bigCardStyle}
+                        card={this.state.targetCard}
+                        showButton={false}
+                        bigCardClick={this.onBigCardClick}
+                    />
                 </div>
                 } 
                 
-            
                 <div className='random-cards'>
                     {this.state.cards &&
                     this.state.cards.map((c,i)=>(

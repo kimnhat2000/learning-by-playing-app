@@ -176,9 +176,9 @@ class BetThemDown extends React.Component{
         return (
             <div>
                 <div className='header'>
-                    <Link to='/selectCard'><button>return to selected cards page</button></Link>
                     <button onClick={this.onPlayClick}>{this.state.playButton}</button>
                     <button onClick={this.test}>test</button>
+                    <Link to='/selectCard'><button>return</button></Link>
                 </div>
 
                 <div className='bet-game-container'>

@@ -102,10 +102,10 @@ class PairThemUp extends React.Component{
         ))
         return(
             <div>
-                <div>
+                <div className='header'>
                     <button onClick={this.onPlay}>{this.state.playButton}</button>
                     <button onClick={this.test}>test</button>
-                    <Link to='/selectCard'>return to select cards page</Link>
+                    <Link to='/selectCard'><button>return</button></Link>
                 </div>
 
                 <div>
