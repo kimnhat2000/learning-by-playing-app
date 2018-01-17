@@ -22,13 +22,13 @@ export const randomColor=()=>{
 }
 
 //random picture from picture folder
-export const randomPics=()=>{
-    const totalPics=54
+export const randomPics=(pics, folderPath, fileExtension)=>{
+    const totalPics=pics
     let array=[]
     const randomNum=Math.floor(Math.random()*totalPics);
     let num;
     for (num=1; num<=totalPics; num++) {
-        array=[...array, `pictures/randomPics/${num}.jpg`]
+        array=[...array, `${folderPath}${num}.${fileExtension}`]
     }
     const r=array[randomNum];
     return r;

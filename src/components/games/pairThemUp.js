@@ -39,7 +39,6 @@ class PairThemUp extends React.Component{
 
         const cardsCheck=[...this.state.cardsCheck, card]
         this.setState({cardsCheck})
-        console.log(cards1.filter(c=>c.id !== card.id))
 
         if(score===10 || score === 0){
             return;

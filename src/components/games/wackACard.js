@@ -1,9 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {shuffle, randomNum} from '../../tools/tools'
+import {shuffle, randomNum, randomColor} from '../../tools/tools'
 import {gotHit} from '../../tools/cookcooproms';
 import {Link} from 'react-router-dom';
 import {Card} from '../card';
+import '../../style/wackACard.css'
 
 class WackACard extends React.Component{
     constructor(props){
@@ -12,7 +13,7 @@ class WackACard extends React.Component{
             cards:[],
             score:5,
             text:'',
-            countDown:5,
+            countDown:8,
             timeControl:null,
             countDownControl:null,
             playButton:'play'
@@ -95,9 +96,16 @@ class WackACard extends React.Component{
     }
 
     render(){
+
+        const r=randomColor()
+        const g=randomColor()
+        const b=randomColor()
+        const style={backgroundColor:`rgb(${r},${g},${b}`}
+
         const cards=this.state.cards.map((c,i)=>(
             <Card
                 className='card'
+                style={style}
                 key={i}
                 card={c}
                 cardClick={this.onCarkClick}
@@ -113,12 +121,11 @@ class WackACard extends React.Component{
 
                 <h3>time: {this.state.countDown}</h3>
                 <h3>your score is: {this.state.score}</h3>
+                <h3>{this.state.text}</h3>
 
-                <div className='cards'>
+                <div className='wack-game-cards'>
                     {cards}
                 </div>
-
-                <h3>{this.state.text}</h3>
 
             </div>
         )

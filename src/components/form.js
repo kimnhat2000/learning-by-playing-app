@@ -49,7 +49,7 @@ class FlashCardForm extends React.Component{
     }
 
     onSubmit=(e)=>{
-        const img=randomPics()
+        const img=randomPics(55, 'pictures/randomPics/', 'jpg')
         const imgInput=false
         e.preventDefault()
         if(!this.state.name){

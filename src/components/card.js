@@ -1,4 +1,5 @@
 import React from 'react';
+import {randomPics} from '../tools/tools'
 import '../style/card.css';
 
 export const Card =({cardClick, card, style})=>{
@@ -35,7 +36,13 @@ export const Card =({cardClick, card, style})=>{
         
 )}
 
+
 export const BigCard =({card, deleteCard, editCard, bigCardClick, showButtons})=>{
+    const img= randomPics(17, 'pictures/backgroundPics/', 'jpg')
+    const style={
+        backgroundImage: `url(${img})`,
+        backgroundSize:'350px 250px',
+    }
     const variants=card.variants && card.variants.map((v,i)=>(
         <li key={i}>{v}</li>
     ))
@@ -45,6 +52,7 @@ export const BigCard =({card, deleteCard, editCard, bigCardClick, showButtons})=
             {card.showInfo?
             <div 
                 className='big-card'
+                style={style}
                 onClick={bigCardClick}
             >
                 <h3 className='info'>{card.name}</h3>
@@ -54,6 +62,7 @@ export const BigCard =({card, deleteCard, editCard, bigCardClick, showButtons})=
             :
             <div 
                 className='big-card'
+                style={style}
                 onClick={bigCardClick}
             >
                 <div className='big-img'>
@@ -78,6 +87,11 @@ export const BigCard =({card, deleteCard, editCard, bigCardClick, showButtons})=
 )}
 
 export const BigCardResize =({card, bigCardClick})=>{
+    const img= randomPics(17, 'pictures/backgroundPics/', 'jpg')
+    const style={
+        backgroundImage: `url(${img})`,
+        backgroundSize:'350px 250px',
+    }
     const variants=card.variants && card.variants.map((v,i)=>(
         <li key={i}>{v}</li>
     ))
@@ -87,6 +101,7 @@ export const BigCardResize =({card, bigCardClick})=>{
             {card.showInfo?
             <div 
                 className='big-card-resize'
+                style={style}
                 onClick={bigCardClick}
             >
                 <h3 className='info-resize'>{card.name}</h3>
@@ -96,6 +111,7 @@ export const BigCardResize =({card, bigCardClick})=>{
             :
             <div 
                 className='big-card-resize'
+                style={style}
                 onClick={bigCardClick}
             >
                 <div className='big-img-resize'>

@@ -48,7 +48,6 @@ class SelectCards extends React.Component{
         const selectCards=this.state.selectCards.filter(c=>c.id!==card.id)
         this.setState({selectCards, cards})
         this.props.dispatch(selectOtherApproach(selectCards))
-        console.log(this.state.cards)
     }
 
     selectAll=(pass)=>{
@@ -71,6 +70,10 @@ class SelectCards extends React.Component{
         
 
     render(){
+        const r1=randomColor();
+        const r2=randomColor();
+        const r3=randomColor();
+        const style={backgroundColor:`rgb(${r1}, ${r2}, ${r3})`}
 
         const allCards=this.state.cards.map((c,i)=>(
             <Card
@@ -83,6 +86,7 @@ class SelectCards extends React.Component{
         const selectedCards=this.state.selectCards && this.state.selectCards.map((c,i)=>(
             <Card
                 key={i}
+                style={style}
                 card={c}
                 cardClick={this.onSelectedCardClick}
             />

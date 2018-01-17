@@ -45,7 +45,6 @@ class FlashCard extends React.Component{
     // }
 
     onCardClick=(card)=>{
-        console.log(card)
         this.setState({bigCard:card})
     }
     onDeleteCard=(card)=>{

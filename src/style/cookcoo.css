@@ -1,0 +1,24 @@
+.next-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;  
+}
+
+.empty-card{
+    width: 200px;
+    height: 150px;
+    display: flex;
+    background: gray;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
+}
+
+.cards-catched{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}

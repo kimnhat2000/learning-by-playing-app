@@ -1,9 +1,10 @@
 import React from 'react';
 import {teasing, gotHit, miss} from '../../tools/cookcooproms';
-import {BigCard} from '../card';
+import {BigCardResize} from '../card';
 import {randomNum} from '../../tools/tools';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
+import '../../style/cookcoo.css';
 
 class Cookcoo extends React.Component{
     constructor(props){
@@ -38,12 +39,11 @@ class Cookcoo extends React.Component{
             if (scoreTrack===0||scoreTrack===10){
                 return;
             }
-            let randomTime = Math.round(Math.random() * randomNum(4)+1) * 1000;
+            let randomTime = Math.round(Math.random() * randomNum(4000)) + 500;
             that.state.test=setTimeout(()=> {
                 that.setState({show:true});
-                setTimeout(()=>{that.setState({show:false, text:teasing[randomNum(teasing.length)]})},800)
+                setTimeout(()=>{that.setState({show:false, text:teasing[randomNum(teasing.length)]})},500)
                 loop();
-                console.log(scoreTrack)
             }, randomTime);
         })();
     }
@@ -85,11 +85,10 @@ class Cookcoo extends React.Component{
     render(){
         const {cardCatched} = this.state
         const cards = cardCatched.map((c,i)=>(
-            <BigCard
+            <BigCardResize
                 key={i}
                 card={c}
                 bigCardClick={()=>this.catchedCardClick(c)}
-                showButtons={false}
             />
         ))
         return(
@@ -98,32 +97,28 @@ class Cookcoo extends React.Component{
                     <button onClick={this.onPlay }>{this.state.playButton}</button>
                     <button onClick={this.test}>test</button>
                     <Link to= '/selectCard'>return to select card page </Link>
-                    <p>{this.state.appear}</p>
-                    <p>{this.state.appear1}</p>
                 </div>
 
-                <div>score: {this.state.score}</div>
+                <h3>score: {this.state.score}</h3>
             
             {this.state.showCard &&
                 <div className='next-card'>
                     {this.state.show?
-                    <BigCard
+                    <BigCardResize
                         bigCardClick={this.onCardClick}
                         card={this.state.card}
-                        showButtons={false}
                     />:
                     <div 
                         className='empty-card'
                         onClick={this.onCardClick}
                     >
-                        ready
+                        <h3>ready</h3>
                     </div>}
                     <div>
-                        <label>It is me that appears</label>
-                        <BigCard
+                        <h3>It is me that appears</h3>
+                        <BigCardResize
                             bigCardClick={false}
                             card={this.state.card}
-                            showButtons={false}
                         />
                     </div>
                 </div>
@@ -133,7 +128,7 @@ class Cookcoo extends React.Component{
             
             {this.state.cardCatched &&
                 <div>
-                    <label>cards you catched</label>
+                    <h3>cards you catched</h3>
                     <div>
                         <div className='cards-catched'  >{cards}</div>
                     </div>

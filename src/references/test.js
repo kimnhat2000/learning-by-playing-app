@@ -1,37 +1,30 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import './test.css'
+import {randomPics} from '../tools/tools';
+// import '../../public/pictures/background01.jpg'
 
-const array=new Array(39).fill('')
-
-const cardNum=()=>{
-    let num;
-    let arrayCard=[];
-    for (num=1; num<=39; num++){
-        arrayCard=[...arrayCard, `pictures/randomPics/randomPic${num}.jpg` ]
-    }
-    return arrayCard;
+const img1 = 'pictures/backgroundPics/1.jpg'
+const img= randomPics(17, 'pictures/backgroundPics/', 'jpg')
+const style={
+    backgroundColor:'gray',
+    width:'300px',
+    height:'200px',
+    backgroundImage: `url(${img})`
 }
 
-const arrayCard=cardNum()
+// const img=randomPics(55, 'pictures/randomPics/', 'jpg')
 
-const randomPic=()=>{
-    const i=Math.floor(Math.random()*arrayCard.length);
-    const r=arrayCard[i]
-    return r;
+
+const test=()=>{
+    console.log(img)
 }
 
-const t=()=>{
-    console.log(randomPic())
-}
 const Test =()=>(
-    <div>
-        <div className='test'/>
-        <div>
-            <img/>
-            <button onClick={t}>test</button>
-            <Link to='/'>retrun to main page</Link>
-        </div>
+    <div>  
+        <div style={style}/>
+        {/* <img src={img}/> */}
+        <button onClick={test}>test</button>
+        <Link to ='/'>return to home page</Link>
     </div> 
 )
 
