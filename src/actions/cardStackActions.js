@@ -16,3 +16,8 @@ export const editStack =(stack)=>({
 export const deleteAllStack =()=>({
     type: 'DELETE_ALL'
 })
+
+export const selectedStackId=(stack)=>({
+    type: 'SELECTED_STACK_ID',
+    stack
+})

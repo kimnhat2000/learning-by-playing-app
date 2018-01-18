@@ -2,10 +2,10 @@ import React from 'react';
 import CardList from './cardList';
 import {BigCard} from './card';
 import {connect} from 'react-redux';
-import {addCard,addCards, removeCard, cardToEditInfo, editCard, removeAllCards, filteredCards} from '../actions/flashCardActions';
+import {addCard,addCards, removeCard, cardToEditInfo, editCard, removeAllCards, filteredCards, filterStack} from '../actions/flashCardActions';
 import FlashCardForm from './form';
 import {Link} from 'react-router-dom';
-import {randomPics, reziseAndStyleBigCard} from '../tools/tools';
+import {reziseAndStyleBigCard} from '../tools/tools';
 import '../style/flashCard.css';
 
 class FlashCard extends React.Component{
@@ -61,26 +61,23 @@ class FlashCard extends React.Component{
             this.setState({text:'This card already existed'})
             return;
         }
-        this.props.dispatch(addCard(newCard))
         this.setState({showForm:false})
+        this.props.dispatch(addCard({stackId:this.props.selectedStackId,...newCard}))
+        this.props.dispatch(filterStack(this.props.selectedStackId))
+        console.log(this.props.cards)
     }
     onSaveEdit=(editedCard)=>{
         const id=this.props.cardToEdit.id
-        const newCard={id,...editedCard, showInfo:false, selected:false, showCard:true}
+        const stackId=this.props.selectedStackId
+        const newCard={id, stackId,...editedCard, showInfo:false, selected:false, showCard:true}
         this.props.dispatch(editCard(newCard))
         this.props.dispatch(cardToEditInfo({}))
         this.setState({showEditForm:false, bigCard:newCard})
+        console.log(newCard)
     }
     cardToEdit=(card)=>{
         this.setState({showEditForm:true})
         this.props.dispatch(cardToEditInfo(card))
-    }
-    test=()=>{
-        // this.props.cards.map(c=>console.log(c.selected))
-        const test=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
-
-        console.log(test.width)
-        // localStorage.clear();
     }
 
     randomColor=()=>{
@@ -91,11 +88,11 @@ class FlashCard extends React.Component{
         return {r, g, b}
     }
 
-    checkPass=(pass)=>{
+    onConfirm=(pass)=>{
         if(pass){
             if(this.state.confirmDeleteAll){
                 this.setState({warning:false, confirmDeleteAll:false, bigCard:''})
-                this.props.dispatch(removeAllCards())
+                this.props.dispatch(removeAllCards(this.props.selectedStackId))
             }else{
                 this.setState({warning:false, bigCard:''})
                 this.props.dispatch(removeCard(this.state.cardToDelete.id))
@@ -112,6 +109,16 @@ class FlashCard extends React.Component{
     onFilterTextChange=(e)=>{
         this.setState({cardFilter:e.target.value})
         this.props.dispatch(filteredCards(e.target.value))
+        
+    }
+
+    test=()=>{
+        const {cards, cardToEdit, filteredCards, selectedStackId}=this.props
+        console.log('cards:', cards)
+        console.log('cardToEdit:', cardToEdit)
+        console.log('filteredCards:', filteredCards)
+        console.log('selectedStackId:', selectedStackId)
+        // localStorage.clear();
     }
 
     render(){
@@ -148,8 +155,8 @@ class FlashCard extends React.Component{
                     <div className='warning'>
                         <h3>{this.state.showWarning}</h3>
                         <div className='warning-buttons'>
-                            <button onClick={()=>this.checkPass(true)}>yes</button>
-                            <button onClick={()=>this.checkPass(false)}>no</button>
+                            <button onClick={()=>this.onConfirm(true)}>yes</button>
+                            <button onClick={()=>this.onConfirm(false)}>no</button>
                         </div>
                     </div>
                     }
@@ -197,9 +204,10 @@ class FlashCard extends React.Component{
 }
 
 const mapStateToProps=(state)=>({
-    cards:state.flashCardReducer.cards,
+    cards:state.flashCardReducer.stackCards,
     cardToEdit:state.flashCardReducer.cardToEdit,
-    filteredCards:state.flashCardReducer.filteredCards
+    filteredCards:state.flashCardReducer.filteredCards,
+    selectedStackId:state.cardStackReducer.selectedStackId
 })
 
 

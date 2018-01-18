@@ -1,5 +1,4 @@
 import React from 'react';
-import {randomPics} from '../tools/tools'
 import '../style/card.css';
 
 export const Card =({cardClick, card, style})=>{

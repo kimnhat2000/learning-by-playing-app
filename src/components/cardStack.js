@@ -3,7 +3,8 @@ import _ from 'lodash';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {randomPics, reziseAndStyleBigCard} from '../tools/tools'
-import {addStack, removeStack, editStack, deleteAllStack} from '../actions/cardStackActions';
+import {addStack, removeStack, editStack, deleteAllStack, selectedStackId} from '../actions/cardStackActions';
+import {filterStack} from '../actions/flashCardActions';
 import '../style/cardStack.css'
 
 class CardStack extends React.Component{
@@ -44,7 +45,6 @@ class CardStack extends React.Component{
         const newStack={...stack, showButtons:!stack.showButtons}
         this.props.dispatch(editStack(newStack))
         this.setState({editNameInputShow:false, error:''})
-        console.log(stack)
     }
 
     handleWarning=(s)=>{
@@ -64,11 +64,17 @@ class CardStack extends React.Component{
         this.setState({editNameInputShow:false})
     }
 
+    openStack=(s)=>{
+        this.props.dispatch(filterStack(s.stackId))
+        this.props.dispatch(selectedStackId(s))
+        // console.log(this.props.sta)
+    }
+
     confirm=(pass)=>{
 
         if(pass){
             if(this.state.saveStack){
-                const saveStack={name:this.state.stackName, img:randomPics(55, 'pictures/randomPics/', 'jpg')}
+                const saveStack={name:this.state.stackName, img:randomPics(71, 'pictures/randomPics/', 'jpg')}
                 this.setState({stackName:'', saveStack:false, warning:false, error:''})
                 this.props.dispatch(addStack(saveStack))
             }
@@ -82,15 +88,15 @@ class CardStack extends React.Component{
     }
 
     test=()=>{
-        const{stacks, tokens, cards}= this.props
+        const{stacks, tokens, cards, stackCards, selectedStackId}= this.props
         console.log('stacks: ',stacks)
         console.log('tokens: ',tokens)
         console.log('cards: ',cards)
+        console.log('stackCards: ',stackCards)
+        console.log('selectedStackId: ',selectedStackId)
     }
 
     render(){
-
-        const pics=randomPics(55, 'pictures/randomPics/', 'jpg')
 
         const style=(style)=>{
             const s={
@@ -121,7 +127,7 @@ class CardStack extends React.Component{
                     <div>
                         <button onClick={()=>this.handleWarning(s)}>delete</button>
                         <button onClick={()=>this.handleEdit(s)}>edit</button>
-                        <button >open</button>
+                        <button onClick={()=>this.openStack(s)}>open</button>
                     </div>  
                     {this.state.editNameInputShow &&
                     <div>
@@ -184,9 +190,11 @@ class CardStack extends React.Component{
 }
 
 const mapStateToProps=(state)=>({
+    selectedStackId:state.cardStackReducer.selectedStackId,
     stacks: state.cardStackReducer.stacks,
     tokens: state.tokenReducer.totalTokens,
-    cards:state.flashCardReducer.cards
+    cards:state.flashCardReducer.cards,
+    stackCards:state.flashCardReducer.stackCards
 })
 
 export default connect(mapStateToProps)(CardStack)

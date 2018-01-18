@@ -3,7 +3,7 @@ import ReactDom from 'react-dom';
 import {Provider, connect} from 'react-redux';
 import {createStore, combineReducers} from 'redux';
 
-import {addCard} from './actions/flashCardActions';
+import {addCard, filterStack} from './actions/flashCardActions';
 import {selectOtherApproach, storeSelectedCards} from './actions/selectCardsActions';
 import {addToken} from './actions/tokenActions';
 import {addStack, removeStack, editStack, deleteAllStack} from './actions/cardStackActions';
@@ -29,14 +29,14 @@ store.subscribe(()=>{
     // console.log(state.cardStackReducer)
 })
 
-store.dispatch(addCard({name:'card 1a', description:' card 1 description', variants:['var1', 'var2'], img:'pictures/lagi.png'}))
-store.dispatch(addCard({name:'card 2a', description:' card 2 description', variants:['var 2a', 'var2a'], img:'pictures/narga.png'}))
-store.dispatch(addCard({name:'card 3b', description:' card 3 description', variants:['var3b', 'var3b'], img:'pictures/akan.png'}))
-store.dispatch(addCard({name:'card 4b', description:' card 4 description', variants:['var4b', 'var4b', 'var4b'], img:'pictures/ukan.png'}))
-// store.dispatch(addCard({name:'card 1a', description:' card 1 description', variants:['var1', 'var2'], img:'pictures/lagi.png'}))
-// store.dispatch(addCard({name:'card 2a', description:' card 2 description', variants:['var 2a', 'var2a'], img:'pictures/narga.png'}))
-// store.dispatch(addCard({name:'card 3b', description:' card 3 description', variants:['var3b', 'var3b'], img:'pictures/akan.png'}))
-// store.dispatch(addCard({name:'card 4b', description:' card 4 description', variants:['var4b', 'var4b', 'var4b'], img:'pictures/ukan.png'}))
+store.dispatch(addCard({stackId:0, name:'card 1a', description:' card 1 description', variants:['var1', 'var2'], img:'pictures/lagi.png'}))
+store.dispatch(addCard({stackId:0, name:'card 2a', description:' card 2 description', variants:['var 2a', 'var2a'], img:'pictures/narga.png'}))
+store.dispatch(addCard({stackId:1, name:'card 3b', description:' card 3 description', variants:['var3b', 'var3b'], img:'pictures/akan.png'}))
+store.dispatch(addCard({stackId:1, name:'card 4b', description:' card 4 description', variants:['var4b', 'var4b', 'var4b'], img:'pictures/ukan.png'}))
+store.dispatch(addCard({stackId:2, name:'card 1a', description:' card 1 description', variants:['var1', 'var2'], img:'pictures/lagi.png'}))
+store.dispatch(addCard({stackId:2, name:'card 2a', description:' card 2 description', variants:['var 2a', 'var2a'], img:'pictures/narga.png'}))
+store.dispatch(addCard({stackId:3, name:'card 3b', description:' card 3 description', variants:['var3b', 'var3b'], img:'pictures/akan.png'}))
+store.dispatch(addCard({stackId:3, name:'card 4b', description:' card 4 description', variants:['var4b', 'var4b', 'var4b'], img:'pictures/ukan.png'}))
 // store.dispatch(addCard({name:'card 1a', description:' card 1 description', variants:['var1', 'var2'], img:'pictures/lagi.png'}))
 // store.dispatch(addCard({name:'card 2a', description:' card 2 description', variants:['var 2a', 'var2a'], img:'pictures/narga.png'}))
 // store.dispatch(addCard({name:'card 3b', description:' card 3 description', variants:['var3b', 'var3b'], img:'pictures/akan.png'}))
@@ -68,6 +68,9 @@ store.dispatch(addStack(stack2))
 store.dispatch(addStack(stack3))
 store.dispatch(addStack(stack4))
 
+// const stack={stackId:1}
+
+// store.dispatch(filterStack(1))
 
 
 
