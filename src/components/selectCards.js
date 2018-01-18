@@ -104,6 +104,7 @@ class SelectCards extends React.Component{
         console.log('tokens: ',totalTokens)
         console.log('gamesBought: ',gamesBought)
         console.log('gamesRemain: ',gamesRemain)
+        console.log(this.props.cards.length===0)
 
         // localStorage.clear('selectCards');
     }
@@ -163,46 +164,50 @@ class SelectCards extends React.Component{
                     <button onClick={this.test}>test</button>
                     <button onClick={()=>this.selectAll(false)}>unselect all cards</button>
                     <button onClick={()=>this.selectAll(true)}>select all cards</button>
-                    <Link to='/'><button>return home</button></Link>
+                    <Link to='/flashCard'><button>return home</button></Link>
                 </div>
 
-                <div className='game-info'> 
-                    {grammarCheck &&
-                        <h3>you have selected {this.state.selectCards.length} {grammarCheck}</h3>
-                    }
-                    <h3>you have {this.state.tokens} tokens</h3>
-                </div>
-             
-                {this.state.warning && 
-                    <div>
-                        <h3>{this.state.text}</h3>
-                        <div className='warning-buttons'>
-                            <button onClick={()=>this.makeDesicion(true)}>YES</button>
-                            <button onClick={()=>this.makeDesicion(false)}>NO</button>
-                        </div>
-                    </div>
-                }
-
-                <div className='cards'>{allCards}</div>
-
-                <div className='cards'>{selectedCards}</div>
-
-                <div className='buttons'>{buttonsShow}</div>
-              
-                {this.state.tokens >= 100 &&
+            {this.props.cards.length === 0 ?
+                <h3>you do not have any cards, please enter at least 4 cards to play games</h3>:
                 <div>
-                    <h3>do you want to buy a card for 100 tokens?</h3>
-                    <div className='games-select'>{games}</div>
-                </div>
-                }
+                    <div className='game-info'> 
+                        {grammarCheck &&
+                            <h3>you have selected {this.state.selectCards.length} {grammarCheck}</h3>
+                        }
+                        <h3>you have {this.state.tokens} tokens</h3>
+                    </div>
+                
+                    {this.state.warning && 
+                        <div>
+                            <h3>{this.state.text}</h3>
+                            <div className='warning-buttons'>
+                                <button onClick={()=>this.makeDesicion(true)}>YES</button>
+                                <button onClick={()=>this.makeDesicion(false)}>NO</button>
+                            </div>
+                        </div>
+                    }
 
+                    <div className='cards'>{allCards}</div>
+
+                    <div className='cards'>{selectedCards}</div>
+
+                    <div className='buttons'>{buttonsShow}</div>
+                
+                    {this.state.tokens >= 100 &&
+                    <div>
+                        <h3>do you want to buy a card for 100 tokens?</h3>
+                        <div className='games-select'>{games}</div>
+                    </div>
+                    }
+                </div>
+            }   
             </div> 
         )
     }
 }
     
 const mapStateToProps=(state)=>({
-    cards:state.flashCardReducer.cards,
+    cards:state.flashCardReducer.stackCards,
     selectCards:state.selectCardsReducer.cards,
     tokens:state.tokenReducer
 })

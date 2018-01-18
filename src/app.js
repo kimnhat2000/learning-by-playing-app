@@ -31,8 +31,8 @@ store.subscribe(()=>{
 
 store.dispatch(addCard({stackId:0, name:'card 1a', description:' card 1 description', variants:['var1', 'var2'], img:'pictures/lagi.png'}))
 store.dispatch(addCard({stackId:0, name:'card 2a', description:' card 2 description', variants:['var 2a', 'var2a'], img:'pictures/narga.png'}))
-store.dispatch(addCard({stackId:1, name:'card 3b', description:' card 3 description', variants:['var3b', 'var3b'], img:'pictures/akan.png'}))
-store.dispatch(addCard({stackId:1, name:'card 4b', description:' card 4 description', variants:['var4b', 'var4b', 'var4b'], img:'pictures/ukan.png'}))
+store.dispatch(addCard({stackId:0, name:'card 3b', description:' card 3 description', variants:['var3b', 'var3b'], img:'pictures/akan.png'}))
+store.dispatch(addCard({stackId:0, name:'card 4b', description:' card 4 description', variants:['var4b', 'var4b', 'var4b'], img:'pictures/ukan.png'}))
 store.dispatch(addCard({stackId:2, name:'card 1a', description:' card 1 description', variants:['var1', 'var2'], img:'pictures/lagi.png'}))
 store.dispatch(addCard({stackId:2, name:'card 2a', description:' card 2 description', variants:['var 2a', 'var2a'], img:'pictures/narga.png'}))
 store.dispatch(addCard({stackId:3, name:'card 3b', description:' card 3 description', variants:['var3b', 'var3b'], img:'pictures/akan.png'}))
@@ -54,7 +54,8 @@ store.dispatch(addCard({stackId:3, name:'card 4b', description:' card 4 descript
 // store.dispatch(addCard({name:'card 3b', description:' card 3 description', variants:['var3b', 'var3b'], img:'pictures/akan.png'}))
 // store.dispatch(addCard({name:'card 4b', description:' card 4 description', variants:['var4b', 'var4b', 'var4b'], img:'pictures/ukan.png'}))
 
-store.dispatch(selectOtherApproach(store.getState().flashCardReducer.cards))
+// store.dispatch(selectOtherApproach(store.getState().flashCardReducer.cards))
+
 store.dispatch(addToken(250))
 store.dispatch(addToken(3))
 

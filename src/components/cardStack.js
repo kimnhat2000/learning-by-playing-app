@@ -14,6 +14,7 @@ class CardStack extends React.Component{
             stack:{},
             stackName:'',
             editNameInput:'',
+            addStackInput:false,
             stackImg:'',
             editNameInputShow:false,
             warning:false,
@@ -32,11 +33,11 @@ class CardStack extends React.Component{
             this.setState({error:'you must enter stack name'})
             return;
         }else if(!this.state.stackImg){
-            this.setState({error:'you will get a random image after save', warning:true, saveStack:true})
+            this.setState({error:'you will get a random image after save', warning:true, saveStack:true, addStackInput:false})
             return;
         }else{
             const stack={name:this.state.stackName, img:this.state.stackImg}
-            this.setState({stackName:'', stackImg:'', saveStack:false, warning:false, error:''})
+            this.setState({stackName:'', stackImg:'', saveStack:false, warning:false, error:'', addStackInput:false})
             this.props.dispatch(addStack(stack))
         }
     }
@@ -44,7 +45,7 @@ class CardStack extends React.Component{
     handleStackClick=(stack)=>{
         const newStack={...stack, showButtons:!stack.showButtons}
         this.props.dispatch(editStack(newStack))
-        this.setState({editNameInputShow:false, error:''})
+        this.setState({editNameInputShow:false, error:'', addStackInput:false})
     }
 
     handleWarning=(s)=>{
@@ -65,6 +66,8 @@ class CardStack extends React.Component{
     }
 
     openStack=(s)=>{
+        const closeButtons={...s, showButtons:false}
+        this.props.dispatch(editStack(closeButtons))
         this.props.dispatch(filterStack(s.stackId))
         this.props.dispatch(selectedStackId(s))
         // console.log(this.props.sta)
@@ -121,13 +124,12 @@ class CardStack extends React.Component{
                     <h3>{s.name}</h3>
                 </div> 
                     
-
                 {s.showButtons && 
                 <div>
                     <div>
                         <button onClick={()=>this.handleWarning(s)}>delete</button>
                         <button onClick={()=>this.handleEdit(s)}>edit</button>
-                        <button onClick={()=>this.openStack(s)}>open</button>
+                        <Link to='/flashCard' onClick={()=>this.openStack(s)}><button>open</button></Link>
                     </div>  
                     {this.state.editNameInputShow &&
                     <div>
@@ -149,9 +151,8 @@ class CardStack extends React.Component{
 
                 <div className='header'>
                     <button onClick={this.test}>test</button>
-                    <Link to='/'><button>return</button></Link>
-                    <button>delete all stack</button>
-                    <button>add stack</button>
+                    <button onClick={this.onDeleteEveryThing}>delete all stack</button>
+                    <button onClick={()=>this.setState({addStackInput:true})}>add stack</button>
                 </div>
 
                 <h3>{this.state.error}</h3>
@@ -164,6 +165,7 @@ class CardStack extends React.Component{
                     </div>
                 }
 
+                {this.state.addStackInput &&
                 <div>
                     <input
                         placeholder='new stack name'
@@ -180,6 +182,7 @@ class CardStack extends React.Component{
                     />
                     <button onClick={this.saveAStack}>save</button>
                 </div>
+                }
 
                 <div className='stack'>{stacks}</div>
                 

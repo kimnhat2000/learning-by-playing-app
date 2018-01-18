@@ -140,7 +140,7 @@ class FlashCard extends React.Component{
                         value = {this.state.cardFilter}
                         onChange= {this.onFilterTextChange}
                     />
-                    <Link to='/cardStack'><button>return</button></Link>
+                    <Link to='/'><button>return</button></Link>
                 </div>
 
                 <div className='text'>

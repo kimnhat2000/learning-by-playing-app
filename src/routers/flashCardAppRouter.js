@@ -16,7 +16,8 @@ import Test from '../references/test';
 const FlashCardAppRouter =()=>(
     <BrowserRouter>
         <Switch>
-            <Route path='/' component={FlashCard} exact={true}/>
+            <Route path='/' component={CardStack} exact={true}/>
+            <Route path='/flashCard' component={FlashCard}/>
             <Route path='/selectCard' component={SelectCards}/>
             <Route path='/luckCheck' component={LuckCheck}/>
             <Route path='/matchCards' component={MatchCards}/>
@@ -26,7 +27,6 @@ const FlashCardAppRouter =()=>(
             <Route path='/betThemDown' component={BetThemDown}/>
             <Route path='/wackACard' component={WackACard}/>
             <Route path='/cookcoo' component={Cookcoo}/>
-            <Route path='/cardStack' component={CardStack}/>
             <Route path='/test' component={Test}/>
 
         </Switch>
