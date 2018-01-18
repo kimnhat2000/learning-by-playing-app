@@ -42,7 +42,7 @@ class LuckCheck extends React.Component{
         //shuffle all the cards
         const allCards=shuffle([...randomOddCards,targetCard])
         //turn the state of the cards to hide
-        const cards=allCards.map(c=>({...c,showCard:true}))
+        const cards=allCards.map(c=>({...c,showCard:false}))
         this.setState({targetCard, cards})
     }
 

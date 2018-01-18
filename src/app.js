@@ -6,23 +6,27 @@ import {createStore, combineReducers} from 'redux';
 import {addCard} from './actions/flashCardActions';
 import {selectOtherApproach, storeSelectedCards} from './actions/selectCardsActions';
 import {addToken} from './actions/tokenActions';
+import {addStack, removeStack, editStack, deleteAllStack} from './actions/cardStackActions';
+import {randomPics} from './tools/tools';
 
 import {flashCardReducer} from './reducers/flashCardReducer';
 import {selectCardsReducer} from './reducers/selectCardsReducer';
 import {tokenReducer} from './reducers/tokenReducer';
+import {cardStackReducer} from './reducers/cardStackReducer';
 import FlashCardAppRouter from './routers/flashCardAppRouter';
 
 const reducers=combineReducers({
     flashCardReducer,
     selectCardsReducer,
-    tokenReducer
+    tokenReducer,
+    cardStackReducer
 })
 
 const store =createStore(reducers)
 
 store.subscribe(()=>{
     const state=store.getState()
-    // console.log(state.tokenReducer)
+    // console.log(state.cardStackReducer)
 })
 
 store.dispatch(addCard({name:'card 1a', description:' card 1 description', variants:['var1', 'var2'], img:'pictures/lagi.png'}))
@@ -53,6 +57,18 @@ store.dispatch(addCard({name:'card 4b', description:' card 4 description', varia
 store.dispatch(selectOtherApproach(store.getState().flashCardReducer.cards))
 store.dispatch(addToken(250))
 store.dispatch(addToken(3))
+
+const stack1={name:'stack1', img:`${randomPics(55, 'pictures/randomPics/', 'jpg')}`}
+const stack2={name:'stack2', img:`${randomPics(55, 'pictures/randomPics/', 'jpg')}`}
+const stack3={name:'stack3', img:`${randomPics(55, 'pictures/randomPics/', 'jpg')}`}
+const stack4={name:'stack4', img:`${randomPics(55, 'pictures/randomPics/', 'jpg')}`}
+
+store.dispatch(addStack(stack1))
+store.dispatch(addStack(stack2))
+store.dispatch(addStack(stack3))
+store.dispatch(addStack(stack4))
+
+
 
 
 

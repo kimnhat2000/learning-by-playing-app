@@ -199,9 +199,9 @@ class BetThemDown extends React.Component{
                     {this.state.playerCard && 
                     <div className='battlefield'>
                         <div className='game-info'>
-                            <h3>your score is {this.state.playerScore}</h3>
-                            <h3>computer score is {this.state.comScore}</h3>
+                            <h3>your score is {this.state.playerScore}</h3>                            
                             <h3>you have {this.props.tokens} tokens</h3>
+                            <h3>computer score is {this.state.comScore}</h3>
                         </div>
                         <div className='battle-card'>
                             <BigCard

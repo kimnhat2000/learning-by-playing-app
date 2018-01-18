@@ -94,7 +94,7 @@ class FlashCard extends React.Component{
     checkPass=(pass)=>{
         if(pass){
             if(this.state.confirmDeleteAll){
-                this.setState({warning:false, confirmDeleteAll:false})
+                this.setState({warning:false, confirmDeleteAll:false, bigCard:''})
                 this.props.dispatch(removeAllCards())
             }else{
                 this.setState({warning:false, bigCard:''})
@@ -133,6 +133,7 @@ class FlashCard extends React.Component{
                         value = {this.state.cardFilter}
                         onChange= {this.onFilterTextChange}
                     />
+                    <Link to='/cardStack'><button>return</button></Link>
                 </div>
 
                 <div className='text'>

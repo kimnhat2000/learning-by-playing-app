@@ -21,8 +21,8 @@
 
 .card-contents h3{
     margin: 0;
-    color: aquamarine;
-    text-shadow: 2px 2px 4px #000000;
+    color: rgb(12, 39, 30);
+    text-shadow: 2px 2px 3px rgba(26, 135, 163, 0.73);
 }
 
 .big-card{
