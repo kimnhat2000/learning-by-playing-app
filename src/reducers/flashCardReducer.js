@@ -22,7 +22,8 @@ export const flashCardReducer =(state=defaultState, action)=>{
         case 'ADD_CARDS':
         return {
             ...state,
-            cards:action.cards
+            cards:[...action.cards],
+            newId:state.newId
         }
 
         //test need, done, works fine now
@@ -84,3 +85,4 @@ export const flashCardReducer =(state=defaultState, action)=>{
             return state
     }
 }
+

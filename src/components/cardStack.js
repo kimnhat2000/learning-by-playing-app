@@ -3,8 +3,8 @@ import _ from 'lodash';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {randomPics, reziseAndStyleBigCard} from '../tools/tools'
-import {addStack, removeStack, editStack, deleteAllStack, selectedStack, stackSearch} from '../actions/cardStackActions';
-import {filterStack, deleteAllCards} from '../actions/flashCardActions';
+import {addStack, addStacks, removeStack, editStack, deleteAllStack, selectedStack, stackSearch} from '../actions/cardStackActions';
+import {filterStack, deleteAllCards, addCards, addCard, deleteAllCardsInCurrentStack} from '../actions/flashCardActions';
 import '../style/cardStack.css'
 
 class CardStack extends React.Component{
@@ -28,6 +28,66 @@ class CardStack extends React.Component{
             showIntruction:false
         }
     }
+
+    componentDidUpdate(prevProps, prevState){
+        if (prevProps.cards.length !== this.props.cards.length){
+        const allCards=JSON.stringify(this.props.cards)
+        const json= localStorage.setItem('allCards', allCards);
+        console.log(this.props.cards)}
+        if (prevProps.stacks !== this.props.stacks) {
+            const stacks =JSON.stringify(this.props.stacks);
+            const stackId=JSON.stringify(this.props.stackNextId);
+            localStorage.setItem('stacks', stacks);
+            localStorage.setItem('stackId', stackId);
+        }
+    }
+
+    componentDidMount(){
+        try{
+            const json=localStorage.getItem('stacks');
+            const json2=localStorage.getItem('stackId');
+            const json3=localStorage.getItem('allCards');
+            const json4=localStorage.getItem('newCardId');
+            const stacks= JSON.parse(json);
+            const stackId= JSON.parse(json2);
+            const allCards=JSON.parse(json3)
+            const newId=JSON.parse(json4)
+            if(stacks){
+                this.props.dispatch(addStacks(stacks, stackId))
+            }
+            if(allCards){
+                this.props.dispatch(addCards(allCards, newId))
+            }
+
+        }catch(error){
+            // do nothing
+        }
+    }
+
+    // componentWillUnmount(){
+    //     const allCards=JSON.stringify(this.props.cards)
+    //     const json= localStorage.setItem('allCards', allCards);
+
+    // }
+
+    // componentDidUpdate(prevProps, prevState){
+    //     if (prevProps.cards !== this.props.cards) {
+    //         const json =JSON.stringify(this.props.cards);
+    //         localStorage.setItem('cards', json);
+    //     }
+    // }
+
+    // componentDidMount(){
+    //     try{
+    //         const json=localStorage.getItem('cards');
+    //         const cards= JSON.parse(json);
+    //         if(cards){
+    //             this.props.dispatch(addCards(cards))
+    //         }
+    //     }catch(error){
+    //         //do nothing
+    //     }
+    // }
 
     stackNameInput=(e)=>{
         this.setState({[e.target.name]:e.target.value})
@@ -114,10 +174,14 @@ class CardStack extends React.Component{
                 this.props.dispatch(deleteAllCards())
                 this.props.dispatch(selectedStack())
                 this.setState({deleteAllConfirm:false, text:'', warning:false})
+                localStorage.clear();
                 return
             }
+
             const stack=this.state.stack
-            this.props.dispatch(removeStack(stack))        
+            console.log(stack.stackId)
+            this.props.dispatch(deleteAllCardsInCurrentStack(stack.stackId))  
+            this.props.dispatch(removeStack(stack))       
             this.props.dispatch(stackSearch())
             this.props.dispatch(selectedStack())
             this.setState({warning:false})
@@ -137,6 +201,9 @@ class CardStack extends React.Component{
         console.log('selectedStack: ',selectedStack)
         console.log('filteredStacks: ',filteredStacks)
         console.log('check stackSearch: ',this.state.stackSearch?true:false)
+
+        // localStorage.clear();
+
     }
 
     render(){
@@ -165,6 +232,7 @@ class CardStack extends React.Component{
                     </div>
                     
                     <div className='header-menu'>
+                    <button onClick={()=>localStorage.clear()}>emptyStorage</button>
                     <button onClick={this.test}>test</button>
                     <input
                         type='text'
@@ -259,6 +327,7 @@ const mapStateToProps=(state)=>({
     tokens: state.tokenReducer.totalTokens,
     cards:state.flashCardReducer.cards,
     stackCards:state.flashCardReducer.stackCards,
+    stackNextId:state.cardStackReducer.stackId,
     filteredStacks:state.cardStackReducer.filteredStacks
 })
 

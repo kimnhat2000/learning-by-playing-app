@@ -2,7 +2,7 @@ import React from 'react';
 import CardList from './cardList';
 import {BigCard} from './card';
 import {connect} from 'react-redux';
-import {addCard,addCards, removeCard, cardToEditInfo, editCard, deleteAllCardsInCurrentStack, filteredCards, filterStack} from '../actions/flashCardActions';
+import {addCard, addCards, removeCard, cardToEditInfo, editCard, deleteAllCardsInCurrentStack, filteredCards, filterStack} from '../actions/flashCardActions';
 import FlashCardForm from './form';
 import {Link} from 'react-router-dom';
 import {reziseAndStyleBigCard, randomPics} from '../tools/tools';
@@ -27,18 +27,33 @@ class FlashCard extends React.Component{
     }
 
     // componentDidUpdate(prevProps, prevState){
-    //     if (prevProps.cards !== this.props.cards) {
-    //         const json =JSON.stringify(this.props.cards);
-    //         localStorage.setItem('cards', json);
-    //     }
+
+    //         const json =JSON.stringify(this.props.AllCards);
+    //         const json2 =JSON.stringify(this.props.newCardId);
+    //         localStorage.setItem('allCards', json);
+    //         localStorage.setItem('newId', json2);
+
     // }
+
+    componentWillUnmount(){
+        const allCards=this.props.allCards
+        const newCardId=this.props.newCardId
+
+        const json =JSON.stringify(allCards);
+        const json2 =JSON.stringify(newCardId);
+        localStorage.setItem('allCards', json);
+        localStorage.setItem('newCardId', json2);
+    }
+
 
     // componentDidMount(){
     //     try{
     //         const json=localStorage.getItem('cards');
+    //         const json2=localStorage.getItem('newId');
     //         const cards= JSON.parse(json);
+    //         const newId= JSON.parse(json2);
     //         if(cards){
-    //             this.props.dispatch(addCards(cards))
+    //             this.props.dispatch(addCards(cards, newId))
     //         }
     //     }catch(error){
     //         //do nothing
@@ -58,13 +73,16 @@ class FlashCard extends React.Component{
     onSaveCard=(newCard)=>{
         const cardsID=this.props.cards.map(c=>c.name)
         const card=newCard.name
+        const stackId=this.props.selectedStack.stackId
+
         if(cardsID.includes(card)){
             this.setState({text:'This card already existed'})
             return;
         }
         this.setState({showForm:false})
-        this.props.dispatch(addCard({stackId:this.props.selectedStack.stackId,...newCard}))
+        this.props.dispatch(addCard({stackId,...newCard}))
         this.props.dispatch(filterStack(this.props.selectedStack.stackId))
+
     }
     onSaveEdit=(editedCard)=>{
         const id=this.props.cardToEdit.id
@@ -104,11 +122,13 @@ class FlashCard extends React.Component{
     }
 
     test=()=>{
-        const {cards, cardToEdit, filteredCards, selectedStack}=this.props
+        const {cards, cardToEdit, filteredCards, selectedStack, allCards}=this.props
         console.log('cards:', cards)
         console.log('cardToEdit:', cardToEdit)
         console.log('filteredCards:', filteredCards)
-        console.log('selectedStack:', selectedStack)
+        console.log('selectedStack:', selectedStack.stackId)
+        console.log('allCards:', allCards)
+
         // localStorage.clear();
     }
 
@@ -214,9 +234,11 @@ class FlashCard extends React.Component{
 }
 
 const mapStateToProps=(state)=>({
+    allCards:state.flashCardReducer.cards,
     cards:state.flashCardReducer.stackCards,
     cardToEdit:state.flashCardReducer.cardToEdit,
     filteredCards:state.flashCardReducer.filteredCards,
+    newCardId:state.flashCardReducer.newId,
     selectedStack:state.cardStackReducer.selectedStack,
     tokens:state.tokenReducer.totalTokens,
 })

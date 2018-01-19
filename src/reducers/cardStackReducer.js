@@ -15,6 +15,12 @@ export const cardStackReducer =(state=defaultState, action)=>{
             stacks:[...state.stacks,addStack],
             stackId:state.stackId+1
         }
+        case 'ADD_STACKS':
+        return {
+            ...state,
+            stacks:[...action.stacks],
+            stackId:action.stackId
+        }
 
         case 'REMOVE_STACK':
         return {

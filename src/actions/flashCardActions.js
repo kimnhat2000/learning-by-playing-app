@@ -8,9 +8,10 @@ export const addCard=({stackId='', name='', description='', variants=[], img=''}
 })
 
 //add many cards
-export const addCards=(cards)=>({
+export const addCards=(cards, newId)=>({
     type:'ADD_CARDS',
-    cards
+    cards,
+    newId
 })
 
 //remove card
