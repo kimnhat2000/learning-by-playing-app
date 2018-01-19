@@ -40,7 +40,6 @@ export const flashCardReducer =(state=defaultState, action)=>{
             cardToEdit:action.card
         }
 
-        //test this, done works fine
         case 'EDIT_CARD':
         return {
             ...state,
@@ -48,8 +47,7 @@ export const flashCardReducer =(state=defaultState, action)=>{
             cards:state.cards.map(c=> c.id === action.card.id && c.stackId === action.card.stackId ? c=action.card : c),
         }
 
-        //test this, tested and working fine
-        case 'REMOVE_ALL_CARDS':
+        case 'DELETE_ALL_CARDS_IN_CURRENT_STACK':
             const stackCards=[]
             const cards=state.cards.filter(c=>c.stackId !== action.stackId)
         return {
@@ -58,7 +56,18 @@ export const flashCardReducer =(state=defaultState, action)=>{
             stackCards
         }
 
-        //test this, tested and working fine
+        case 'DELETE_ALL_CARDS':
+        return {
+            ...state,
+            cards:[],
+            selectedCards:[],
+            stackCards:[],
+            newId:0,
+            showInfo:false,
+            cardToEdit:'',
+            filteredCards:[]
+        }
+
         case 'FILTERED_CARD':
         const filteredCards=state.stackCards.filter(c=>c.name.toLowerCase().includes(action.text.toLowerCase()))
         return {

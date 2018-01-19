@@ -20,9 +20,13 @@ export const removeCard=(id)=>({
 })
 
 //removeAllCards
-export const removeAllCards=(stackId)=>({
-    type:'REMOVE_ALL_CARDS',
+export const deleteAllCardsInCurrentStack=(stackId)=>({
+    type:'DELETE_ALL_CARDS_IN_CURRENT_STACK',
     stackId
+})
+
+export const deleteAllCards=()=>({
+    type:'DELETE_ALL_CARDS',
 })
 
 //cardToEditInfo

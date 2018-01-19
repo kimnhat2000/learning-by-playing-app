@@ -13,7 +13,7 @@ class FlashCardForm extends React.Component{
             img:editCardInfo?editCardInfo.img:'',
             imgInput:true,
             text:'',
-            error:''
+            saveButton:'Save'
         }
     }
 
@@ -53,11 +53,11 @@ class FlashCardForm extends React.Component{
         const imgInput=false
         e.preventDefault()
         if(!this.state.name){
-            this.setState({error:'please enter card name'})
+            this.setState({text:'please enter card name'})
         }else if (!this.state.description){
-            this.setState({error:'please enter card description'})
+            this.setState({text:'please enter card description'})
         }else if (!this.state.img){
-            this.setState({img, imgInput, text:'a random img was set for your card'})
+            this.setState({img, imgInput, text:'a random img was set for your card', saveButton:'OK'})
         }
         else{
             this.props.editCardInfo ?
@@ -134,7 +134,7 @@ class FlashCardForm extends React.Component{
 
                 <div>
                     <label>image</label>
-                    <div>{this.state.text}</div>
+                    <h3>{this.state.text}</h3>
                     {this.state.imgInput&&
                     <input
                         name='img'
@@ -145,7 +145,7 @@ class FlashCardForm extends React.Component{
                     />}
                 </div>
                 {this.state.error}
-                <button className='buttons'>save</button>
+                <button className='buttons'>{this.state.saveButton}</button>
             </form>
                 
             </div>

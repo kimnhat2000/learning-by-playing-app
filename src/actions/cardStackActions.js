@@ -14,10 +14,10 @@ export const editStack =(stack)=>({
 })
 
 export const deleteAllStack =()=>({
-    type: 'DELETE_ALL'
+    type: 'DELETE_ALL_STACK'
 })
 
-export const selectedStackId=(stack)=>({
-    type: 'SELECTED_STACK_ID',
+export const selectedStack=(stack)=>({
+    type: 'SELECTED_STACK',
     stack
 })

@@ -1,6 +1,6 @@
 const defaultState = {
     stacks:[],
-    selectedStackId:'',
+    selectedStack:'',
     stackId:0
 }
 
@@ -34,10 +34,10 @@ export const cardStackReducer =(state=defaultState, action)=>{
             stackId:0
         }
 
-        case 'SELECTED_STACK_ID':
+        case 'SELECTED_STACK':
         return {
             ...state,
-            selectedStackId:action.stack.stackId
+            selectedStack:action.stack
         }
 
     default:

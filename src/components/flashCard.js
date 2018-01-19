@@ -2,7 +2,7 @@ import React from 'react';
 import CardList from './cardList';
 import {BigCard} from './card';
 import {connect} from 'react-redux';
-import {addCard,addCards, removeCard, cardToEditInfo, editCard, removeAllCards, filteredCards, filterStack} from '../actions/flashCardActions';
+import {addCard,addCards, removeCard, cardToEditInfo, editCard, deleteAllCardsInCurrentStack, filteredCards, filterStack} from '../actions/flashCardActions';
 import FlashCardForm from './form';
 import {Link} from 'react-router-dom';
 import {reziseAndStyleBigCard} from '../tools/tools';
@@ -62,18 +62,16 @@ class FlashCard extends React.Component{
             return;
         }
         this.setState({showForm:false})
-        this.props.dispatch(addCard({stackId:this.props.selectedStackId,...newCard}))
-        this.props.dispatch(filterStack(this.props.selectedStackId))
-        console.log(this.props.cards)
+        this.props.dispatch(addCard({stackId:this.props.selectedStack.stackId,...newCard}))
+        this.props.dispatch(filterStack(this.props.selectedStack.stackId))
     }
     onSaveEdit=(editedCard)=>{
         const id=this.props.cardToEdit.id
-        const stackId=this.props.selectedStackId
+        const stackId=this.props.selectedStack.stackId
         const newCard={id, stackId,...editedCard, showInfo:false, selected:false, showCard:true}
         this.props.dispatch(editCard(newCard))
         this.props.dispatch(cardToEditInfo({}))
         this.setState({showEditForm:false, bigCard:newCard})
-        console.log(newCard)
     }
     cardToEdit=(card)=>{
         this.setState({showEditForm:true})
@@ -92,7 +90,7 @@ class FlashCard extends React.Component{
         if(pass){
             if(this.state.confirmDeleteAll){
                 this.setState({warning:false, confirmDeleteAll:false, bigCard:''})
-                this.props.dispatch(removeAllCards(this.props.selectedStackId))
+                this.props.dispatch(deleteAllCardsInCurrentStack(this.props.selectedStack.stackId))
             }else{
                 this.setState({warning:false, bigCard:''})
                 this.props.dispatch(removeCard(this.state.cardToDelete.id))
@@ -113,11 +111,11 @@ class FlashCard extends React.Component{
     }
 
     test=()=>{
-        const {cards, cardToEdit, filteredCards, selectedStackId}=this.props
+        const {cards, cardToEdit, filteredCards, selectedStack}=this.props
         console.log('cards:', cards)
         console.log('cardToEdit:', cardToEdit)
         console.log('filteredCards:', filteredCards)
-        console.log('selectedStackId:', selectedStackId)
+        console.log('selectedStack:', selectedStack)
         // localStorage.clear();
     }
 
@@ -207,7 +205,7 @@ const mapStateToProps=(state)=>({
     cards:state.flashCardReducer.stackCards,
     cardToEdit:state.flashCardReducer.cardToEdit,
     filteredCards:state.flashCardReducer.filteredCards,
-    selectedStackId:state.cardStackReducer.selectedStackId
+    selectedStack:state.cardStackReducer.selectedStack
 })
 
 

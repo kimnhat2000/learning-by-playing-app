@@ -3,8 +3,8 @@ import _ from 'lodash';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {randomPics, reziseAndStyleBigCard} from '../tools/tools'
-import {addStack, removeStack, editStack, deleteAllStack, selectedStackId} from '../actions/cardStackActions';
-import {filterStack} from '../actions/flashCardActions';
+import {addStack, removeStack, editStack, deleteAllStack, selectedStack} from '../actions/cardStackActions';
+import {filterStack, deleteAllCards} from '../actions/flashCardActions';
 import '../style/cardStack.css'
 
 class CardStack extends React.Component{
@@ -20,7 +20,8 @@ class CardStack extends React.Component{
             warning:false,
             text:'',
             error:'',
-            saveStack:false
+            saveStack:false,
+            deleteAllConfirm:false
         }
     }
 
@@ -63,14 +64,18 @@ class CardStack extends React.Component{
         const newStack={...s, name:this.state.editNameInput, showButtons:false}
         this.props.dispatch(editStack(newStack))
         this.setState({editNameInputShow:false})
+
     }
 
     openStack=(s)=>{
         const closeButtons={...s, showButtons:false}
         this.props.dispatch(editStack(closeButtons))
         this.props.dispatch(filterStack(s.stackId))
-        this.props.dispatch(selectedStackId(s))
-        // console.log(this.props.sta)
+        this.props.dispatch(selectedStack(s))
+    }
+
+    onDeleteEveryThing=()=>{
+        this.setState({warning:true, text:'are you sure you want to delete EVERYTHING?', deleteAllConfirm:true})
     }
 
     confirm=(pass)=>{
@@ -80,23 +85,30 @@ class CardStack extends React.Component{
                 const saveStack={name:this.state.stackName, img:randomPics(71, 'pictures/randomPics/', 'jpg')}
                 this.setState({stackName:'', saveStack:false, warning:false, error:''})
                 this.props.dispatch(addStack(saveStack))
+                return
+            }else if (this.state.deleteAllConfirm){
+                this.props.dispatch(deleteAllStack());
+                this.props.dispatch(deleteAllCards())
+                this.setState({deleteAllConfirm:false, text:'', warning:false})
+                return
             }
             const stack=this.state.stack
             this.props.dispatch(removeStack(stack))
+            this.setState({warning:false})
             return
         }else {
-            this.setState({warning:false})
+            this.setState({warning:false, text:''})
             return
         }
     }
 
     test=()=>{
-        const{stacks, tokens, cards, stackCards, selectedStackId}= this.props
+        const{stacks, tokens, cards, stackCards, selectedStack}= this.props
         console.log('stacks: ',stacks)
         console.log('tokens: ',tokens)
         console.log('cards: ',cards)
         console.log('stackCards: ',stackCards)
-        console.log('selectedStackId: ',selectedStackId)
+        console.log('selectedStack: ',selectedStack)
     }
 
     render(){
@@ -146,6 +158,8 @@ class CardStack extends React.Component{
             </div>   
         ))
 
+        const grammarCheck = this.props.stacks.length === 1 ? 'stack' : 'stacks'
+
         return(
             <div>
 
@@ -184,6 +198,12 @@ class CardStack extends React.Component{
                 </div>
                 }
 
+                {this.props.stacks.length !== 0 ? 
+                    <h3>you have {this.props.stacks.length} {grammarCheck}</h3>:
+                    <h3>please add a card stack</h3>
+                }
+                
+
                 <div className='stack'>{stacks}</div>
                 
                 
@@ -193,7 +213,7 @@ class CardStack extends React.Component{
 }
 
 const mapStateToProps=(state)=>({
-    selectedStackId:state.cardStackReducer.selectedStackId,
+    selectedStack:state.cardStackReducer.selectedStack,
     stacks: state.cardStackReducer.stacks,
     tokens: state.tokenReducer.totalTokens,
     cards:state.flashCardReducer.cards,
