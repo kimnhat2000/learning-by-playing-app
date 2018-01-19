@@ -23,6 +23,9 @@ class CardStack extends React.Component{
             saveStack:false,
             deleteAllConfirm:false,
             stackSearch:'',
+            cancelButton:false,
+            showDiv:false,
+            showIntruction:false
         }
     }
 
@@ -38,8 +41,14 @@ class CardStack extends React.Component{
     }
 
     saveAStack=()=>{
+        const name=this.state.stackName
+        const names=this.props.stacks.map(s=>s.name)
+
         if(!this.state.stackName){
             this.setState({error:'you must enter stack name'})
+            return;
+        }else if(names.includes(name)){
+            this.setState({error:'this stack name is already existed, please select another name', cancelButton:true})
             return;
         }else if(!this.state.stackImg){
             this.setState({error:'you will get a random image after save', warning:true, saveStack:true, addStackInput:false})
@@ -49,6 +58,10 @@ class CardStack extends React.Component{
             this.setState({stackName:'', stackImg:'', saveStack:false, warning:false, error:'', addStackInput:false})
             this.props.dispatch(addStack(stack))
         }
+    }
+
+    cancelSaving=()=>{
+        this.setState({cancelButton:false, warning:false, error:'', addStackInput:false})
     }
 
     handleStackClick=(stack)=>{
@@ -99,16 +112,18 @@ class CardStack extends React.Component{
             }else if (this.state.deleteAllConfirm){
                 this.props.dispatch(deleteAllStack());
                 this.props.dispatch(deleteAllCards())
+                this.props.dispatch(selectedStack())
                 this.setState({deleteAllConfirm:false, text:'', warning:false})
                 return
             }
             const stack=this.state.stack
             this.props.dispatch(removeStack(stack))        
             this.props.dispatch(stackSearch())
+            this.props.dispatch(selectedStack())
             this.setState({warning:false})
             return
         }else {
-            this.setState({warning:false, text:''})
+            this.setState({warning:false, text:'', error:''})
             return
         }
     }
@@ -133,11 +148,22 @@ class CardStack extends React.Component{
 
                 <div className='header'>
                     <div className='stack-info'>
-                        {this.props.selectedStack &&
-                            <h3>{this.props.selectedStack.name}</h3>
-                        }
-                    </div>
+                        <div className='stack-name'>
+                            {this.props.selectedStack &&
+                                <h3>{this.props.selectedStack.name}</h3>
+                            }
+                        </div>
 
+                        <div 
+                            className ='token-container' 
+                            onMouseOver={()=>this.setState({showIntruction:true})}
+                            onMouseOut={()=>this.setState({showIntruction:false})}
+                        >
+                            <div className='token'/>
+                            <h2>{this.props.tokens}</h2>
+                        </div>
+                    </div>
+                    
                     <div className='header-menu'>
                     <button onClick={this.test}>test</button>
                     <input
@@ -146,39 +172,50 @@ class CardStack extends React.Component{
                         value={this.state.stackSearch}
                         onChange={this.onStackSearch}
                     />
-                    <button onClick={this.onDeleteEveryThing}>delete all stack</button>
-                    <button onClick={()=>this.setState({addStackInput:true})}>add stack</button>
+                    <button onClick={()=>this.setState({addStackInput:!this.state.addStackInput, stackName:'', stackImg:''})} className='add'>add stack</button>
+                    <button onClick={this.onDeleteEveryThing} className='delete'>delete all stack</button>
                     </div>
                 </div>
 
                 <h3>{this.state.error}</h3>
 
                 {this.state.warning &&
-                    <div>
+                    <div className='warning-show'>
                         <h3>{this.state.text}</h3>
-                        <button onClick={()=>this.confirm(true)}>yes</button>
-                        <button onClick={()=>this.confirm(false)}>no</button>
+                        <div className='warning-buttons'>
+                            <button className='yes' onClick={()=>this.confirm(true)}>yes</button>
+                            <button className='no' onClick={()=>this.confirm(false)}>no</button>
+                        </div>        
                     </div>
                 }
 
                 {this.state.addStackInput &&
-                <div>
-                    <input
-                        type='text'
-                        placeholder='new stack name'
-                        name='stackName'
-                        value={this.state.stackName}
-                        onChange={this.stackNameInput}
-                        autoFocus
-                    />
-                    <input
-                        type='text'
-                        placeholder='new stack image'
-                        name='stackImg'
-                        value={this.state.stackImg}
-                        onChange={this.stackNameInput}
-                    />
-                    <button onClick={this.saveAStack}>save</button>
+                <div className='stack-input'>
+                    <div className='inputs'>
+                        <input
+                            type='text'
+                            placeholder='new stack name'
+                            name='stackName'
+                            value={this.state.stackName}
+                            onChange={this.stackNameInput}
+                            autoFocus
+                        />
+                        <input
+                            type='text'
+                            placeholder='new stack image'
+                            name='stackImg'
+                            value={this.state.stackImg}
+                            onChange={this.stackNameInput}
+                        />
+                    </div>
+                    
+                    <div className='input-buttons'>
+                        <button className='save' onClick={this.saveAStack}>save</button>
+                        {this.state.cancelButton &&
+                        <button className='cancel' onClick={this.cancelSaving}>cancel</button>
+                        }
+                    </div>
+
                 </div>
                 }
 
@@ -187,7 +224,7 @@ class CardStack extends React.Component{
                     <h3>please add a card stack</h3>
                 }
                 
-                <Test
+                <Stacks
                     stacks={this.props.filteredStacks.length===0?this.props.stacks:this.props.filteredStacks}
                     inputShow={this.state.editNameInputShow}
                     inputValue={this.state.editNameInput}
@@ -198,6 +235,18 @@ class CardStack extends React.Component{
                     editClick={(s)=>this.handleEdit(s)}
                     openClick={(s)=>this.openStack(s)}
                 />    
+
+                {this.state.showDiv &&
+                    <div style={divStyle}>
+                        <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere enim debitis sint reprehenderit rerum optio ullam possimus provident accusantium laboriosam quae blanditiis alias delectus natus, non ducimus facilis sunt similique!</h2>
+                    </div>
+                }
+
+                {this.state.showIntruction &&
+                    <div className='instruction'>
+                        <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>
+                    </div>
+                }
 
             </div>
         )
@@ -216,7 +265,7 @@ const mapStateToProps=(state)=>({
 export default connect(mapStateToProps)(CardStack)
 
 //stacks render
-const Test =({stacks, inputShow, inputValue, onInputChange, buttonClick, stackClick, deleteClick, editClick, openClick, shouldShowButtons})=>{
+const Stacks =({stacks, inputShow, inputValue, onInputChange, buttonClick, stackClick, deleteClick, editClick, openClick, shouldShowButtons})=>{
 
     const style=(stack)=>{
         const s={
@@ -230,8 +279,10 @@ const Test =({stacks, inputShow, inputValue, onInputChange, buttonClick, stackCl
         return s
     }
 
-    const teststacks=stacks && stacks.map((s,i)=>(
-        <div key={i}>
+    const renderStacks=stacks && stacks.map((s,i)=>(
+        <div
+            className='stack-render' 
+            key={i}>
             <div>
                 <div
                     style={style(s)}
@@ -242,14 +293,15 @@ const Test =({stacks, inputShow, inputValue, onInputChange, buttonClick, stackCl
             </div> 
 
             {s.showButtons && 
-            <div>
-                <div>
-                    <button onClick={()=>deleteClick(s)}>delete</button>
-                    <button onClick={()=>editClick(s)}>edit</button>
+            <div className='edit-feild'>
+                <div className='stack-buttons'>
+                    <button className='delete' onClick={()=>deleteClick(s)}>delete</button>
+                    <button className='edit' onClick={()=>editClick(s)}>edit</button>
                     <Link to='/flashCard' onClick={()=>openClick(s)}><button>open</button></Link>
-                </div>  
+                </div>
+                  
                 {inputShow &&
-                <div>
+                <div className='edit-stack-input'>
                     <input
                         type='text'
                         name='editNameInput'
@@ -265,6 +317,6 @@ const Test =({stacks, inputShow, inputValue, onInputChange, buttonClick, stackCl
         </div>   
     ))
     return(
-        <div className='stack'>{teststacks}</div>
+        <div className='stack'>{renderStacks}</div>
     )
 }

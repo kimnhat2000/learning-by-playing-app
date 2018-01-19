@@ -107,16 +107,27 @@ class LuckCheck extends React.Component{
         const r1=randomColor();
         const r2=randomColor();
         const r3=randomColor();
-        const style={backgroundColor:`rgb(${r1}, ${r2}, ${r3})`}
+        const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3}, 0.4)`}
         const bigCardStyle=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
         return(
             <div>
 
                 <div className='header'>
                     <div className='stack-info'>
-                        {this.props.selectedStack &&
-                            <h3>{this.props.selectedStack.name}</h3>
-                        }
+                        <div className='stack-name'>
+                            {this.props.selectedStack &&
+                                <h3>{this.props.selectedStack.name}</h3>
+                            }
+                        </div>
+
+                        <div 
+                            className ='token-container' 
+                            onMouseOver={()=>this.setState({showIntruction:true})}
+                            onMouseOut={()=>this.setState({showIntruction:false})}
+                        >
+                            <div className='token'/>
+                            <h2>{this.props.tokens}</h2>
+                        </div>
                     </div>
 
                     <div className='header-menu'>
@@ -129,9 +140,9 @@ class LuckCheck extends React.Component{
                             <option value="5">6 'Luck god is smiling'</option>
                         </select>
 
-                        <button onClick={this.onPlay}>{this.state.playButton}</button>
+                        <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
                         <button onClick={this.test}>test</button>
-                        <Link to='/selectCard'><button>return</button></Link>
+                        <Link to='/selectCard' className='return'><button>return</button></Link>
                     </div>
                 </div> 
      

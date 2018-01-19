@@ -81,7 +81,6 @@ class FlashCardForm extends React.Component{
                     autoCorrect='off'
                 />
                 <button 
-                    className='delete-button'
                     type='button'
                     onClick={()=>this.removeVariant(i)}
                 >-</button> 
@@ -97,12 +96,10 @@ class FlashCardForm extends React.Component{
             >
                 
                 <button
-                    className='buttons'
                     type='button'
                     onClick={this.props.onCloseForm}
                 >X</button>
                 
-                <label>name</label>
                 <input
                     type='text'
                     name='name'
@@ -125,7 +122,6 @@ class FlashCardForm extends React.Component{
                 <div>
                     <label>add variant</label>
                     <button
-                        className='buttons'
                         type='button'
                         onClick={this.addVariant}
                     >+</button>
@@ -145,7 +141,7 @@ class FlashCardForm extends React.Component{
                     />}
                 </div>
                 {this.state.error}
-                <button className='buttons'>{this.state.saveButton}</button>
+                <button>{this.state.saveButton}</button>
             </form>
                 
             </div>

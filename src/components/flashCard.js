@@ -5,7 +5,8 @@ import {connect} from 'react-redux';
 import {addCard,addCards, removeCard, cardToEditInfo, editCard, deleteAllCardsInCurrentStack, filteredCards, filterStack} from '../actions/flashCardActions';
 import FlashCardForm from './form';
 import {Link} from 'react-router-dom';
-import {reziseAndStyleBigCard} from '../tools/tools';
+import {reziseAndStyleBigCard, randomPics} from '../tools/tools';
+import styled, {injectGlobal} from 'styled-components';
 import '../style/flashCard.css';
 
 class FlashCard extends React.Component{
@@ -78,14 +79,6 @@ class FlashCard extends React.Component{
         this.props.dispatch(cardToEditInfo(card))
     }
 
-    randomColor=()=>{
-        const r=Math.floor(Math.random()*256);
-        const g=Math.floor(Math.random()*256);
-        const b=Math.floor(Math.random()*256);
-        const rgb={r,g,b}
-        return {r, g, b}
-    }
-
     onConfirm=(pass)=>{
         if(pass){
             if(this.state.confirmDeleteAll){
@@ -129,24 +122,35 @@ class FlashCard extends React.Component{
                 <div className='header'>
                     
                     <div className='stack-info'>
-                        {this.props.selectedStack &&
-                            <h3>{this.props.selectedStack.name}</h3>
-                        }
+                        <div className='stack-name'>
+                            {this.props.selectedStack &&
+                                <h3>{this.props.selectedStack.name}</h3>
+                            }
+                        </div>
+
+                        <div 
+                            className ='token-container' 
+                            onMouseOver={()=>this.setState({showIntruction:true})}
+                            onMouseOut={()=>this.setState({showIntruction:false})}
+                        >
+                            <div className='token'/>
+                            <h2>{this.props.tokens}</h2>
+                        </div>
                     </div>
 
                     <div className='header-menu'>
                         <Link to='/test'><button>test page</button></Link>
                         <button onClick={this.test}>test</button>
-                        <Link to='/selectCard'><button>play games</button></Link>
-                        <button onClick={this.onDeleteAll}>delete all</button>
-                        <button onClick={()=>this.setState({showForm:true})}>add a card</button>
+                        <button onClick={()=>this.setState({showForm:true})} className='add'>add a card</button>
+                        <button onClick={this.onDeleteAll} className='delete'>delete all cards</button>
+                        <Link to='/selectCard'><button className='play'>play games</button></Link>
                         <input
                             type='text'
                             placeholder='find cards by name'
                             value = {this.state.cardFilter}
                             onChange= {this.onFilterTextChange}
                         />
-                        <Link to='/'><button>return</button></Link>
+                        <Link to='/'><button className='return'>return</button></Link>
                     </div>
                 </div>
 
@@ -181,7 +185,6 @@ class FlashCard extends React.Component{
                         editCardInfo={this.props.cardToEdit}
                         saveEditCard={(editedCard)=>this.onSaveEdit(editedCard)}
                     />
-
                 }
 
                 <div className='all-cards'>
@@ -214,8 +217,23 @@ const mapStateToProps=(state)=>({
     cards:state.flashCardReducer.stackCards,
     cardToEdit:state.flashCardReducer.cardToEdit,
     filteredCards:state.flashCardReducer.filteredCards,
-    selectedStack:state.cardStackReducer.selectedStack
+    selectedStack:state.cardStackReducer.selectedStack,
+    tokens:state.tokenReducer.totalTokens,
 })
 
 
 export default connect(mapStateToProps)(FlashCard)
+
+const randomBg=randomPics(13, '/pictures/textures/', 'jpg')
+
+injectGlobal`
+body{
+    margin: 0;
+    padding: 0;
+    background: rgba(153, 127, 127, 0.7);
+    background-image: url(${randomBg});
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+} 
+`;

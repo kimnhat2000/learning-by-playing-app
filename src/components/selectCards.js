@@ -104,7 +104,7 @@ class SelectCards extends React.Component{
         console.log('tokens: ',totalTokens)
         console.log('gamesBought: ',gamesBought)
         console.log('gamesRemain: ',gamesRemain)
-        console.log(this.props.cards.length===0)
+        console.log(this.state.token)
 
         // localStorage.clear('selectCards');
     }
@@ -113,7 +113,7 @@ class SelectCards extends React.Component{
         const r1=randomColor();
         const r2=randomColor();
         const r3=randomColor();
-        const style={backgroundColor:`rgb(${r1}, ${r2}, ${r3})`}
+        const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3}, 0.4)`}
 
         const allCards=this.state.cards.map((c,i)=>(
             <Card
@@ -161,16 +161,27 @@ class SelectCards extends React.Component{
             <div>
                 <div className='header'>
                     <div className='stack-info'>
-                        {this.props.selectedStack &&
-                            <h3>{this.props.selectedStack.name}</h3>
-                        }
+                        <div className='stack-name'>
+                            {this.props.selectedStack &&
+                                <h3>{this.props.selectedStack.name}</h3>
+                            }
+                        </div>
+
+                        <div 
+                            className ='token-container' 
+                            onMouseOver={()=>this.setState({showIntruction:true})}
+                            onMouseOut={()=>this.setState({showIntruction:false})}
+                        >
+                            <div className='token'/>
+                            <h2>{this.state.tokens}</h2>
+                        </div>
                     </div>
 
                     <div className='header-menu'>     
                         <button onClick={this.test}>test</button>
-                        <button onClick={()=>this.selectAll(false)}>unselect all cards</button>
-                        <button onClick={()=>this.selectAll(true)}>select all cards</button>
-                        <Link to='/flashCard'><button>return home</button></Link>
+                        <button onClick={()=>this.selectAll(true)} className='add'>select all cards</button>
+                        <button onClick={()=>this.selectAll(false)} className='delete'>unselect all cards</button>
+                        <Link to='/flashCard'><button className='return'>return home</button></Link>
                     </div>
                 </div>
 
@@ -217,7 +228,7 @@ const mapStateToProps=(state)=>({
     cards:state.flashCardReducer.stackCards,
     selectCards:state.selectCardsReducer.cards,
     selectedStack:state.cardStackReducer.selectedStack,
-    tokens:state.tokenReducer
+    tokens:state.tokenReducer,
 })
 
 export default connect(mapStateToProps)(SelectCards)

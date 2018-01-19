@@ -29,7 +29,7 @@ store.subscribe(()=>{
     // console.log(state.cardStackReducer)
 })
 
-store.dispatch(addCard({stackId:0, name:'card 1a', description:' card 1 description', variants:['var1', 'var2'], img:'pictures/lagi.png'}))
+store.dispatch(addCard({stackId:0, name:'card 1a looong loong nameeee and it keeps getting looonggeerrrrr', description:' card 1 description', variants:['var1', 'var2'], img:'pictures/lagi.png'}))
 store.dispatch(addCard({stackId:0, name:'card 2a', description:' card 2 description', variants:['var 2a', 'var2a'], img:'pictures/narga.png'}))
 store.dispatch(addCard({stackId:0, name:'card 3b', description:' card 3 description', variants:['var3b', 'var3b'], img:'pictures/akan.png'}))
 store.dispatch(addCard({stackId:0, name:'card 4b', description:' card 4 description', variants:['var4b', 'var4b', 'var4b'], img:'pictures/ukan.png'}))
