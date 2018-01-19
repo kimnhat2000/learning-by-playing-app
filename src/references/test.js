@@ -1,31 +1,28 @@
-import React from 'react';
 import {Link} from 'react-router-dom';
-import {randomPics} from '../tools/tools';
-// import '../../public/pictures/background01.jpg'
+// import React from 'react';
 
-const img1 = 'pictures/backgroundPics/1.jpg'
-const img= randomPics(17, 'pictures/backgroundPics/', 'jpg')
-const style={
-    backgroundColor:'gray',
-    width:'300px',
-    height:'200px',
-    backgroundImage: `url(${img})`
-}
+// const style={
+//     width:'300px',
+//     height:'200px',
+//     backgroundImage: 'url(pictures/backgroundPics/1.jpg)'
+// }
 
-// const img=randomPics(55, 'pictures/randomPics/', 'jpg')
+// const Test =()=>(  
+//     <div style={style}/>
+// )
 
+// export default (Test)
+// import '../../public/pictures/randomPics/1.jpg'
 
-const test=()=>{
-    console.log(img)
-}
+import React from 'react';
+import './test.css'
 
-const Test =()=>(
-    <div>  
-        <div style={style}/>
-        {/* <img src={img}/> */}
-        <button onClick={test}>test</button>
-        <Link to ='/'>return to home page</Link>
-    </div> 
+const Test =()=>(  
+    <div>
+        <div className='test'/>
+        <Link to='/'>return</Link>
+    </div>
+
 )
 
 export default (Test)

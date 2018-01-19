@@ -6,11 +6,19 @@ body{
 
 .header{
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     background-color:Gray;
     box-shadow: 0px 3px 4px 0px rgba(0,0,0,0.61);
     margin: 0;
     padding: 0;
+}
+
+.header-menu{
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
 }
 
 .header button{
@@ -22,16 +30,29 @@ body{
     text-align: center;
     padding: 10px;
     height: auto;
-    margin: 0 5px;
+    margin: 5px 5px;
 }
 
 .header input{
     height: auto;
+    margin: 5px;
+    background-image: url('/pictures/icons/searchIcon.png');
+    background-size: 30px 30px;
+    background-position: 5px 8px; 
+    background-repeat: no-repeat;
+    padding-left: 40px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 3px 4px 5px 0px rgba(0,0,0,0.75);
 }
 
-.header select{
-    height: auto;
+.header .stack-info{
+    margin: 0 10px;
 }
+
+/* .header select{
+    height: auto;
+} */
 
 .text{
     font-size: 1.2em;

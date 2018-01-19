@@ -20,7 +20,7 @@ class LuckCheck extends React.Component{
         }
     }
 
-    onPlayClick=()=>{
+    onPlay=()=>{
         this.setState({playButton:'restart', score:5, warning:''})
         this.targetCard()
     }
@@ -111,21 +111,28 @@ class LuckCheck extends React.Component{
         const bigCardStyle=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
         return(
             <div>
+
                 <div className='header'>
-                
-                    <select onChange={this.cardNum}>
-                        <option value="1" autoFocus>cards to play</option>
-                        <option value="1" >2 'normal'</option>
-                        <option value="2">3 'I feel lucky'</option>
-                        <option value="3">4 'today is my day'</option>
-                        <option value="4">5 'I am very lucky'</option>
-                        <option value="5">6 'Luck god is smiling'</option>
-                    </select>
+                    <div className='stack-info'>
+                        {this.props.selectedStack &&
+                            <h3>{this.props.selectedStack.name}</h3>
+                        }
+                    </div>
 
-                    <button onClick={this.onPlayClick}>{this.state.playButton}</button>
-                    <button onClick={this.test}>test</button>
-                    <Link to='/selectCard'><button>return</button></Link>
+                    <div className='header-menu'>
+                        <select onChange={this.cardNum}>
+                            <option value="1" autoFocus>cards to play</option>
+                            <option value="1" >2 'normal'</option>
+                            <option value="2">3 'I feel lucky'</option>
+                            <option value="3">4 'today is my day'</option>
+                            <option value="4">5 'I am very lucky'</option>
+                            <option value="5">6 'Luck god is smiling'</option>
+                        </select>
 
+                        <button onClick={this.onPlay}>{this.state.playButton}</button>
+                        <button onClick={this.test}>test</button>
+                        <Link to='/selectCard'><button>return</button></Link>
+                    </div>
                 </div> 
      
                 {this.state.targetCard&&
@@ -169,7 +176,8 @@ class LuckCheck extends React.Component{
 
 const mapStateToProps=(state)=>({
     selectedCards:state.selectCardsReducer.cards,
-    tokens:state.tokenReducer.totalTokens
+    tokens:state.tokenReducer.totalTokens,
+    selectedStack:state.cardStackReducer.selectedStack
 })
 
 export default connect(mapStateToProps)(LuckCheck) 

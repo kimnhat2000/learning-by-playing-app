@@ -22,6 +22,11 @@ class WackACard extends React.Component{
         }
     }
 
+    componentWillUnmount(){
+        clearTimeout(this.state.timeControl);
+        clearInterval(this.state.countDownControl);
+    }
+
     randomCards=()=>{
         const allCards=shuffle(this.props.selectedCards);
         const selected=allCards.slice(0,(randomNum(4)+1));
@@ -73,14 +78,15 @@ class WackACard extends React.Component{
 
         if(score===10){
             clearTimeout(this.state.timeControl)
-            this.setState({text:'congrat, you win the game with 2 tokens', playButton:'play again?'})
+            this.setState({text:'congrat, you win the game with 2 tokens, play again?', playButton:'play again?'})
             this.props.dispatch(addToken(2))
             return;
         }else if(score===0){
             clearTimeout(this.state.timeControl)
-            this.setState({text:'sorry, you lose the game', playButton:'play again?'})
+            this.setState({text:'sorry, you lose the game, play again?', playButton:'play again?'})
             return;
         }else if (countDown===0){
+            this.setState({text:'sorry, time is up, play again?', playButton:'play again?'})
             return;
         }
 
@@ -122,9 +128,17 @@ class WackACard extends React.Component{
         return(
             <div>
                 <div className='header'>
-                    <button onClick={this.onPlay}>{this.state.playButton}</button>
-                    <button onClick={this.test}>test</button>
-                    <Link to='/selectCard'><button>return</button></Link>
+                    <div className='stack-info'>
+                        {this.props.selectedStack &&
+                            <h3>{this.props.selectedStack.name}</h3>
+                        }
+                    </div>
+
+                    <div className='header-menu'>
+                        <button onClick={this.onPlay}>{this.state.playButton}</button>
+                        <button onClick={this.test}>test</button>
+                        <Link to='/selectCard'><button>return</button></Link>
+                    </div>
                 </div>
 
                 {this.state.showinfo &&
@@ -149,7 +163,8 @@ class WackACard extends React.Component{
 
 const mapStateToPtops=state=>({
     selectedCards:state.selectCardsReducer.cards,
-    tokens:state.tokenReducer.totalTokens
+    tokens:state.tokenReducer.totalTokens,
+    selectedStack:state.cardStackReducer.selectedStack
 })
 
 export default connect(mapStateToPtops)(WackACard) 

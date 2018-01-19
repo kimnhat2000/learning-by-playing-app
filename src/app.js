@@ -54,7 +54,7 @@ store.dispatch(addCard({stackId:3, name:'card 4b', description:' card 4 descript
 // store.dispatch(addCard({name:'card 3b', description:' card 3 description', variants:['var3b', 'var3b'], img:'pictures/akan.png'}))
 // store.dispatch(addCard({name:'card 4b', description:' card 4 description', variants:['var4b', 'var4b', 'var4b'], img:'pictures/ukan.png'}))
 
-// store.dispatch(selectOtherApproach(store.getState().flashCardReducer.cards))
+store.dispatch(selectOtherApproach(store.getState().flashCardReducer.cards))
 
 store.dispatch(addToken(250))
 store.dispatch(addToken(3))

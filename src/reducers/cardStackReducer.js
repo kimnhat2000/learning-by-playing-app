@@ -1,6 +1,7 @@
 const defaultState = {
     stacks:[],
     selectedStack:'',
+    filteredStacks:[],
     stackId:0
 }
 
@@ -24,7 +25,8 @@ export const cardStackReducer =(state=defaultState, action)=>{
         case 'EDIT_STACK':
         return {
             ...state,
-            stacks:state.stacks.map(s=>s.stackId === action.stack.stackId ? s=action.stack : s={...s, showButtons:false})
+            stacks:state.stacks.map(s=>s.stackId === action.stack.stackId ? s=action.stack : s={...s, showButtons:false}),
+            filteredStacks:state.filteredStacks.length !== 0 ? state.filteredStacks.map(s=>s.stackId === action.stack.stackId ? s=action.stack : s={...s, showButtons:false}) : state.filteredStacks
         }
 
         case 'DELETE_ALL_STACK':
@@ -38,6 +40,12 @@ export const cardStackReducer =(state=defaultState, action)=>{
         return {
             ...state,
             selectedStack:action.stack
+        }
+
+        case 'SEARCH_STACK':
+        return {
+            ...state,
+            filteredStacks:action.text?state.stacks.filter(s=>s.name.includes(action.text)):state.filteredStacks=[]
         }
 
     default:

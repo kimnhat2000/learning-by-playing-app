@@ -52,16 +52,16 @@ class TypeThemOut extends React.Component{
         }
 
         if(text===cardName){       
-            this.setState({warning:'congrat', score:score+1, warning:'', card:setCard, showCard:setShowCard, input:''})
+            this.setState({warning:'correct', score:score+1, card:setCard, showCard:setShowCard, input:''})
             scoreTrack=scoreTrack+1;
             if(scoreTrack===5){
-                this.setState({warning:'congrat you win 2 tokens', playButton:'play again?'})
+                this.setState({warning:'congrat you win 2 tokens, play again?', playButton:'play again?'})
                 this.props.dispatch(addToken(2))
 
             }
             return;
         }else{       
-            this.setState({warning:'sorry', score:score-1, warning:'', card:setCard, showCard:setShowCard, input:''})
+            this.setState({warning:'wrong', score:score-1, card:setCard, showCard:setShowCard, input:''})
             scoreTrack=scoreTrack-1;
             if(scoreTrack===0){
                 this.setState({warning:'you lose'})
@@ -80,11 +80,19 @@ class TypeThemOut extends React.Component{
         const style=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
         return(
             <div>
-                <div className='header'>
+            <div className='header'>
+                <div className='stack-info'>
+                    {this.props.selectedStack &&
+                        <h3>{this.props.selectedStack.name}</h3>
+                    }
+                </div>
+
+                <div className='header-menu'>
                     <button onClick={this.onPlayClick}>{this.state.playButton}</button>
                     <button onClick={this.test}>test</button>
                     <Link to='/selectCard'><button>return</button></Link>
                 </div>
+            </div>
 
             {this.state.card &&
                 <div>
@@ -124,7 +132,8 @@ class TypeThemOut extends React.Component{
 
 const mapStateToProps =(state)=>({
     selectedCards:state.selectCardsReducer.cards,
-    tokens:state.tokenReducer.totalTokens
+    tokens:state.tokenReducer.totalTokens,
+    selectedStack:state.cardStackReducer.selectedStack
 })
 
 export default connect(mapStateToProps)(TypeThemOut)

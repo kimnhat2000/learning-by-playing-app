@@ -19,7 +19,7 @@ class WackACard extends React.Component{
         }
     }
 
-    play=()=>{
+    onPlay=()=>{
         const allCards=shuffle(this.props.selectedCards);
         const selectCards=allCards.slice(0,18)
         const hideCards=selectCards.map((c,i)=>c={...c,showCard:false,match:false});
@@ -96,9 +96,17 @@ class WackACard extends React.Component{
             <div className='matchCard'>
 
                 <div className='header'>
-                        <button onClick={this.play}>{this.state.playButton}</button>
+                    <div className='stack-info'>
+                        {this.props.selectedStack &&
+                            <h3>{this.props.selectedStack.name}</h3>
+                        }
+                    </div>
+
+                    <div className='header-menu'>
+                        <button onClick={this.onPlay}>{this.state.playButton}</button>
                         <button onClick={this.test}>test</button>
-                        <Link to = '/selectCard'><button>return</button></Link>
+                        <Link to='/selectCard'><button>return</button></Link>
+                    </div>
                 </div>
 
                 {this.state.countDown&&
@@ -120,7 +128,8 @@ class WackACard extends React.Component{
 
 const mapStateToProps=(state)=>({
     selectedCards:state.selectCardsReducer.cards,
-    tokens:state.tokenReducer.totalTokens
+    tokens:state.tokenReducer.totalTokens,
+    selectedStack:state.cardStackReducer.selectedStack
 })
 
 export default connect(mapStateToProps)(WackACard) 

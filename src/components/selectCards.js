@@ -159,12 +159,19 @@ class SelectCards extends React.Component{
 
         return(
             <div>
-                
-                <div className='header'>     
-                    <button onClick={this.test}>test</button>
-                    <button onClick={()=>this.selectAll(false)}>unselect all cards</button>
-                    <button onClick={()=>this.selectAll(true)}>select all cards</button>
-                    <Link to='/flashCard'><button>return home</button></Link>
+                <div className='header'>
+                    <div className='stack-info'>
+                        {this.props.selectedStack &&
+                            <h3>{this.props.selectedStack.name}</h3>
+                        }
+                    </div>
+
+                    <div className='header-menu'>     
+                        <button onClick={this.test}>test</button>
+                        <button onClick={()=>this.selectAll(false)}>unselect all cards</button>
+                        <button onClick={()=>this.selectAll(true)}>select all cards</button>
+                        <Link to='/flashCard'><button>return home</button></Link>
+                    </div>
                 </div>
 
             {this.props.cards.length === 0 ?
@@ -209,6 +216,7 @@ class SelectCards extends React.Component{
 const mapStateToProps=(state)=>({
     cards:state.flashCardReducer.stackCards,
     selectCards:state.selectCardsReducer.cards,
+    selectedStack:state.cardStackReducer.selectedStack,
     tokens:state.tokenReducer
 })
 

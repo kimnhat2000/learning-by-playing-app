@@ -12,6 +12,13 @@ const tokenDefault={
     ],
     gamesBought:[
         {id: 1, name:'luck check', path:'/luckCheck', buy:true},
+        {id: 2, name:'match cards', path:'/matchCards', buy:true},
+        {id: 3, name:'type Them Out', path:'/typeThemOut', buy:true},
+        {id: 4, name:'pair ThemUp', path:'/pairThemUp', buy:true},
+        {id: 5, name:'multible Choices', path:'/multibleChoices', buy:true},
+        {id: 6, name:'bet Them Down', path:'/betThemDown', buy:true},
+        {id: 7, name:'wack A Card', path:'/wackACard', buy:true},
+        {id: 8, name:'cook coo', path:'/cookcoo', buy:true},
     ],
     gamesRemain:[
         {id: 2, name:'match cards', path:'/matchCards', buy:false},

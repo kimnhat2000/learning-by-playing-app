@@ -3,7 +3,7 @@ import _ from 'lodash';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {randomPics, reziseAndStyleBigCard} from '../tools/tools'
-import {addStack, removeStack, editStack, deleteAllStack, selectedStack} from '../actions/cardStackActions';
+import {addStack, removeStack, editStack, deleteAllStack, selectedStack, stackSearch} from '../actions/cardStackActions';
 import {filterStack, deleteAllCards} from '../actions/flashCardActions';
 import '../style/cardStack.css'
 
@@ -21,12 +21,20 @@ class CardStack extends React.Component{
             text:'',
             error:'',
             saveStack:false,
-            deleteAllConfirm:false
+            deleteAllConfirm:false,
+            stackSearch:'',
         }
     }
 
     stackNameInput=(e)=>{
         this.setState({[e.target.name]:e.target.value})
+    }
+
+    //search a stack by name
+    onStackSearch=(e)=>{
+        const s=e.target.value
+        this.setState({stackSearch:s})
+        this.props.dispatch(stackSearch(s))
     }
 
     saveAStack=()=>{
@@ -47,6 +55,7 @@ class CardStack extends React.Component{
         const newStack={...stack, showButtons:!stack.showButtons}
         this.props.dispatch(editStack(newStack))
         this.setState({editNameInputShow:false, error:'', addStackInput:false})
+        this.props.dispatch(selectedStack(stack))
     }
 
     handleWarning=(s)=>{
@@ -72,6 +81,7 @@ class CardStack extends React.Component{
         this.props.dispatch(editStack(closeButtons))
         this.props.dispatch(filterStack(s.stackId))
         this.props.dispatch(selectedStack(s))
+        this.props.dispatch(stackSearch())
     }
 
     onDeleteEveryThing=()=>{
@@ -93,7 +103,8 @@ class CardStack extends React.Component{
                 return
             }
             const stack=this.state.stack
-            this.props.dispatch(removeStack(stack))
+            this.props.dispatch(removeStack(stack))        
+            this.props.dispatch(stackSearch())
             this.setState({warning:false})
             return
         }else {
@@ -103,60 +114,17 @@ class CardStack extends React.Component{
     }
 
     test=()=>{
-        const{stacks, tokens, cards, stackCards, selectedStack}= this.props
+        const{stacks, tokens, cards, stackCards, selectedStack, filteredStacks}= this.props
         console.log('stacks: ',stacks)
         console.log('tokens: ',tokens)
         console.log('cards: ',cards)
         console.log('stackCards: ',stackCards)
         console.log('selectedStack: ',selectedStack)
+        console.log('filteredStacks: ',filteredStacks)
+        console.log('check stackSearch: ',this.state.stackSearch?true:false)
     }
 
     render(){
-
-        const style=(style)=>{
-            const s={
-                width:'150px',
-                height:'250px',
-                backgroundColor:'gray',
-                margin:'10px',
-                backgroundImage: `url(${style.img})`,
-                backgroundSize: '150px 250px'
-            }
-            return s
-        }
-
-        const stacks=this.props.stacks && this.props.stacks.map((s,i)=>(
-            <div key={i}>
-                <div>
-                    <div
-                        style={style(s)}
-                        onClick={()=>this.handleStackClick(s)}
-                    />
-
-                    <h3>{s.name}</h3>
-                </div> 
-                    
-                {s.showButtons && 
-                <div>
-                    <div>
-                        <button onClick={()=>this.handleWarning(s)}>delete</button>
-                        <button onClick={()=>this.handleEdit(s)}>edit</button>
-                        <Link to='/flashCard' onClick={()=>this.openStack(s)}><button>open</button></Link>
-                    </div>  
-                    {this.state.editNameInputShow &&
-                    <div>
-                        <input
-                            name='editNameInput'
-                            value={this.state.editNameInput}
-                            onChange={this.stackNameInput}
-                        />
-                        <button onClick={()=>this.onEditSave(s)}>save</button>
-                    </div>   
-                    }
-                </div>               
-                }
-            </div>   
-        ))
 
         const grammarCheck = this.props.stacks.length === 1 ? 'stack' : 'stacks'
 
@@ -164,9 +132,23 @@ class CardStack extends React.Component{
             <div>
 
                 <div className='header'>
+                    <div className='stack-info'>
+                        {this.props.selectedStack &&
+                            <h3>{this.props.selectedStack.name}</h3>
+                        }
+                    </div>
+
+                    <div className='header-menu'>
                     <button onClick={this.test}>test</button>
+                    <input
+                        type='text'
+                        placeholder='find stack by name'
+                        value={this.state.stackSearch}
+                        onChange={this.onStackSearch}
+                    />
                     <button onClick={this.onDeleteEveryThing}>delete all stack</button>
                     <button onClick={()=>this.setState({addStackInput:true})}>add stack</button>
+                    </div>
                 </div>
 
                 <h3>{this.state.error}</h3>
@@ -182,6 +164,7 @@ class CardStack extends React.Component{
                 {this.state.addStackInput &&
                 <div>
                     <input
+                        type='text'
                         placeholder='new stack name'
                         name='stackName'
                         value={this.state.stackName}
@@ -189,6 +172,7 @@ class CardStack extends React.Component{
                         autoFocus
                     />
                     <input
+                        type='text'
                         placeholder='new stack image'
                         name='stackImg'
                         value={this.state.stackImg}
@@ -203,10 +187,18 @@ class CardStack extends React.Component{
                     <h3>please add a card stack</h3>
                 }
                 
+                <Test
+                    stacks={this.props.filteredStacks.length===0?this.props.stacks:this.props.filteredStacks}
+                    inputShow={this.state.editNameInputShow}
+                    inputValue={this.state.editNameInput}
+                    onInputChange={this.stackNameInput}
+                    stackClick={(s)=>this.handleStackClick(s)}
+                    buttonClick={(s)=>this.onEditSave(s)}
+                    deleteClick={(s)=>this.handleWarning(s)}
+                    editClick={(s)=>this.handleEdit(s)}
+                    openClick={(s)=>this.openStack(s)}
+                />    
 
-                <div className='stack'>{stacks}</div>
-                
-                
             </div>
         )
     }
@@ -217,7 +209,62 @@ const mapStateToProps=(state)=>({
     stacks: state.cardStackReducer.stacks,
     tokens: state.tokenReducer.totalTokens,
     cards:state.flashCardReducer.cards,
-    stackCards:state.flashCardReducer.stackCards
+    stackCards:state.flashCardReducer.stackCards,
+    filteredStacks:state.cardStackReducer.filteredStacks
 })
 
 export default connect(mapStateToProps)(CardStack)
+
+//stacks render
+const Test =({stacks, inputShow, inputValue, onInputChange, buttonClick, stackClick, deleteClick, editClick, openClick, shouldShowButtons})=>{
+
+    const style=(stack)=>{
+        const s={
+            width:'150px',
+            height:'250px',
+            backgroundColor:'gray',
+            margin:'10px',
+            backgroundImage: `url(${stack.img})`,
+            backgroundSize: '150px 250px'
+        }
+        return s
+    }
+
+    const teststacks=stacks && stacks.map((s,i)=>(
+        <div key={i}>
+            <div>
+                <div
+                    style={style(s)}
+                    onClick={()=>stackClick(s)}
+                />
+
+                <h3>{s.name}</h3>
+            </div> 
+
+            {s.showButtons && 
+            <div>
+                <div>
+                    <button onClick={()=>deleteClick(s)}>delete</button>
+                    <button onClick={()=>editClick(s)}>edit</button>
+                    <Link to='/flashCard' onClick={()=>openClick(s)}><button>open</button></Link>
+                </div>  
+                {inputShow &&
+                <div>
+                    <input
+                        type='text'
+                        name='editNameInput'
+                        value={inputValue}
+                        onChange={onInputChange}
+                    />
+                    <button onClick={()=>buttonClick(s)}>save</button>
+                </div>   
+                }
+            </div>               
+            }
+
+        </div>   
+    ))
+    return(
+        <div className='stack'>{teststacks}</div>
+    )
+}

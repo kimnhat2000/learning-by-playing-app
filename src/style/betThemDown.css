@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    flex-wrap: wrap;
 }
 
 .battlefield h1{
@@ -31,6 +30,7 @@
 h1{
     display: flex;
     justify-content: center;
+    font-family: 'vsfont';
 }
 
 .buttons .attact{
@@ -94,3 +94,8 @@ h1{
     background-image: linear-gradient(to bottom, #faf03c, #b0d934);
     text-decoration: none;
   }
+
+  @font-face {
+    font-family: 'vsfont';
+    src: url(/pictures/fonts/SSF4.ttf) format('truetype');
+}

@@ -21,3 +21,8 @@ export const selectedStack=(stack)=>({
     type: 'SELECTED_STACK',
     stack
 })
+
+export const stackSearch =(text)=>({
+    type: 'SEARCH_STACK',
+    text
+})

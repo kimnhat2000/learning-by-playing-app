@@ -67,9 +67,17 @@ class MultibleChoices extends React.Component{
         return(
             <div>
                 <div className='header'>
-                    <button onClick={this.randomCard}>{this.state.playButton}</button>
-                    <button onClick={this.test}>test</button>
-                    <Link to='/selectCard'><button>return</button></Link>
+                    <div className='stack-info'>
+                        {this.props.selectedStack &&
+                            <h3>{this.props.selectedStack.name}</h3>
+                        }
+                    </div>
+
+                    <div className='header-menu'>
+                        <button onClick={this.randomCard}>{this.state.playButton}</button>
+                        <button onClick={this.test}>test</button>
+                        <Link to='/selectCard'><button>return</button></Link>
+                    </div>
                 </div>
 
                 {this.state.showinfo &&
@@ -101,7 +109,8 @@ class MultibleChoices extends React.Component{
 
 const mapStateToProps=(state)=>({
     selectedCards:state.selectCardsReducer.cards,
-    tokens:state.tokenReducer.totalTokens
+    tokens:state.tokenReducer.totalTokens,
+    selectedStack:state.cardStackReducer.selectedStack
 })
 
 export default connect(mapStateToProps)(MultibleChoices)
