@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {randomPics, reziseAndStyleBigCard} from '../tools/tools'
 import {addStack, addStacks, removeStack, editStack, deleteAllStack, selectedStack, stackSearch} from '../actions/cardStackActions';
 import {filterStack, deleteAllCards, addCards, addCard, deleteAllCardsInCurrentStack} from '../actions/flashCardActions';
+import {changeTokenNum}from '../actions/tokenActions';
 import '../style/cardStack.css'
 
 class CardStack extends React.Component{
@@ -48,15 +49,20 @@ class CardStack extends React.Component{
             const json2=localStorage.getItem('stackId');
             const json3=localStorage.getItem('allCards');
             const json4=localStorage.getItem('newCardId');
+            const json5=localStorage.getItem('tokens');
             const stacks= JSON.parse(json);
             const stackId= JSON.parse(json2);
-            const allCards=JSON.parse(json3)
-            const newId=JSON.parse(json4)
+            const allCards=JSON.parse(json3);
+            const newId=JSON.parse(json4);
+            const tokens=JSON.parse(json5);
             if(stacks){
                 this.props.dispatch(addStacks(stacks, stackId))
             }
             if(allCards){
                 this.props.dispatch(addCards(allCards, newId))
+            }
+            if(tokens){
+                this.props.dispatch(changeTokenNum(tokens))
             }
 
         }catch(error){

@@ -12,6 +12,15 @@ const tokenDefault={
     ],
     gamesBought:[
         {id: 1, name:'luck check', path:'/luckCheck', buy:true},
+        // {id: 2, name:'match cards', path:'/matchCards', buy:false},
+        // {id: 3, name:'type Them Out', path:'/typeThemOut', buy:false},
+        // {id: 4, name:'pair ThemUp', path:'/pairThemUp', buy:false},
+        // {id: 5, name:'multible Choices', path:'/multibleChoices', buy:false},
+        // {id: 6, name:'bet Them Down', path:'/betThemDown', buy:false},
+        // {id: 7, name:'wack A Card', path:'/wackACard', buy:false},
+        // {id: 8, name:'cook coo', path:'/cookcoo', buy:false},
+    ],
+    gamesRemain:[
         {id: 2, name:'match cards', path:'/matchCards', buy:true},
         {id: 3, name:'type Them Out', path:'/typeThemOut', buy:true},
         {id: 4, name:'pair ThemUp', path:'/pairThemUp', buy:true},
@@ -19,20 +28,26 @@ const tokenDefault={
         {id: 6, name:'bet Them Down', path:'/betThemDown', buy:true},
         {id: 7, name:'wack A Card', path:'/wackACard', buy:true},
         {id: 8, name:'cook coo', path:'/cookcoo', buy:true},
-    ],
-    gamesRemain:[
-        {id: 2, name:'match cards', path:'/matchCards', buy:false},
-        {id: 3, name:'type Them Out', path:'/typeThemOut', buy:false},
-        {id: 4, name:'pair ThemUp', path:'/pairThemUp', buy:false},
-        {id: 5, name:'multible Choices', path:'/multibleChoices', buy:false},
-        {id: 6, name:'bet Them Down', path:'/betThemDown', buy:false},
-        {id: 7, name:'wack A Card', path:'/wackACard', buy:false},
-        {id: 8, name:'cook coo', path:'/cookcoo', buy:false},
     ]
 }
 
 export const tokenReducer=(state=tokenDefault, action)=>{
     switch (action.type){
+        //this is for token saving in cardStack
+        case 'CHANGE_TOKEN_NUM':
+        return{
+            ...state,
+            totalTokens:action.num
+        }
+
+        //this is for game saving state
+        case 'CHANGE_GAME_BOUGHT_STATE':
+        return{
+            ...state,
+            gamesBought:action.gamesBoughtState,
+            gamesRemain:action.gamesRemainState
+        }
+
         case 'ADD_TOKEN':
         return {
             ...state,

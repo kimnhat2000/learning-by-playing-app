@@ -18,6 +18,13 @@ class MultibleChoices extends React.Component{
         }
     }
 
+    componentDidUpdate(prevProps, prevStates){
+        if(prevProps.tokens !== this.props.tokens){
+            const json=JSON.stringify(this.props.tokens)
+            localStorage.setItem('tokens', json)
+        }
+    }
+
     randomCard=()=>{
         const card=this.props.selectedCards[randomNum(this.props.selectedCards.length)]
         const allCards=shuffle(this.props.selectedCards.filter(c=>c.id !== card.id))

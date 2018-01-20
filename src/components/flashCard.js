@@ -4,6 +4,7 @@ import {BigCard} from './card';
 import {connect} from 'react-redux';
 import {addCard, addCards, removeCard, cardToEditInfo, editCard, deleteAllCardsInCurrentStack, filteredCards, filterStack, setNewCardId} from '../actions/flashCardActions';
 import {selectedStack} from '../actions/cardStackActions';
+import {addToken, reduceToken} from '../actions/tokenActions'
 import FlashCardForm from './form';
 import {Link} from 'react-router-dom';
 import {reziseAndStyleBigCard, randomPics} from '../tools/tools';
@@ -28,14 +29,12 @@ class FlashCard extends React.Component{
         }
     }
 
-    // componentDidUpdate(prevProps, prevState){
-
-    //         const json =JSON.stringify(this.props.AllCards);
-    //         const json2 =JSON.stringify(this.props.newCardId);
-    //         localStorage.setItem('allCards', json);
-    //         localStorage.setItem('newId', json2);
-
-    // }
+    componentDidUpdate(prevProps, prevStates){
+        if(prevProps.tokens !== this.props.tokens){
+            const json=JSON.stringify(this.props.tokens)
+            localStorage.setItem('tokens', json)
+        }
+    }
 
     componentWillUnmount(){
         if(this.props.selectedStack){
@@ -48,7 +47,6 @@ class FlashCard extends React.Component{
         }else{
             const newCardId=JSON.stringify(this.props.newCardId)
             localStorage.setItem('newCardId', newCardId)
-            // this.setState({returnHome:flase})
         }
     }
 
@@ -162,11 +160,20 @@ class FlashCard extends React.Component{
                     </div>
 
                     <div className='header-menu'>
+
                         <Link to='/test'><button>test page</button></Link>
                         <button onClick={this.test}>test</button>
-                        <button onClick={()=>this.setState({showForm:true})} className='add'>add a card</button>
-                        <button onClick={this.onDeleteAll} className='delete'>delete all cards</button>
-                        <Link to='/selectCard'><button className='play'>play games</button></Link>
+                        <button onClick={()=>this.props.dispatch(addToken(50))}>add a token</button>
+                        <button onClick={()=>this.props.dispatch(reduceToken(50))}>remove a token</button>
+
+                        {!this.state.returnHome &&
+                        <div>
+                            <button onClick={()=>this.setState({showForm:true})} className='add'>add a card</button>
+                            <button onClick={this.onDeleteAll} className='delete'>delete all cards</button>
+                            <Link to='/selectCard'><button className='play'>play games</button></Link>
+                        </div>
+                        }
+
                         <input
                             type='text'
                             placeholder='find cards by name'
@@ -247,6 +254,8 @@ const mapStateToProps=(state)=>({
     newCardId:state.flashCardReducer.newId,
     selectedStack:state.cardStackReducer.selectedStack,
     tokens:state.tokenReducer.totalTokens,
+    gameBought:state.tokenReducer.gamesBought,
+    gameRemain:state.tokenReducer.gamesRemain
 })
 
 

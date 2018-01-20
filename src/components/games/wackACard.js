@@ -22,6 +22,13 @@ class WackACard extends React.Component{
         }
     }
 
+    componentDidUpdate(prevProps, prevStates){
+        if(prevProps.tokens !== this.props.tokens){
+            const json=JSON.stringify(this.props.tokens)
+            localStorage.setItem('tokens', json)
+        }
+    }
+
     componentWillUnmount(){
         clearTimeout(this.state.timeControl);
         clearInterval(this.state.countDownControl);

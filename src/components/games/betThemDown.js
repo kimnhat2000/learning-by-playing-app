@@ -23,6 +23,13 @@ class BetThemDown extends React.Component{
         }
     }
 
+    componentDidUpdate(prevProps, prevStates){
+        if(prevProps.tokens !== this.props.tokens){
+            const json=JSON.stringify(this.props.tokens)
+            localStorage.setItem('tokens', json)
+        }
+    }
+
     onPlay=()=>{
         this.randomComCards()
         this.randomPlayerCards()
@@ -202,6 +209,10 @@ class BetThemDown extends React.Component{
                     <div className='header-menu'>
                         <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
                         <button onClick={this.test}>test</button>
+
+                        <button onClick={()=>this.props.dispatch(addToken(1))}>add token</button>
+
+
                         <Link to='/selectCard'><button className='return'>return</button></Link>
                     </div>
                 </div>

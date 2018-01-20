@@ -5,7 +5,7 @@ import {Card, BigCard} from './card';
 import {editCard} from '../actions/flashCardActions';
 import {randomColor} from '../tools/tools';
 import {selectOtherApproach, storeSelectedCards} from '../actions/selectCardsActions';
-import { buyAGame } from '../actions/tokenActions';
+import { buyAGame, saveGameBought } from '../actions/tokenActions';
 import '../style/selectCards.css';
 
 
@@ -24,28 +24,40 @@ class SelectCards extends React.Component{
             selectCards:[],
             warning:false,
             text:'',
-            dicisionCard:''
+            gameWant:''
         }
     }
 
-    // componentDidUpdate(prevProps, prevState){
-    //     if (prevProps.selectCards !== this.props.selectCards) {
-    //         const json =JSON.stringify(this.props.selectCards);
-    //         localStorage.setItem('selectCards', json);
-    //     }
-    // }
+    componentDidUpdate(prevProps, prevState){
+        if (prevState.buyGames.length !== this.state.buyGames.length) {
+            console.log('bought',this.state.buyGames, 'remain: ', this.state.selectGames)
+            const json =JSON.stringify(this.state.buyGames);
+            const json1 =JSON.stringify(this.state.selectGames);
+            localStorage.setItem('boughtGames', json);
+            localStorage.setItem('remainGames', json1);
+        }
+        if(prevProps.tokens.totalTokens !== this.props.tokens.totalTokens){
+            const json=JSON.stringify(this.props.tokens.totalTokens)
+            localStorage.setItem('tokens', json)
+        }
+    }
 
-    // componentDidMount(){
-    //     try{
-    //         const json=localStorage.getItem('selectCards');
-    //         const selectCards= JSON.parse(json);
-    //         if(selectCards){
-    //             this.props.dispatch(storeSelectedCards(selectCards))
-    //         }
-    //     }catch(error){
-    //         //do nothing
-    //     }
-    // }
+    componentDidMount(){
+        try{
+            if(localStorage.getItem('boughtGames')===null){
+                return;
+            }else{
+            const json=localStorage.getItem('boughtGames');
+            const json1=localStorage.getItem('remainGames');
+            const gamesBought= JSON.parse(json);
+            const gamesRemain=JSON.parse(json1)
+            this.props.dispatch(saveGameBought(gamesBought, gamesRemain))
+            this.setState({buyGames:gamesBought, selectGames:gamesRemain})
+            }
+        }catch(error){
+            //do nothing
+        }
+    }
 
     onCardClick=(card)=>{
         const cards=this.state.cards.filter(c=>c.id!==card.id)
@@ -78,18 +90,22 @@ class SelectCards extends React.Component{
         this.setState({
             text:`are you sure you want to buy this ${game.name} game for 100 tokens?`, 
             warning:true,
-            dicisionCard:game
+            gameWant:game
         })
     }
 
     makeDesicion=(pass)=>{
         if(pass){
             const tokens=this.state.tokens-100
-            const dicisionCard=this.state.dicisionCard
-            const selectGames=this.state.selectGames.filter(g=>g.id!==dicisionCard.id)
-            const buyGames=[...this.state.buyGames, {...dicisionCard,buy:true}]
+            const gameWant=this.state.gameWant
+            const selectGames=this.state.selectGames.filter(g=>g.id!==gameWant.id)
+            const buyGames=[...this.state.buyGames, {...gameWant,buy:true}]
             this.setState({tokens, warning:false, buyGames, selectGames})
-            this.props.dispatch(buyAGame(dicisionCard))
+            this.props.dispatch(buyAGame(gameWant))
+            // const gamesBought=JSON.stringify(this.props.tokenReducer.gamesBought)
+            // const gamesRemain=JSON.stringify(this.props.tokenReducer.gamesRemain)
+            // localStorage.setItem('gamesBought',gamesBought)
+            // localStorage.setItem('gamesRemain',gamesRemain)
             return;
         }else {
             this.setState({warning:false})
@@ -99,12 +115,13 @@ class SelectCards extends React.Component{
 
     test=()=>{
         const {totalTokens, games, gamesBought, gamesRemain}= this.props.tokens
-        const {buyGames}= this.state
+        const {buyGames, selectGames}= this.state
         console.log('games: ',games)
         console.log('tokens: ',totalTokens)
         console.log('gamesBought: ',gamesBought)
         console.log('gamesRemain: ',gamesRemain)
-        console.log(this.state.token)
+        console.log(buyGames, selectGames)
+        // console.log(this.state.selectGames)
 
         // localStorage.clear('selectCards');
     }
@@ -136,7 +153,7 @@ class SelectCards extends React.Component{
 
         const buttonGrammar=4-this.state.selectCards.length === 1? 'card': 'cards';
 
-        const boughtGames=this.state.buyGames.map((g,i)=>(
+        const boughtGames=this.state.buyGames.map((g,i)=>g.buy && (
             <div key={i}>
                 <Link to ={g.path}><button>{g.name}</button></Link>
             </div>
@@ -151,7 +168,7 @@ class SelectCards extends React.Component{
     
             </div> 
         
-        const games=this.state.selectGames.map((g,i)=>(
+        const games=this.state.selectGames.map((g,i)=> (
             <div key={i} className='buttons'>
                 <button onClick={()=>this.onGameClick(g)}>{g.name}</button>
             </div>
@@ -213,7 +230,7 @@ class SelectCards extends React.Component{
                 
                     {this.state.tokens >= 100 &&
                     <div>
-                        <h3>do you want to buy a card for 100 tokens?</h3>
+                        <h3>do you want to buy a game for 100 tokens?</h3>
                         <div className='games-select'>{games}</div>
                     </div>
                     }

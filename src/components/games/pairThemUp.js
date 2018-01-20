@@ -21,6 +21,13 @@ class PairThemUp extends React.Component{
         }
     }
 
+    componentDidUpdate(prevProps, prevStates){
+        if(prevProps.tokens !== this.props.tokens){
+            const json=JSON.stringify(this.props.tokens)
+            localStorage.setItem('tokens', json)
+        }
+    }
+
     shuffleCards=()=>{
         const {text, playButton}=this.state
         const cards=this.props.selectedCards.slice(0,this.state.cardplay)

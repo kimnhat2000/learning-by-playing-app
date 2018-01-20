@@ -19,6 +19,13 @@ class TypeThemOut extends React.Component{
         }
     }
 
+    componentDidUpdate(prevProps, prevStates){
+        if(prevProps.tokens !== this.props.tokens){
+            const json=JSON.stringify(this.props.tokens)
+            localStorage.setItem('tokens', json)
+        }
+    }
+
     onPlayClick=()=>{
         const card=this.randomCard()
         const showCard={...card, name:'this card name is hidden'}

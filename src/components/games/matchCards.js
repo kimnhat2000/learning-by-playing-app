@@ -19,6 +19,13 @@ class WackACard extends React.Component{
         }
     }
 
+    componentDidUpdate(prevProps, prevStates){
+        if(prevProps.tokens !== this.props.tokens){
+            const json=JSON.stringify(this.props.tokens)
+            localStorage.setItem('tokens', json)
+        }
+    }
+
     onPlay=()=>{
         const allCards=shuffle(this.props.selectedCards);
         const selectCards=allCards.slice(0,18)

@@ -3,8 +3,8 @@ import {connect} from  'react-redux';
 import {Card, BigCard} from '../card';
 import {shuffle, randomNum, randomColor, reziseAndStyleBigCard} from '../../tools/tools';
 import {Link} from 'react-router-dom';
-import '../../style/luckCheck.css'
 import { addToken } from '../../actions/tokenActions';
+import '../../style/luckCheck.css'
 
 class LuckCheck extends React.Component{
     constructor(props){
@@ -17,6 +17,13 @@ class LuckCheck extends React.Component{
             score:5,
             noClick:false,
             playButton:'play'
+        }
+    }
+
+    componentDidUpdate(prevProps, prevStates){
+        if(prevProps.tokens !== this.props.tokens){
+            const json=JSON.stringify(this.props.tokens)
+            localStorage.setItem('tokens', json)
         }
     }
 
@@ -141,6 +148,9 @@ class LuckCheck extends React.Component{
                         </select>
 
                         <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
+
+                        <button onClick={()=>this.props.dispatch(addToken(1))}>add token</button>
+                        
                         <button onClick={this.test}>test</button>
                         <Link to='/selectCard' className='return'><button>return</button></Link>
                     </div>
