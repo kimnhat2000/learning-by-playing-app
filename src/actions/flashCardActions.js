@@ -53,3 +53,9 @@ export const filterStack=(stackId)=>({
     type: 'FILTER_STACK',
     stackId
 })
+
+//set new card id for saving to storage purpose
+export const setNewCardId =(newCardId)=>({
+    type: 'SET_CARD_ID',
+    newCardId
+})

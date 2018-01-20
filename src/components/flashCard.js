@@ -2,7 +2,8 @@ import React from 'react';
 import CardList from './cardList';
 import {BigCard} from './card';
 import {connect} from 'react-redux';
-import {addCard, addCards, removeCard, cardToEditInfo, editCard, deleteAllCardsInCurrentStack, filteredCards, filterStack} from '../actions/flashCardActions';
+import {addCard, addCards, removeCard, cardToEditInfo, editCard, deleteAllCardsInCurrentStack, filteredCards, filterStack, setNewCardId} from '../actions/flashCardActions';
+import {selectedStack} from '../actions/cardStackActions';
 import FlashCardForm from './form';
 import {Link} from 'react-router-dom';
 import {reziseAndStyleBigCard, randomPics} from '../tools/tools';
@@ -22,7 +23,8 @@ class FlashCard extends React.Component{
             confirmDeleteAll:false,
             cardFilter:'',
             bigCard:'',
-            text:''
+            text:'',
+            returnHome:false
         }
     }
 
@@ -36,29 +38,29 @@ class FlashCard extends React.Component{
     // }
 
     componentWillUnmount(){
-        const allCards=this.props.allCards
-        const newCardId=this.props.newCardId
-
-        const json =JSON.stringify(allCards);
-        const json2 =JSON.stringify(newCardId);
-        localStorage.setItem('allCards', json);
-        localStorage.setItem('newCardId', json2);
+        if(this.props.selectedStack){
+            const allCards=this.props.allCards
+            const newCardId=this.props.newCardId
+            const json =JSON.stringify(allCards);
+            const json2 =JSON.stringify(newCardId);
+            localStorage.setItem('allCards', json);
+            localStorage.setItem('newCardId', json2);
+        }else{
+            const newCardId=JSON.stringify(this.props.newCardId)
+            localStorage.setItem('newCardId', newCardId)
+            // this.setState({returnHome:flase})
+        }
     }
 
-
-    // componentDidMount(){
-    //     try{
-    //         const json=localStorage.getItem('cards');
-    //         const json2=localStorage.getItem('newId');
-    //         const cards= JSON.parse(json);
-    //         const newId= JSON.parse(json2);
-    //         if(cards){
-    //             this.props.dispatch(addCards(cards, newId))
-    //         }
-    //     }catch(error){
-    //         //do nothing
-    //     }
-    // }
+    componentDidMount(){
+        if(!this.props.selectedStack){
+            this.setState({returnHome:true})
+            const json=localStorage.getItem('allCards')
+            const json2=localStorage.getItem('newCardId')
+            const newCardId=JSON.parse(json2)
+            this.props.dispatch(setNewCardId(newCardId))
+        }
+    }
 
     onCardClick=(card)=>{
         this.setState({bigCard:card})
@@ -122,12 +124,13 @@ class FlashCard extends React.Component{
     }
 
     test=()=>{
-        const {cards, cardToEdit, filteredCards, selectedStack, allCards}=this.props
+        const {cards, cardToEdit, filteredCards, selectedStack, allCards, newCardId}=this.props
         console.log('cards:', cards)
         console.log('cardToEdit:', cardToEdit)
         console.log('filteredCards:', filteredCards)
         console.log('selectedStack:', selectedStack.stackId)
         console.log('allCards:', allCards)
+        console.log('newCardId: ', newCardId)
 
         // localStorage.clear();
     }
@@ -170,10 +173,13 @@ class FlashCard extends React.Component{
                             value = {this.state.cardFilter}
                             onChange= {this.onFilterTextChange}
                         />
-                        <Link to='/'><button className='return'>return</button></Link>
+                        <Link to='/'><button className='return'>return</button></Link>                       
                     </div>
-                </div>
 
+                </div>
+                    {this.state.returnHome &&
+                    <Link to='/'><h3>you need to choose a stack to see cards, click this to go to stacks selection page</h3></Link>
+                    }
                 <div className='text'>
                     {this.state.text && this.state.text}
                     {this.props.cards.length > 0 && 

@@ -18,6 +18,13 @@ export const flashCardReducer =(state=defaultState, action)=>{
             newId:state.newId+1
         }
 
+        //I do this for saving purpose, for my next app, I better use uuid, or create my own Id generation function
+        case 'SET_CARD_ID':
+        return {
+            ...state,
+            newId:action.newCardId
+        }
+
         //for using to add all cards in state to local storage
         case 'ADD_CARDS':
         return {

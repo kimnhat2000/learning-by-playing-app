@@ -106,6 +106,7 @@ class FlashCardForm extends React.Component{
                     placeholder='enter card name'
                     value={this.state.name}
                     onChange={this.onChange}
+                    autoComplete='off'
                 />
                 
                 <label>description</label>

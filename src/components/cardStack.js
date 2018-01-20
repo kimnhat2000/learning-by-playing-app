@@ -33,7 +33,7 @@ class CardStack extends React.Component{
         if (prevProps.cards.length !== this.props.cards.length){
         const allCards=JSON.stringify(this.props.cards)
         const json= localStorage.setItem('allCards', allCards);
-        console.log(this.props.cards)}
+        }
         if (prevProps.stacks !== this.props.stacks) {
             const stacks =JSON.stringify(this.props.stacks);
             const stackId=JSON.stringify(this.props.stackNextId);
@@ -64,11 +64,11 @@ class CardStack extends React.Component{
         }
     }
 
-    // componentWillUnmount(){
-    //     const allCards=JSON.stringify(this.props.cards)
-    //     const json= localStorage.setItem('allCards', allCards);
+    componentWillUnmount(){
+        const selectedStack=JSON.stringify(this.props.selectedStack)
+        const json= localStorage.setItem('selectedStack', selectedStack);
 
-    // }
+    }
 
     // componentDidUpdate(prevProps, prevState){
     //     if (prevProps.cards !== this.props.cards) {
