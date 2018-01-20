@@ -213,11 +213,11 @@ class SelectCards extends React.Component{
                     </div>
                 
                     {this.state.warning && 
-                        <div>
+                        <div className='warning-show'>
                             <h3>{this.state.text}</h3>
                             <div className='warning-buttons'>
-                                <button onClick={()=>this.makeDesicion(true)}>YES</button>
-                                <button onClick={()=>this.makeDesicion(false)}>NO</button>
+                                <button onClick={()=>this.makeDesicion(true)} className='yes'>yes</button>
+                                <button onClick={()=>this.makeDesicion(false)} className='no'>no</button>
                             </div>
                         </div>
                     }

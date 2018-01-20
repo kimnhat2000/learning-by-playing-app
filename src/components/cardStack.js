@@ -7,6 +7,7 @@ import {addStack, addStacks, removeStack, editStack, deleteAllStack, selectedSta
 import {filterStack, deleteAllCards, addCards, addCard, deleteAllCardsInCurrentStack, setNewCardId} from '../actions/flashCardActions';
 import {changeTokenNum}from '../actions/tokenActions';
 import styled, {injectGlobal} from 'styled-components';
+import '../style/cardStack.css';
 
 
 class CardStack extends React.Component{
@@ -262,6 +263,7 @@ class CardStack extends React.Component{
                 <div className='stack-input'>
                     <div className='inputs'>
                         <input
+                            className='name-input'
                             type='text'
                             placeholder='new stack name'
                             name='stackName'
@@ -270,6 +272,7 @@ class CardStack extends React.Component{
                             autoFocus
                         />
                         <input
+                            className='img-input'
                             type='text'
                             placeholder='new stack image'
                             name='stackImg'
@@ -353,7 +356,7 @@ const Stacks =({stacks, inputShow, inputValue, onInputChange, buttonClick, stack
         <div
             className='stack-render' 
             key={i}>
-            <div>
+            <div className='stack-pic-name'>
                 <div
                     style={style(s)}
                     onClick={()=>stackClick(s)}
@@ -363,11 +366,11 @@ const Stacks =({stacks, inputShow, inputValue, onInputChange, buttonClick, stack
             </div> 
 
             {s.showButtons && 
-            <div className='edit-feild'>
+            <div className='edit-field'>
                 <div className='stack-buttons'>
                     <button className='delete' onClick={()=>deleteClick(s)}>delete</button>
                     <button className='edit' onClick={()=>editClick(s)}>edit</button>
-                    <Link to='/flashCard' onClick={()=>openClick(s)}><button>open</button></Link>
+                    <Link to='/flashCard' onClick={()=>openClick(s)}><button className='open'>open</button></Link>
                 </div>
                   
                 {inputShow &&

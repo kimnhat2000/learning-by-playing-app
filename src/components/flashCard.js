@@ -205,11 +205,11 @@ class FlashCard extends React.Component{
 
                 <div>
                     {this.state.warning && 
-                    <div className='warning'>
+                    <div className='warning-show'>
                         <h3>{this.state.showWarning}</h3>
                         <div className='warning-buttons'>
-                            <button onClick={()=>this.onConfirm(true)}>yes</button>
-                            <button onClick={()=>this.onConfirm(false)}>no</button>
+                            <button onClick={()=>this.onConfirm(true)} className='yes'>yes</button>
+                            <button onClick={()=>this.onConfirm(false)} className='no'>no</button>
                         </div>
                     </div>
                     }
