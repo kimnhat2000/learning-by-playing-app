@@ -9,7 +9,6 @@ const CardList =({cards, cardClick, deleteCard, editCard, showEditForm})=>{
     const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3},0.4)`}
     const card=cards.map((c,i)=>(
         <div
-            className='card-list'
             key={i}
         >
             <Card

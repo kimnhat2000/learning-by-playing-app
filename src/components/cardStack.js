@@ -32,54 +32,54 @@ class CardStack extends React.Component{
         }
     }
 
-    componentDidUpdate(prevProps, prevState){
-        //this if is to check if I decide to delete a stack
-        if (prevProps.cards.length !== this.props.cards.length){
-        const allCards=JSON.stringify(this.props.cards)
-        const json= localStorage.setItem('allCards', allCards);
-        }
-        if (prevProps.stacks !== this.props.stacks) {
-            const stacks =JSON.stringify(this.props.stacks);
-            const stackId=JSON.stringify(this.props.stackNextId);
-            localStorage.setItem('stacks', stacks);
-            localStorage.setItem('stackId', stackId);
-        }
-    }
+    // componentDidUpdate(prevProps, prevState){
+    //     //this if is to check if I decide to delete a stack
+    //     if (prevProps.cards.length !== this.props.cards.length){
+    //     const allCards=JSON.stringify(this.props.cards)
+    //     const json= localStorage.setItem('allCards', allCards);
+    //     }
+    //     if (prevProps.stacks !== this.props.stacks) {
+    //         const stacks =JSON.stringify(this.props.stacks);
+    //         const stackId=JSON.stringify(this.props.stackNextId);
+    //         localStorage.setItem('stacks', stacks);
+    //         localStorage.setItem('stackId', stackId);
+    //     }
+    // }
 
-    componentDidMount(){
-        try{
-            const json=localStorage.getItem('stacks');
-            const json2=localStorage.getItem('stackId');
-            const json3=localStorage.getItem('allCards');
-            const json4=localStorage.getItem('newCardId');
-            const json5=localStorage.getItem('tokens');
-            const stacks= JSON.parse(json);
-            const stackId= JSON.parse(json2);
-            const allCards=JSON.parse(json3);
-            const newId=JSON.parse(json4);
-            const tokens=JSON.parse(json5);
-            if(stacks){
-                this.props.dispatch(addStacks(stacks, stackId))
-            }
-            if(allCards){
-                this.props.dispatch(addCards(allCards, newId))
-            }
-            if(tokens){
-                this.props.dispatch(changeTokenNum(tokens))
-            }
+    // componentDidMount(){
+    //     try{
+    //         const json=localStorage.getItem('stacks');
+    //         const json2=localStorage.getItem('stackId');
+    //         const json3=localStorage.getItem('allCards');
+    //         const json4=localStorage.getItem('newCardId');
+    //         const json5=localStorage.getItem('tokens');
+    //         const stacks= JSON.parse(json);
+    //         const stackId= JSON.parse(json2);
+    //         const allCards=JSON.parse(json3);
+    //         const newId=JSON.parse(json4);
+    //         const tokens=JSON.parse(json5);
+    //         if(stacks){
+    //             this.props.dispatch(addStacks(stacks, stackId))
+    //         }
+    //         if(allCards){
+    //             this.props.dispatch(addCards(allCards, newId))
+    //         }
+    //         if(tokens){
+    //             this.props.dispatch(changeTokenNum(tokens))
+    //         }
 
-        }catch(error){
-            // do nothing
-        }
-    }
+    //     }catch(error){
+    //         // do nothing
+    //     }
+    // }
 
-    componentWillUnmount(){
-        const selectedStack=JSON.stringify(this.props.selectedStack)
-        const json= localStorage.setItem('selectedStack', selectedStack);
-        const json1 =localStorage.getItem('newCardId')
-        const newCardId=JSON.parse(json1)
-        this.props.dispatch(setNewCardId(newCardId))
-    }
+    // componentWillUnmount(){
+    //     const selectedStack=JSON.stringify(this.props.selectedStack)
+    //     const json= localStorage.setItem('selectedStack', selectedStack);
+    //     const json1 =localStorage.getItem('newCardId')
+    //     const newCardId=JSON.parse(json1)
+    //     this.props.dispatch(setNewCardId(newCardId))
+    // }
 
     stackNameInput=(e)=>{
         this.setState({[e.target.name]:e.target.value})

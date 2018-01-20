@@ -26,37 +26,37 @@ class SelectCards extends React.Component{
         }
     }
 
-    componentDidUpdate(prevProps, prevState){
-        if (prevState.buyGames.length !== this.state.buyGames.length) {
-            const json =JSON.stringify(this.state.buyGames);
-            const json1 =JSON.stringify(this.state.selectGames);
-            localStorage.setItem('boughtGames', json);
-            localStorage.setItem('remainGames', json1);
-            return;
-        }
-        if(prevProps.tokens.totalTokens !== this.props.tokens.totalTokens){
-            const json=JSON.stringify(this.props.tokens.totalTokens)
-            localStorage.setItem('tokens', json)
-            return;
-        }
-    }
+    // componentDidUpdate(prevProps, prevState){
+    //     if (prevState.buyGames.length !== this.state.buyGames.length) {
+    //         const json =JSON.stringify(this.state.buyGames);
+    //         const json1 =JSON.stringify(this.state.selectGames);
+    //         localStorage.setItem('boughtGames', json);
+    //         localStorage.setItem('remainGames', json1);
+    //         return;
+    //     }
+    //     if(prevProps.tokens.totalTokens !== this.props.tokens.totalTokens){
+    //         const json=JSON.stringify(this.props.tokens.totalTokens)
+    //         localStorage.setItem('tokens', json)
+    //         return;
+    //     }
+    // }
 
-    componentDidMount(){
-        try{
-            if(localStorage.getItem('boughtGames')===null){
-                return;
-            }else{
-            const json=localStorage.getItem('boughtGames');
-            const json1=localStorage.getItem('remainGames');
-            const gamesBought= JSON.parse(json);
-            const gamesRemain=JSON.parse(json1)
-            this.props.dispatch(saveGameBought(gamesBought, gamesRemain))
-            this.setState({buyGames:gamesBought, selectGames:gamesRemain})
-            }
-        }catch(error){
-            //do nothing
-        }
-    }
+    // componentDidMount(){
+    //     try{
+    //         if(localStorage.getItem('boughtGames')===null){
+    //             return;
+    //         }else{
+    //         const json=localStorage.getItem('boughtGames');
+    //         const json1=localStorage.getItem('remainGames');
+    //         const gamesBought= JSON.parse(json);
+    //         const gamesRemain=JSON.parse(json1)
+    //         this.props.dispatch(saveGameBought(gamesBought, gamesRemain))
+    //         this.setState({buyGames:gamesBought, selectGames:gamesRemain})
+    //         }
+    //     }catch(error){
+    //         //do nothing
+    //     }
+    // }
 
     onCardClick=(card)=>{
         const cards=this.state.cards.filter(c=>c.id!==card.id)

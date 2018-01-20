@@ -8,6 +8,7 @@ import {addToken, reduceToken} from '../actions/tokenActions'
 import FlashCardForm from './form';
 import {Link} from 'react-router-dom';
 import {reziseAndStyleBigCard, randomPics} from '../tools/tools';
+import '../style/flashCard.css';
 
 class FlashCard extends React.Component{
     constructor(props){
@@ -23,44 +24,45 @@ class FlashCard extends React.Component{
             cardFilter:'',
             bigCard:'',
             text:'',
-            returnHome:false
+            returnHome:false,
+            showIntruction:false
         }
     }
 
-    componentDidUpdate(prevProps, prevStates){
-        if(prevProps.tokens !== this.props.tokens){
-            const json=JSON.stringify(this.props.tokens)
-            localStorage.setItem('tokens', json)
-        }
-    }
+    // componentDidUpdate(prevProps, prevStates){
+    //     if(prevProps.tokens !== this.props.tokens){
+    //         const json=JSON.stringify(this.props.tokens)
+    //         localStorage.setItem('tokens', json)
+    //     }
+    // }
 
-    componentWillUnmount(){
-        if(!this.props.selectedStack){
-            return;
-        }else if(this.props.selectedStack){
-            const allCards=this.props.allCards
-            const newCardId=this.props.newCardId
-            const json =JSON.stringify(allCards);
-            const json2 =JSON.stringify(newCardId);
-            localStorage.setItem('allCards', json);
-            localStorage.setItem('newCardId', json2); 
-        }
-    }
+    // componentWillUnmount(){
+    //     if(!this.props.selectedStack){
+    //         return;
+    //     }else if(this.props.selectedStack){
+    //         const allCards=this.props.allCards
+    //         const newCardId=this.props.newCardId
+    //         const json =JSON.stringify(allCards);
+    //         const json2 =JSON.stringify(newCardId);
+    //         localStorage.setItem('allCards', json);
+    //         localStorage.setItem('newCardId', json2); 
+    //     }
+    // }
 
-    componentDidMount(){
-        if(!this.props.selectedStack){
-            this.setState({returnHome:true})
-            return;
-        }else{
-            if(localStorage.getItem('newCardId')===null){
-                return;
-            }
-            const json2=localStorage.getItem('newCardId')
-            const newCardId=JSON.parse(json2)
-            this.props.dispatch(setNewCardId(newCardId))
-        }
+    // componentDidMount(){
+    //     if(!this.props.selectedStack){
+    //         this.setState({returnHome:true})
+    //         return;
+    //     }else{
+    //         if(localStorage.getItem('newCardId')===null){
+    //             return;
+    //         }
+    //         const json2=localStorage.getItem('newCardId')
+    //         const newCardId=JSON.parse(json2)
+    //         this.props.dispatch(setNewCardId(newCardId))
+    //     }
         
-    }
+    // }
 
     onCardClick=(card)=>{
         this.setState({bigCard:card})
@@ -189,19 +191,13 @@ class FlashCard extends React.Component{
                             value = {this.state.cardFilter}
                             onChange= {this.onFilterTextChange}
                         />
-                        <Link to='/'><button className='return'>return</button></Link>                       
+                        <Link to='/'><button className='return-home'>return to homepage</button></Link>                       
                     </div>
 
                 </div>
                     {this.state.returnHome &&
                     <Link to='/'><h3>you need to choose a stack to see cards, click this to go to stacks selection page</h3></Link>
                     }
-                <div className='text'>
-                    {this.state.text && this.state.text}
-                    {this.props.cards.length > 0 && 
-                    <h3>You have {this.props.cards.length} {cardCheck}</h3>
-                    }
-                </div>
 
                 <div>
                     {this.state.warning && 
@@ -212,6 +208,13 @@ class FlashCard extends React.Component{
                             <button onClick={()=>this.onConfirm(false)} className='no'>no</button>
                         </div>
                     </div>
+                    }
+                </div>
+
+                <div className='text'>
+                    {this.state.text && this.state.text}
+                    {this.props.cards.length > 0 && 
+                    <h3>You have {this.props.cards.length} {cardCheck}</h3>
                     }
                 </div>
 
@@ -247,7 +250,13 @@ class FlashCard extends React.Component{
                             showButtons={true}
                         />
                     }
-                </div>      
+                </div> 
+
+                {this.state.showIntruction &&
+                    <div className='instruction'>
+                        <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>
+                    </div>
+                }     
 
             </div>
         )
