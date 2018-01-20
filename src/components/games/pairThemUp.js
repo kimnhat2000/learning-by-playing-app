@@ -38,7 +38,7 @@ class PairThemUp extends React.Component{
 
     onPlay=()=>{
         this.shuffleCards()
-        this.setState({text:'', score:5, showinfo:true})
+        this.setState({text:'', score:5, showinfo:true, cardsCheck:[]})
     }
 
     onCardClick=(card)=>{
@@ -81,9 +81,9 @@ class PairThemUp extends React.Component{
         }}
 
     test=()=>{
-        const {cards1, cards2, score}= this.state
+        const {cards1, cards2, score, cardsCheck}= this.state
         const {selectedCards}=this.props
-        console.log(selectedCards)
+        console.log(cardsCheck)
     }
 
     render(){

@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {randomPics, reziseAndStyleBigCard} from '../tools/tools'
 import {addStack, addStacks, removeStack, editStack, deleteAllStack, selectedStack, stackSearch} from '../actions/cardStackActions';
-import {filterStack, deleteAllCards, addCards, addCard, deleteAllCardsInCurrentStack} from '../actions/flashCardActions';
+import {filterStack, deleteAllCards, addCards, addCard, deleteAllCardsInCurrentStack, setNewCardId} from '../actions/flashCardActions';
 import {changeTokenNum}from '../actions/tokenActions';
 import '../style/cardStack.css'
 
@@ -31,6 +31,7 @@ class CardStack extends React.Component{
     }
 
     componentDidUpdate(prevProps, prevState){
+        //this if is to check if I decide to delete a stack
         if (prevProps.cards.length !== this.props.cards.length){
         const allCards=JSON.stringify(this.props.cards)
         const json= localStorage.setItem('allCards', allCards);
@@ -73,27 +74,10 @@ class CardStack extends React.Component{
     componentWillUnmount(){
         const selectedStack=JSON.stringify(this.props.selectedStack)
         const json= localStorage.setItem('selectedStack', selectedStack);
-
+        const json1 =localStorage.getItem('newCardId')
+        const newCardId=JSON.parse(json1)
+        this.props.dispatch(setNewCardId(newCardId))
     }
-
-    // componentDidUpdate(prevProps, prevState){
-    //     if (prevProps.cards !== this.props.cards) {
-    //         const json =JSON.stringify(this.props.cards);
-    //         localStorage.setItem('cards', json);
-    //     }
-    // }
-
-    // componentDidMount(){
-    //     try{
-    //         const json=localStorage.getItem('cards');
-    //         const cards= JSON.parse(json);
-    //         if(cards){
-    //             this.props.dispatch(addCards(cards))
-    //         }
-    //     }catch(error){
-    //         //do nothing
-    //     }
-    // }
 
     stackNameInput=(e)=>{
         this.setState({[e.target.name]:e.target.value})
@@ -150,9 +134,15 @@ class CardStack extends React.Component{
 
     onEditSave=(s)=>{
         const newStack={...s, name:this.state.editNameInput, showButtons:false}
-        this.props.dispatch(editStack(newStack))
-        this.setState({editNameInputShow:false})
-
+        const checkMatch=this.props.stacks.map(s=>s.name)
+        if(checkMatch.includes(newStack.name)){
+            this.setState({error:'this stack already existed'})
+            return;
+        }else{
+            this.props.dispatch(editStack(newStack))
+            this.setState({editNameInputShow:false, error:''})
+            return;
+        }       
     }
 
     openStack=(s)=>{

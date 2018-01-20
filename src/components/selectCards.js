@@ -30,15 +30,16 @@ class SelectCards extends React.Component{
 
     componentDidUpdate(prevProps, prevState){
         if (prevState.buyGames.length !== this.state.buyGames.length) {
-            console.log('bought',this.state.buyGames, 'remain: ', this.state.selectGames)
             const json =JSON.stringify(this.state.buyGames);
             const json1 =JSON.stringify(this.state.selectGames);
             localStorage.setItem('boughtGames', json);
             localStorage.setItem('remainGames', json1);
+            return;
         }
         if(prevProps.tokens.totalTokens !== this.props.tokens.totalTokens){
             const json=JSON.stringify(this.props.tokens.totalTokens)
             localStorage.setItem('tokens', json)
+            return;
         }
     }
 
@@ -114,9 +115,10 @@ class SelectCards extends React.Component{
     }
 
     test=()=>{
-        const {totalTokens, games, gamesBought, gamesRemain}= this.props.tokens
+        const {totalTokens, games, gamesBought, gamesRemain, }= this.props.tokens
         const {buyGames, selectGames}= this.state
-        console.log('games: ',games)
+        console.log('games: ',games, 'props cards: ', this.props.cards)
+        console.log('selected cards: ',this.props.selectCards)
         console.log('tokens: ',totalTokens)
         console.log('gamesBought: ',gamesBought)
         console.log('gamesRemain: ',gamesRemain)

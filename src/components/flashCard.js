@@ -37,27 +37,31 @@ class FlashCard extends React.Component{
     }
 
     componentWillUnmount(){
-        if(this.props.selectedStack){
+        if(!this.props.selectedStack){
+            return;
+        }else if(this.props.selectedStack){
             const allCards=this.props.allCards
             const newCardId=this.props.newCardId
             const json =JSON.stringify(allCards);
             const json2 =JSON.stringify(newCardId);
             localStorage.setItem('allCards', json);
-            localStorage.setItem('newCardId', json2);
-        }else{
-            const newCardId=JSON.stringify(this.props.newCardId)
-            localStorage.setItem('newCardId', newCardId)
+            localStorage.setItem('newCardId', json2); 
         }
     }
 
     componentDidMount(){
         if(!this.props.selectedStack){
             this.setState({returnHome:true})
-            const json=localStorage.getItem('allCards')
+            return;
+        }else{
+            if(localStorage.getItem('newCardId')===null){
+                return;
+            }
             const json2=localStorage.getItem('newCardId')
             const newCardId=JSON.parse(json2)
             this.props.dispatch(setNewCardId(newCardId))
         }
+        
     }
 
     onCardClick=(card)=>{
@@ -88,9 +92,16 @@ class FlashCard extends React.Component{
         const id=this.props.cardToEdit.id
         const stackId=this.props.selectedStack.stackId
         const newCard={id, stackId,...editedCard, showInfo:false, selected:false, showCard:true}
-        this.props.dispatch(editCard(newCard))
-        this.props.dispatch(cardToEditInfo({}))
-        this.setState({showEditForm:false, bigCard:newCard})
+        const matchCheck=this.props.cards.map(c=>c.name)
+        if(matchCheck.includes(newCard.name)){
+            this.setState({text:'there is a card with the same name'})
+            return;
+        }else{
+            this.props.dispatch(editCard(newCard))
+            this.props.dispatch(cardToEditInfo({}))
+            this.setState({showEditForm:false, bigCard:newCard, text:''})
+            return;
+        }
     }
     cardToEdit=(card)=>{
         this.setState({showEditForm:true})
@@ -214,7 +225,7 @@ class FlashCard extends React.Component{
                 }    
                 {this.state.showEditForm && 
                     <FlashCardForm
-                        onCloseForm={()=>this.setState({showEditForm:false})}
+                        onCloseForm={()=>this.setState({showEditForm:false, text:''})}
                         editCardInfo={this.props.cardToEdit}
                         saveEditCard={(editedCard)=>this.onSaveEdit(editedCard)}
                     />
