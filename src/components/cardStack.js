@@ -6,6 +6,7 @@ import {randomPics, reziseAndStyleBigCard} from '../tools/tools'
 import {addStack, addStacks, removeStack, editStack, deleteAllStack, selectedStack, stackSearch} from '../actions/cardStackActions';
 import {filterStack, deleteAllCards, addCards, addCard, deleteAllCardsInCurrentStack, setNewCardId} from '../actions/flashCardActions';
 import {changeTokenNum}from '../actions/tokenActions';
+import styled, {injectGlobal} from 'styled-components';
 
 
 class CardStack extends React.Component{
@@ -213,7 +214,7 @@ class CardStack extends React.Component{
                     <div className='stack-info'>
                         <div className='stack-name'>
                             {this.props.selectedStack &&
-                                <h3>{this.props.selectedStack.name}</h3>
+                                <h2>{this.props.selectedStack.name}</h2>
                             }
                         </div>
 
@@ -223,21 +224,25 @@ class CardStack extends React.Component{
                             onMouseOut={()=>this.setState({showIntruction:false})}
                         >
                             <div className='token'/>
+                            <img className='token-img'src='pictures/myLogo.png'/>
                             <h2>{this.props.tokens}</h2>
                         </div>
                     </div>
                     
                     <div className='header-menu'>
-                    <button onClick={()=>localStorage.clear()}>emptyStorage</button>
-                    <button onClick={this.test}>test</button>
-                    <input
-                        type='text'
-                        placeholder='find stack by name'
-                        value={this.state.stackSearch}
-                        onChange={this.onStackSearch}
-                    />
-                    <button onClick={()=>this.setState({addStackInput:!this.state.addStackInput, stackName:'', stackImg:''})} className='add'>add stack</button>
-                    <button onClick={this.onDeleteEveryThing} className='delete'>delete all stack</button>
+                        <button onClick={()=>localStorage.clear()}>emptyStorage</button>
+                        <button onClick={this.test}>test</button>
+                        <input
+                            type='text'
+                            placeholder='find stack by name'
+                            value={this.state.stackSearch}
+                            onChange={this.onStackSearch}
+                        />
+                        <button 
+                            className='add'
+                            onClick={()=>this.setState({addStackInput:!this.state.addStackInput, stackName:'', stackImg:''})}    
+                        >add stack</button>
+                        <button onClick={this.onDeleteEveryThing} className='delete'>delete all stack</button>
                     </div>
                 </div>
 
@@ -385,3 +390,17 @@ const Stacks =({stacks, inputShow, inputValue, onInputChange, buttonClick, stack
         <div className='stack'>{renderStacks}</div>
     )
 }
+
+const randomBg=randomPics(13, '/pictures/textures/', 'jpg')
+
+injectGlobal`
+body{
+    margin: 0;
+    padding: 0;
+    background: rgba(153, 127, 127, 0.7);
+    background-image: url(${randomBg});
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+} 
+`;

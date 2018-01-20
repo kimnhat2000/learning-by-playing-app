@@ -8,7 +8,6 @@ import {addToken, reduceToken} from '../actions/tokenActions'
 import FlashCardForm from './form';
 import {Link} from 'react-router-dom';
 import {reziseAndStyleBigCard, randomPics} from '../tools/tools';
-import styled, {injectGlobal} from 'styled-components';
 
 class FlashCard extends React.Component{
     constructor(props){
@@ -271,16 +270,3 @@ const mapStateToProps=(state)=>({
 
 export default connect(mapStateToProps)(FlashCard)
 
-const randomBg=randomPics(13, '/pictures/textures/', 'jpg')
-
-injectGlobal`
-body{
-    margin: 0;
-    padding: 0;
-    background: rgba(153, 127, 127, 0.7);
-    background-image: url(${randomBg});
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 100%;
-} 
-`;
