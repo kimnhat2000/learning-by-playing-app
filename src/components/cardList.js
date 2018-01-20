@@ -1,7 +1,6 @@
 import React from 'react';
 import {randomColor} from '../tools/tools';
 import {Card} from './card';
-import '../style/cardList.css';
 
 const CardList =({cards, cardClick, deleteCard, editCard, showEditForm})=>{
     const r1=randomColor();

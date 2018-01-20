@@ -4,7 +4,6 @@ import {Card, BigCard} from '../card';
 import {shuffle, randomNum, randomColor, reziseAndStyleBigCard} from '../../tools/tools';
 import {Link} from 'react-router-dom';
 import { addToken } from '../../actions/tokenActions';
-import '../../style/luckCheck.css'
 
 class LuckCheck extends React.Component{
     constructor(props){

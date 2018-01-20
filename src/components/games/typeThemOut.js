@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {BigCard} from '../card';
 import { addToken } from '../../actions/tokenActions';
-import '../../style/typeThemOut.css';
 
 class TypeThemOut extends React.Component{
     constructor(props){

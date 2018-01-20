@@ -9,7 +9,6 @@ import FlashCardForm from './form';
 import {Link} from 'react-router-dom';
 import {reziseAndStyleBigCard, randomPics} from '../tools/tools';
 import styled, {injectGlobal} from 'styled-components';
-import '../style/flashCard.css';
 
 class FlashCard extends React.Component{
     constructor(props){

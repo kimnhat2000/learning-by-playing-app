@@ -1,5 +1,4 @@
 import React from 'react';
-import '../style/card.css';
 
 export const Card =({cardClick, card, style})=>{
     const onCardClick=()=>cardClick && cardClick(card)

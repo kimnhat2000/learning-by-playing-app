@@ -1,6 +1,5 @@
 import React from 'react';
 import {randomPics} from '../tools/tools';
-import '../style/form.css';
 
 class FlashCardForm extends React.Component{
     constructor(props){

@@ -6,7 +6,7 @@ import {randomPics, reziseAndStyleBigCard} from '../tools/tools'
 import {addStack, addStacks, removeStack, editStack, deleteAllStack, selectedStack, stackSearch} from '../actions/cardStackActions';
 import {filterStack, deleteAllCards, addCards, addCard, deleteAllCardsInCurrentStack, setNewCardId} from '../actions/flashCardActions';
 import {changeTokenNum}from '../actions/tokenActions';
-import '../style/cardStack.css'
+
 
 class CardStack extends React.Component{
     constructor(props){

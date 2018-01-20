@@ -4,7 +4,6 @@ import {shuffle, reziseAndStyleBigCard} from '../../tools/tools';
 import {BigCard} from '../card';
 import {Link} from 'react-router-dom';
 import { addToken } from '../../actions/tokenActions';
-import '../../style/pairThemUp.css';
 
 class PairThemUp extends React.Component{
     constructor(props){

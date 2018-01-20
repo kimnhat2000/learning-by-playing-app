@@ -6,8 +6,6 @@ import {editCard} from '../actions/flashCardActions';
 import {randomColor} from '../tools/tools';
 import {selectOtherApproach, storeSelectedCards} from '../actions/selectCardsActions';
 import { buyAGame, saveGameBought } from '../actions/tokenActions';
-import '../style/selectCards.css';
-
 
 class SelectCards extends React.Component{
     constructor(props){

@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {Card, BigCard} from '../card';
 import {Link} from 'react-router-dom';
 import { addToken } from '../../actions/tokenActions';
-import '../../style/betThemDown.css';
 
 class BetThemDown extends React.Component{
     constructor(props){

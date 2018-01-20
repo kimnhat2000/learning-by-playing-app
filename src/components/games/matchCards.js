@@ -5,7 +5,6 @@ import {shuffle} from '../../tools/tools';
 import {Link} from 'react-router-dom';
 import {randomColor} from '../../tools/tools';
 import { addToken } from '../../actions/tokenActions';
-import '../../style/matchCards.css';
 
 class WackACard extends React.Component{
     constructor(props){

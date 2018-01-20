@@ -5,7 +5,6 @@ import {gotHit} from '../../tools/cookcooproms';
 import {Link} from 'react-router-dom';
 import {Card} from '../card';
 import { addToken } from '../../actions/tokenActions';
-import '../../style/wackACard.css'
 
 class WackACard extends React.Component{
     constructor(props){
