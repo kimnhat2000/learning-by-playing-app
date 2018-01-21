@@ -4,6 +4,7 @@ import {shuffle, randomNum, reziseAndStyleBigCard} from '../../tools/tools';
 import {BigCard} from '../card';
 import {Link} from 'react-router-dom';
 import { addToken } from '../../actions/tokenActions';
+import '../../style/multibleChoice.css'
 
 class MultibleChoices extends React.Component{
     constructor(props){
@@ -41,17 +42,17 @@ class MultibleChoices extends React.Component{
         let scoreTract=score
 
         if(scoreTract===10) {
-            this.setState({playButton:'play again', text:'you win the game, you earn 2 tokens'})
+            this.setState({playButton:'play again', text:'you win'})
             this.props.dispatch(addToken(2))
             return;
         }else if (scoreTract===0){
-            this.setState({playButton:'play again', text:'you lose the game'})
+            this.setState({playButton:'play again', text:'you lose'})
             return;
         }
 
         card.id===this.state.card.id?
-        this.setState({score:scoreTract+1, text:'you are correct'}):
-        this.setState({score:scoreTract-1, text:'you are wrong, try again'})
+        this.setState({score:scoreTract+1, text:' correct'}):
+        this.setState({score:scoreTract-1, text:'wrong'})
         this.randomCard();
     }
 
@@ -93,23 +94,27 @@ class MultibleChoices extends React.Component{
                         </div>
                     </div>
 
+                    {this.state.showinfo &&
+                    <div className='game-info'>
+                        <img src='pictures/icons/score.png'/>
+                        <h3>{this.state.score}</h3>
+                    </div>
+                    }
+
+                    {this.state.showinfo &&
+                    <h3 className='game-end'>{this.state.text}</h3>
+                    }
+
                     <div className='header-menu'>
                         <button onClick={this.randomCard} className='play'>{this.state.playButton}</button>
                         <button onClick={this.test}>test</button>
                         <Link to='/selectCard'><button className='return'>return</button></Link>
+                        <Link to='/'><button className='return-home'>return home</button></Link>
                     </div>
                 </div>
 
                 {this.state.showinfo &&
-                <div className='game-info'>
-                    <h3>your score is: {this.state.score}</h3>
-                    <h3>{this.state.text}</h3>
-                    <h3>you have {this.props.tokens} tokens</h3>
-                </div>
-                }
-
-                {this.state.showinfo &&
-                <div>
+                <div className='multible-choice-target'>
                     <BigCard
                         style={style}
                         card={this.state.card}
@@ -119,9 +124,10 @@ class MultibleChoices extends React.Component{
                 </div>
                 }
 
-                <div className='cards'>
+                <div className='multible-choice-cards'>
                     {allCards}
                 </div>
+
                 {this.state.showIntruction &&
                     <div className='instruction'>
                         <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>

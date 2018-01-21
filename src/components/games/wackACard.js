@@ -5,6 +5,7 @@ import {gotHit} from '../../tools/cookcooproms';
 import {Link} from 'react-router-dom';
 import {Card} from '../card';
 import { addToken } from '../../actions/tokenActions';
+import '../../style/wackACard.css';
 
 class WackACard extends React.Component{
     constructor(props){
@@ -14,7 +15,7 @@ class WackACard extends React.Component{
             cards:[],
             score:5,
             text:'',
-            countDown:8,
+            countDown:10,
             timeControl:null,
             countDownControl:null,
             playButton:'play',
@@ -48,9 +49,9 @@ class WackACard extends React.Component{
         this.state.countDownControl;
         clearTimeout(this.state.timeControl);
         clearInterval(this.state.countDownControl);
-        this.setState({score:5, countDown:5, showinfo:true})
+        this.setState({score:5, countDown:10, showinfo:true})
 
-        let countDown=5;
+        let countDown=10;
         this.state.countDownControl=setInterval(()=>{
             countDown--;
             this.setState({countDown})
@@ -121,7 +122,7 @@ class WackACard extends React.Component{
         const r=randomColor()
         const g=randomColor()
         const b=randomColor()
-        const style={backgroundColor:`rgba(${r},${g},${b}, 0.4)`}
+        const style={backgroundColor:`rgba(${r},${g},${b}, 0.6)`}
 
         const cards=this.state.cards.map((c,i)=>(
             <Card
@@ -153,23 +154,33 @@ class WackACard extends React.Component{
                         </div>
                     </div>
 
+                    {this.state.showinfo &&
+                    <div className='game-info'>
+                        <img src='pictures/icons/score.png'/>
+                        <h3>{this.state.score}</h3>
+                    </div>
+                    }
+
+                    {this.state.showinfo &&
+                    <div className='game-info'>
+                        <img src='pictures/icons/hourGlass.png'/>
+                        <h3>{this.state.countDown}</h3>
+                    </div>
+                    }
+
+                    {this.state.showinfo &&
+                    <h3 className='game-end'>{this.state.text}</h3>
+                    }
+
                     <div className='header-menu'>
                         <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
                         <button onClick={this.test}>test</button>
                         <Link to='/selectCard'><button className='return'>return</button></Link>
+                        <Link to='/'><button className='return-home'>return home</button></Link>
                     </div>
                 </div>
 
-                {this.state.showinfo &&
-                <div className='game-info'>
-                    <h3>your score is: {this.state.score}</h3>
-                    <div>
-                        <h3>time: {this.state.countDown}</h3>
-                        <h3>{this.state.text}</h3>
-                    </div>
-                    <h3>you have {this.props.tokens} tokens</h3>
-                </div>
-                }
+
                 
                 <div className='wack-game-cards'>
                     {cards}

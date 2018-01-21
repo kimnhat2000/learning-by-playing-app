@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {Card, BigCard} from '../card';
 import {Link} from 'react-router-dom';
 import { addToken } from '../../actions/tokenActions';
+import '../../style/betThemDown.css';
 
 class BetThemDown extends React.Component{
     constructor(props){
@@ -215,6 +216,8 @@ class BetThemDown extends React.Component{
 
 
                         <Link to='/selectCard'><button className='return'>return</button></Link>
+                        <Link to='/'><button className='return-home'>return home</button></Link>
+
                     </div>
                 </div>
 
@@ -229,33 +232,39 @@ class BetThemDown extends React.Component{
 
                     {this.state.playerCard && 
                     <div className='battlefield'>
-                        <div className='game-info'>
-                            <h3>your score is {this.state.playerScore}</h3>                            
-                            <h3>you have {this.props.tokens} tokens</h3>
-                            <h3>computer score is {this.state.comScore}</h3>
-                        </div>
+
                         <div className='battle-card'>
-                            <BigCard
-                                style={cardstyle}
-                                card={this.state.playerCard}
-                                bigCardClick={this.onBigCardClick}
-                                showButtons={false}
-                            />
-                            <BigCard
-                                style={cardstyle}
-                                card={this.state.comCard}
-                                bigCardClick={this.onComBigCardClick}
-                                showButtons={false}
-                            />
-                        </div>
-                        <h1>VS</h1>
-                        <h3>{this.state.warning}</h3>
-                        {this.state.showingButtons &&
-                            <div className='buttons'>
-                                <button className='attact' onClick={()=>this.onBattleClick(true)}>ATTACT</button>
+                            <div className='left-card'>
+                                <h3>your score is {this.state.playerScore}</h3>  
+                                <BigCard
+                                    style={cardstyle}
+                                    card={this.state.playerCard}
+                                    bigCardClick={this.onBigCardClick}
+                                    showButtons={false}
+                                />
+                                {this.state.showingButtons &&
                                 <button className='defend' onClick={()=>this.onBattleClick(false)}>DEFEND</button>
-                            </div>  
-                        }
+                                }
+                            </div>
+
+                            <h1 className='vsfont'>VS</h1>
+                            
+                            <div className='right-card'>
+                                <h3>computer score is {this.state.comScore}</h3>
+                                <BigCard
+                                    style={cardstyle}
+                                    card={this.state.comCard}
+                                    bigCardClick={this.onComBigCardClick}
+                                    showButtons={false}
+                                />
+                                {this.state.showingButtons &&
+                                <button className='attack' onClick={()=>this.onBattleClick(true)}>ATTACT</button>
+                                }
+                            </div>
+
+                        </div>
+
+                        <h1 className='annouce'>{this.state.warning}</h1>
                         
                     </div>   
                     }

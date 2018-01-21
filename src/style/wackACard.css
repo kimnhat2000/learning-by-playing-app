@@ -1,0 +1,9 @@
+.wack-game-cards{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-self: center;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 30px;
+}

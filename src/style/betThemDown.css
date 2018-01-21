@@ -1,0 +1,104 @@
+.bet-game-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.player-cards{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.player-cards h3{
+    color: orange;
+}
+
+.playerCards{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.computer-cards{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap
+}
+
+.computer-cards h3{
+    color: red;
+}
+
+.comCards{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+
+.battlefield{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.battle-card{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.annouce{
+    font-size: 1.5em;
+    color: blue;
+}
+
+.left-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.left-card h3{
+    color: orange;
+}
+
+.right-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.right-card h3{
+    color: red;
+}
+
+.battle-card .attack{
+    padding: 15px;
+    background-color: rgba(255, 0, 0, 0.7);
+}
+
+.attack:hover{
+    padding: 15px;
+    background-color: rgba(153, 13, 13, 0.7);
+}
+
+.battle-card .defend{
+    padding: 15px;
+    background-color: rgba(255, 153, 0, 0.7);
+}
+
+.defend:hover{
+    padding: 15px;
+    background-color: rgba(161, 102, 12, 0.7);
+}
+

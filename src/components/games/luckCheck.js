@@ -4,6 +4,7 @@ import {Card, BigCard} from '../card';
 import {shuffle, randomNum, randomColor, reziseAndStyleBigCard} from '../../tools/tools';
 import {Link} from 'react-router-dom';
 import { addToken } from '../../actions/tokenActions';
+import '../../style/luckCheck.css';
 
 class LuckCheck extends React.Component{
     constructor(props){
@@ -118,7 +119,6 @@ class LuckCheck extends React.Component{
         const bigCardStyle=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
         return(
             <div>
-
                 <div className='header'>
                     <div className='stack-info'>
                         <div className='stack-name'>
@@ -139,21 +139,22 @@ class LuckCheck extends React.Component{
                     </div>
 
                     <div className='header-menu'>
-                        <select onChange={this.cardNum}>
-                            <option value="1" autoFocus>cards to play</option>
-                            <option value="1" >2 'normal'</option>
-                            <option value="2">3 'I feel lucky'</option>
-                            <option value="3">4 'today is my day'</option>
-                            <option value="4">5 'I am very lucky'</option>
-                            <option value="5">6 'Luck god is smiling'</option>
-                        </select>
-
-                        <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
-
-                        <button onClick={()=>this.props.dispatch(addToken(1))}>add token</button>
-                        
-                        <button onClick={this.test}>test</button>
-                        <Link to='/selectCard' className='return'><button>return</button></Link>
+                            <button onClick={this.test}>test</button>
+                            <button onClick={()=>this.props.dispatch(addToken(1))}>add token</button>
+                            <select className='selects' onChange={this.cardNum}>
+                                <option 
+                                    onMouseOver={()=>this.setState({showIntruction:true})}
+                                    onMouseOut={()=>this.setState({showIntruction:false})}
+                                    value="1" autoFocus>cards to play</option>
+                                <option value="1" >2 'normal'</option>
+                                <option value="2">3 'I feel lucky'</option>
+                                <option value="3">4 'today is my day'</option>
+                                <option value="4">5 'I am very lucky'</option>
+                                <option value="5">6 'Luck god is smiling'</option>
+                            </select>
+                        <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>  
+                        <Link to='/selectCard'><button className='return'>return</button></Link>
+                        <Link to='/'><button className='return-home'>return home</button></Link>
                     </div>
                 </div> 
      

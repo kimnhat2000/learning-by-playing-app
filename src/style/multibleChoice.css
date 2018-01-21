@@ -1,0 +1,9 @@
+.multible-choice-cards{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.multible-choice-target{
+    margin: 20px;
+}

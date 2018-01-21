@@ -5,6 +5,7 @@ import {randomNum, reziseAndStyleBigCard} from '../../tools/tools';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import { addToken } from '../../actions/tokenActions';
+import '../../style/cookcoo.css';
 
 class Cookcoo extends React.Component{
     constructor(props){
@@ -97,8 +98,8 @@ class Cookcoo extends React.Component{
         console.log(cardCatched)
     }
     render(){
-        const style1=reziseAndStyleBigCard('200px', '150px', 17, 'pictures/backgroundPics/', 'jpg', '0.8em', '0', 'hidden')
-        const style2=reziseAndStyleBigCard('300px', '200px', 17, 'pictures/backgroundPics/', 'jpg', '0.8em', '10px', 'hidden')
+        const style1=reziseAndStyleBigCard('350px', '200px', 17, 'pictures/backgroundPics/', 'jpg', '0.8em', '0', 'hidden')
+        const style2=reziseAndStyleBigCard('250px', '200px', 17, 'pictures/backgroundPics/', 'jpg', '0.8em', '10px', 'hidden')
 
         const {cardCatched} = this.state
         const cards = cardCatched.map((c,i)=>(
@@ -129,66 +130,61 @@ class Cookcoo extends React.Component{
                             <img className='token-img'src='pictures/myLogo.png'/>
                             <h2>{this.props.tokens}</h2>
                         </div>
+                        
                     </div>
+
+                    <div className='game-info'>
+                        <img src='pictures/icons/score.png'/>
+                        <h3>{this.state.score}</h3>
+                    </div>
+
+                    <h3 className='game-end'>{this.state.text}</h3>
 
                     <div className='header-menu'>
                         <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
                         <button onClick={this.test}>test</button>
                         <Link to='/selectCard'><button className='return'>return</button></Link>
+                        <Link to='/'><button className='return-home'>return home</button></Link>
                     </div>
                 </div>
 
-                {this.state.showinfo &&
-                <div className='game-info'>
-                    <h3>score: {this.state.score}</h3>
-                    <h3>{this.state.text}</h3>
-                    <h3>you have {this.props.tokens} tokens</h3>
-                </div>
-                }
-            
-                {this.state.showCard &&
-                <div className='next-card'>
-                    {this.state.show?
-                    <BigCard
-                        style={style1}
-                        bigCardClick={this.onCardClick}
-                        card={this.state.card}
-                        showButtons={false}
-                    />:
-                    <div 
-                        className='empty-card'
-                        onClick={this.onCardClick}
-                    >
-                        <h3>ready</h3>
-                    </div>}
-                    <div>
-                        <h3>It is me that appears</h3>
-                        <BigCard
-                            style={style1}
-                            bigCardClick={false}
-                            card={this.state.card}
-                            showButtons={false}
-                        />
-                    </div>
-                </div>
-                }
-            
-            {this.state.cardCatched &&
-                <div>
-                    {this.state.showinfo &&
-                    <h3>cards you catched</h3>
+                <div className='cookcoo-all-cards'>
+
+                    {this.state.showCard &&
+                        <div className='next-card'>
+                            {this.state.show?
+                            <BigCard
+                                style={style1}
+                                bigCardClick={this.onCardClick}
+                                card={this.state.card}
+                                showButtons={false}
+                            />:
+                            <div 
+                                className='empty-card'
+                                onClick={this.onCardClick}
+                            />
+                        }
+                        </div>
                     }
-                    <div>
-                        <div className='cards-catched'  >{cards}</div>
-                    </div>
-                </div>   
-            }
-            
-            {this.state.showIntruction &&
-                <div className='instruction'>
-                    <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>
+                
+                <div className='cookcoo-card-catched'>
+                    {this.state.showinfo &&
+                        <div className='card-catch-text'>
+                            <img src='/pictures/icons/hunter.png'/>
+                            <h3>card hunt</h3>
+                        </div>   
+                    }    
+                    <div className='cards-catched'>{cards}</div>
                 </div>
-            }
+
+
+                </div>
+                
+                {this.state.showIntruction &&
+                    <div className='instruction'>
+                        <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>
+                    </div>
+                }
             
             </div>
         )

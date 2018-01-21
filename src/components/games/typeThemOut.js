@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {BigCard} from '../card';
 import { addToken } from '../../actions/tokenActions';
+import '../../style/typeThemOut.css';
 
 class TypeThemOut extends React.Component{
     constructor(props){
@@ -84,7 +85,7 @@ class TypeThemOut extends React.Component{
     }
 
     render(){
-        const style=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
+        const style=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg', '1em')
         return(
             <div>
             <div className='header'>
@@ -106,21 +107,23 @@ class TypeThemOut extends React.Component{
                     </div>
                 </div>
 
+                <div className='game-info'>
+                    <img src='pictures/icons/score.png'/>
+                    <h3>{this.state.score}</h3>
+                </div>
+
+                <h3 className='game-end'>{this.state.warning}</h3>
+
                 <div className='header-menu'>
                     <button onClick={this.onPlayClick} className='play'>{this.state.playButton}</button>
                     <button onClick={this.test}>test</button>
                     <Link to='/selectCard'><button className='return'>return</button></Link>
+                    <Link to='/'><button className='return-home'>return home</button></Link>    
                 </div>
             </div>
 
             {this.state.card &&
-                <div>
-                    <div className='game-info'>
-                        <h3>your score is {this.state.score}</h3>
-                        <h3>{this.state.warning}</h3>
-                        <h3>you have {this.props.tokens} tokens</h3>
-                    </div>
-
+                <div>                                        
                     <div className='type-game'>
                         <BigCard
                             style={style}
@@ -141,6 +144,7 @@ class TypeThemOut extends React.Component{
                                 >done</button>
                             </div>
                         </form>
+
                     </div>
                 </div>
             }

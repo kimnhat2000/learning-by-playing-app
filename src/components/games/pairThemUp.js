@@ -4,6 +4,7 @@ import {shuffle, reziseAndStyleBigCard} from '../../tools/tools';
 import {BigCard} from '../card';
 import {Link} from 'react-router-dom';
 import { addToken } from '../../actions/tokenActions';
+import '../../style/pairThemUp.css'
 
 class PairThemUp extends React.Component{
     constructor(props){
@@ -131,26 +132,30 @@ class PairThemUp extends React.Component{
                         </div>
                     </div>
 
+                    {this.state.showinfo &&
+                    <div className='game-info'>
+                        <img src='pictures/icons/score.png'/>
+                        <h3>{this.state.score}</h3>
+                    </div>
+                    }
+
+                    {this.state.showinfo &&
+                    <h3 className='game-end'>{this.state.text}</h3>
+                    }
+
                     <div className='header-menu'>
                         <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
                         <button onClick={this.test}>test</button>
                         <Link to='/selectCard'><button className='return'>return</button></Link>
+                        <Link to='/'><button className='return-home'>return home</button></Link>
                     </div>
                 </div>
 
-                {this.state.showinfo &&
-                <div className='game-info'>
-                    <h3>your score is {this.state.score}</h3>
-                    <h3>{this.state.text}</h3> 
-                    <h3>you have {this.props.tokens} tokens</h3>
-                </div>
-                }
-
-                <div className='cards1'>
+                <div className='card-set'>
                     {cardSet1}
                 </div>
 
-                <div className='cards2'>
+                <div className='card-set'>
                     {cardSet2}
                 </div>
                 {this.state.showIntruction &&
