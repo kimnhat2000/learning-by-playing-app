@@ -6,6 +6,7 @@ import {editCard} from '../actions/flashCardActions';
 import {randomColor} from '../tools/tools';
 import {selectOtherApproach, storeSelectedCards} from '../actions/selectCardsActions';
 import { buyAGame, saveGameBought } from '../actions/tokenActions';
+import _ from 'lodash';
 import '../style/selectCards.css';
 
 class SelectCards extends React.Component{
@@ -24,7 +25,8 @@ class SelectCards extends React.Component{
             warning:false,
             text:'',
             gameWant:'',
-            showIntruction:false
+            findCard:'',
+            showIntruction:false,           
         }
     }
 
@@ -59,6 +61,11 @@ class SelectCards extends React.Component{
     //         //do nothing
     //     }
     // }
+
+    onFilterTextChange=(e)=>{
+        const findCard=e.target.value
+        this.setState({findCard})
+    }
 
     onCardClick=(card)=>{
         const cards=this.state.cards.filter(c=>c.id!==card.id)
@@ -134,22 +141,50 @@ class SelectCards extends React.Component{
         const r3=randomColor();
         const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3}, 0.6)`}
 
-        const allCards=this.state.cards.map((c,i)=>(
-            <Card
-                key={i}
-                card={c}
-                cardClick={this.onCardClick}
-            />
-        ))
+        const cards=this.state.findCard && this.state.cards.filter(c=>c.name.includes(this.state.findCard));
+        const findSelectCards=this.state.findCard && this.state.selectCards.filter(c=>c.name.includes(this.state.findCard));
 
-        const selectedCards=this.state.selectCards && this.state.selectCards.map((c,i)=>(
-            <Card
-                key={i}
-                style={style}
-                card={c}
-                cardClick={this.onSelectedCardClick}
-            />
-        ))
+        let allCards =[];
+        let selectedCards=[];
+
+        if(this.state.findCard){
+            allCards=cards.length !== 0 && cards.map((c,i)=>(
+                <Card
+                    key={i}
+                    card={c}
+                    cardClick={this.onCardClick}
+                />
+            ))
+
+            selectedCards=findSelectCards.length !== 0 && findSelectCards.map((c,i)=>(
+                <Card
+                    key={i}
+                    style={style}
+                    card={c}
+                    cardClick={this.onSelectedCardClick}
+                />
+            ))
+        }else{
+            allCards=this.state.cards.map((c,i)=>(
+                <Card
+                    key={i}
+                    card={c}
+                    cardClick={this.onCardClick}
+                />
+            ))
+
+            selectedCards=this.state.selectCards && this.state.selectCards.map((c,i)=>(
+                <Card
+                    key={i}
+                    style={style}
+                    card={c}
+                    cardClick={this.onSelectedCardClick}
+                />
+            ))
+        }
+
+
+
 
         const grammarCheck=this.state.selectCards.length===1?'card':'cards';
 
@@ -193,12 +228,18 @@ class SelectCards extends React.Component{
                         >
                             <div className='token'/>
                             <img className='token-img'src='pictures/myLogo.png'/>
-                            <h2>{this.props.tokens}</h2>
+                            <h2>{this.props.tokens.totalTokens}</h2>
                         </div>
                     </div>
 
                     <div className='header-menu'>     
                         <button onClick={this.test}>test</button>
+                        <input
+                            type='text'
+                            placeholder='find cards by name'
+                            value = {this.state.findCard}
+                            onChange= {this.onFilterTextChange}
+                        />
                         <button onClick={()=>this.selectAll(true)} className='add'>select all cards</button>
                         <button onClick={()=>this.selectAll(false)} className='delete'>unselect all cards</button>
                         <Link to='/flashCard'><button className='return'>return</button></Link>
@@ -245,7 +286,7 @@ class SelectCards extends React.Component{
                             }
                         </div>
                     </div>
-
+            
                 </div>
                 }   
 
