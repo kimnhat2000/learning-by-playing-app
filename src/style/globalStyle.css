@@ -7,8 +7,8 @@ body{
 button{
     border: none;
     color: white;
-    background: rgb(60, 0, 60);
-    padding: 5px;
+    background: rgb(116, 5, 116);
+    padding: 10px;
     margin: 5px;
     -webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
@@ -16,10 +16,21 @@ button{
     border-radius: 10px;
 }
 
+button:hover{
+    background: rgb(85, 2, 85);
+}
+
 input{
     border: none;
     background: rgba(255, 255, 255, 0.6);
     border-radius: 5px;
+    padding: 0px 5px 0px 15px;
+}
+
+select{
+    border: none;
+    border-radius: 10px;
+    background:  rgba(255, 255, 255, 0.6);
     padding: 0px 5px 0px 15px;
 }
 
@@ -151,6 +162,10 @@ h3{
     background-color: rgba(162, 0, 255, 0.7)
 }
 
+.header-menu .return:hover{
+    background-color: rgba(87, 7, 133, 0.7)
+}
+
 .header-menu .return-home{
     background-image: url(/pictures/icons/home.png);
     background-repeat: no-repeat;
@@ -206,22 +221,29 @@ h3{
 
 .card{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;;
     width: 150px;
-    height: 200px;
+    height: 100px;
     box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 15px;
-    margin: 10px;
-    flex-wrap: wrap;
+    margin: 5px;
+
+    border: solid 5px;
+    border-style:ridge;
 }
 
 .card img{
     border-radius: 15px;
-    max-width: 90%;
-    max-height: 150px;
+    max-width: 50%;
+    max-height: 100;
     overflow: hidden;
+}
+
+.card .card-name h3{
+    font-size: 0.8em;
+    flex-wrap: wrap;
 }
 
 .card-list{

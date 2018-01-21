@@ -6,7 +6,7 @@ const CardList =({cards, cardClick, deleteCard, editCard, showEditForm})=>{
     const r1=randomColor();
     const r2=randomColor();
     const r3=randomColor();
-    const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3},0.4)`}
+    const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3}, 0.6)`}
     const card=cards.map((c,i)=>(
         <div
             key={i}

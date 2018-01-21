@@ -14,9 +14,9 @@ export const Card =({cardClick, card, style})=>{
                 style={style}
                 onClick={onCardClick}
             >         
-                    <div className='img-div'>
+
                         <img src={card.img}/>
-                    </div>
+
                     <div className='card-name'>
                         <h3>{card.name}</h3>
                     </div>

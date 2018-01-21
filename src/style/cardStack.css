@@ -40,14 +40,17 @@
 }
 
 .stack-buttons .delete{
+    padding: 5px;
     background-color: red;
 }
 
 .stack-buttons .edit{
+    padding: 5px;
     background-color: yellowgreen;
 }
 
 .stack-buttons .open{
+    padding: 5px;
     background-color: blue;
 }
 

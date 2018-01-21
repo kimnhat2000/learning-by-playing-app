@@ -14,7 +14,8 @@ class TypeThemOut extends React.Component{
             playButton:'play',
             input:'',
             warning:'',
-            score:2
+            score:2,
+            showIntruction:false
         }
     }
 
@@ -94,12 +95,13 @@ class TypeThemOut extends React.Component{
                         }
                     </div>
 
-                    <div 
-                        className ='token-container' 
-                        onMouseOver={()=>this.setState({showIntruction:true})}
-                        onMouseOut={()=>this.setState({showIntruction:false})}
-                    >
+                <div 
+                    className ='token-container' 
+                    onMouseOver={()=>this.setState({showIntruction:true})}
+                    onMouseOut={()=>this.setState({showIntruction:false})}
+                >
                         <div className='token'/>
+                        <img className='token-img'src='pictures/myLogo.png'/>
                         <h2>{this.props.tokens}</h2>
                     </div>
                 </div>
@@ -142,6 +144,12 @@ class TypeThemOut extends React.Component{
                     </div>
                 </div>
             }
+            {this.state.showIntruction &&
+                <div className='instruction'>
+                    <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>
+                </div>
+            }
+
             </div>
         )
     }

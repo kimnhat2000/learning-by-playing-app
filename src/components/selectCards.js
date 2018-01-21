@@ -6,6 +6,7 @@ import {editCard} from '../actions/flashCardActions';
 import {randomColor} from '../tools/tools';
 import {selectOtherApproach, storeSelectedCards} from '../actions/selectCardsActions';
 import { buyAGame, saveGameBought } from '../actions/tokenActions';
+import '../style/selectCards.css';
 
 class SelectCards extends React.Component{
     constructor(props){
@@ -22,7 +23,8 @@ class SelectCards extends React.Component{
             selectCards:[],
             warning:false,
             text:'',
-            gameWant:''
+            gameWant:'',
+            showIntruction:false
         }
     }
 
@@ -130,7 +132,7 @@ class SelectCards extends React.Component{
         const r1=randomColor();
         const r2=randomColor();
         const r3=randomColor();
-        const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3}, 0.4)`}
+        const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3}, 0.6)`}
 
         const allCards=this.state.cards.map((c,i)=>(
             <Card
@@ -155,7 +157,7 @@ class SelectCards extends React.Component{
 
         const boughtGames=this.state.buyGames.map((g,i)=>g.buy && (
             <div key={i}>
-                <Link to ={g.path}><button>{g.name}</button></Link>
+                <Link to ={g.path}><button className='games-button'>{g.name}</button></Link>
             </div>
         ))
     
@@ -190,7 +192,8 @@ class SelectCards extends React.Component{
                             onMouseOut={()=>this.setState({showIntruction:false})}
                         >
                             <div className='token'/>
-                            <h2>{this.state.tokens}</h2>
+                            <img className='token-img'src='pictures/myLogo.png'/>
+                            <h2>{this.props.tokens}</h2>
                         </div>
                     </div>
 
@@ -198,44 +201,60 @@ class SelectCards extends React.Component{
                         <button onClick={this.test}>test</button>
                         <button onClick={()=>this.selectAll(true)} className='add'>select all cards</button>
                         <button onClick={()=>this.selectAll(false)} className='delete'>unselect all cards</button>
-                        <Link to='/flashCard'><button className='return'>return home</button></Link>
+                        <Link to='/flashCard'><button className='return'>return</button></Link>
+                        <Link to='/'><button className='return-home'>return home</button></Link>
                     </div>
                 </div>
 
             {this.props.cards.length === 0 ?
-                <h3>you do not have any cards, please enter at least 4 cards to play games</h3>:
-                <div>
-                    <div className='game-info'> 
-                        {grammarCheck &&
-                            <h3>you have selected {this.state.selectCards.length} {grammarCheck}</h3>
-                        }
-                        <h3>you have {this.state.tokens} tokens</h3>
-                    </div>
+                <h3>create at least 4 cards to play games</h3>:
+                <div className='select-page-container'>
                 
-                    {this.state.warning && 
+                    <div>
+                        {this.state.warning && 
                         <div className='warning-show'>
-                            <h3>{this.state.text}</h3>
+                            <h3>{this.state.showWarning}</h3>
                             <div className='warning-buttons'>
                                 <button onClick={()=>this.makeDesicion(true)} className='yes'>yes</button>
                                 <button onClick={()=>this.makeDesicion(false)} className='no'>no</button>
                             </div>
                         </div>
-                    }
-
-                    <div className='cards'>{allCards}</div>
-
-                    <div className='cards'>{selectedCards}</div>
-
-                    <div className='buttons'>{buttonsShow}</div>
-                
-                    {this.state.tokens >= 100 &&
-                    <div>
-                        <h3>do you want to buy a game for 100 tokens?</h3>
-                        <div className='games-select'>{games}</div>
+                        }
                     </div>
-                    }
+
+                    <div className='select-cards-cards-menu'>
+
+                        <div className='select-cards-left-menu'>
+                            
+                            {grammarCheck &&
+                                <h3>you have selected {this.state.selectCards.length} {grammarCheck}</h3>
+                            }
+                            
+                            <div className='select-cards-all-cards'>{allCards}</div>
+                            <div className='select-cards-select-cards'>{selectedCards}</div>
+                        </div>
+
+                        <div className='select-cards-right-menu'>
+                            <div className='select-cards-buttons'>{buttonsShow}</div>
+                        
+                            {this.state.tokens >= 100 &&
+                            <div>
+                                <h3>do you want to buy a game for 100 tokens?</h3>
+                                <div className='select-cards-games-select'>{games}</div>
+                            </div>
+                            }
+                        </div>
+                    </div>
+
                 </div>
-            }   
+                }   
+
+                {this.state.showIntruction &&
+                    <div className='instruction'>
+                        <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>
+                    </div>
+                }
+
             </div> 
         )
     }

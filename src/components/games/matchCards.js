@@ -15,6 +15,7 @@ class WackACard extends React.Component{
             countDown:'',
             text:'',
             playButton:'play',
+            showIntruction:false
         }
     }
 
@@ -115,6 +116,7 @@ class WackACard extends React.Component{
                             onMouseOut={()=>this.setState({showIntruction:false})}
                         >
                             <div className='token'/>
+                            <img className='token-img'src='pictures/myLogo.png'/>
                             <h2>{this.props.tokens}</h2>
                         </div>
                     </div>
@@ -138,6 +140,11 @@ class WackACard extends React.Component{
                 <div className='match-cards'>
                     {cards}
                 </div>
+                {this.state.showIntruction &&
+                    <div className='instruction'>
+                        <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>
+                    </div>
+                }
             </div>
         )
     }
