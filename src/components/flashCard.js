@@ -25,7 +25,8 @@ class FlashCard extends React.Component{
             bigCard:'',
             text:'',
             returnHome:false,
-            showIntruction:false
+            showIntruction:false,
+            cardNumber:false
         }
     }
 
@@ -171,6 +172,20 @@ class FlashCard extends React.Component{
                         </div>
                     </div>
 
+                    <div className='game-info'>
+                        <img 
+                            onMouseOver={()=>this.setState({cardNumber:true})}
+                            onMouseOut={()=>this.setState({cardNumber:false})}
+                            src='pictures/icons/cards.png'
+                        />
+                        <div className='text'>
+                            {this.state.text && this.state.text}
+                            {this.props.cards.length > 0 && 
+                            <h3>{this.props.cards.length}</h3>
+                            }
+                        </div>
+                    </div>
+
                     <div className='header-menu'>
 
                         <Link to='/test'><button>test page</button></Link>
@@ -180,9 +195,9 @@ class FlashCard extends React.Component{
 
                         {!this.state.returnHome &&
                         <div>
-                            <button onClick={()=>this.setState({showForm:true})} className='add'>add a card</button>
-                            <button onClick={this.onDeleteAll} className='delete'>delete all cards</button>
-                            <Link to='/selectCard'><button className='play'>play games</button></Link>
+                            <button onClick={()=>this.setState({showForm:true})} className='add'>+</button>
+                            <button onClick={this.onDeleteAll} className='delete'>ALL</button>
+                            <Link to='/selectCard'><button className='play'>></button></Link>
                         </div>
                         }
 
@@ -192,7 +207,7 @@ class FlashCard extends React.Component{
                             value = {this.state.cardFilter}
                             onChange= {this.onFilterTextChange}
                         />
-                        <Link to='/'><button className='return-home'>return to homepage</button></Link>                       
+                        <Link to='/'><button className='return-home'>HOME</button></Link>                       
                     </div>
 
                 </div>
@@ -209,13 +224,6 @@ class FlashCard extends React.Component{
                             <button onClick={()=>this.onConfirm(false)} className='no'>no</button>
                         </div>
                     </div>
-                    }
-                </div>
-
-                <div className='text'>
-                    {this.state.text && this.state.text}
-                    {this.props.cards.length > 0 && 
-                    <h3>You have {this.props.cards.length} {cardCheck}</h3>
                     }
                 </div>
 
@@ -253,9 +261,17 @@ class FlashCard extends React.Component{
                     }
                 </div> 
 
+                <div className='flashCard-instruction'>
+                    {this.state.cardNumber &&
+                        <div className='instruction'>
+                            <h3>your total cards</h3>
+                        </div>
+                    }
+                </div>
+
                 {this.state.showIntruction &&
                     <div className='instruction'>
-                        <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>
+                        <h3>tokens you get from winning games, collect 100 tokens and you can buy new games</h3>
                     </div>
                 }
                      

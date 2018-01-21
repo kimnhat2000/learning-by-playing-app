@@ -58,8 +58,10 @@
 }
 
 .annouce{
-    font-size: 1.5em;
-    color: blue;
+    font-size: 1.3em;
+    color: red;
+    margin: 0;
+    padding: 0px 5px 0px 25px;
 }
 
 .left-card{

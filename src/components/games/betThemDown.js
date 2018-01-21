@@ -166,9 +166,9 @@ class BetThemDown extends React.Component{
         const r1=randomColor();
         const r2=randomColor();
         const r3=randomColor();
-        const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3}, 0.4)`}
+        const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3}, 0.6)`}
 
-        const cardstyle=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg', '1em', '20px', 'hidden')
+        const cardstyle=reziseAndStyleBigCard('300px', '250px', 17, 'pictures/backgroundPics/', 'jpg', '1em', '20px', 'hidden')
 
         const comCards=this.state.comCards.map((c,i)=>(
             <Card 
@@ -207,6 +207,8 @@ class BetThemDown extends React.Component{
                             <h2>{this.props.tokens}</h2>
                         </div>
                     </div>
+
+                    <h1 className='annouce'>{this.state.warning}</h1>
 
                     <div className='header-menu'>
                         <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
@@ -263,8 +265,6 @@ class BetThemDown extends React.Component{
                             </div>
 
                         </div>
-
-                        <h1 className='annouce'>{this.state.warning}</h1>
                         
                     </div>   
                     }

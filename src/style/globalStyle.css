@@ -140,8 +140,6 @@ h1{
     margin: 0;
 }
 
-
-
 .header-menu{
     display: flex;
     flex-direction: row;
@@ -157,6 +155,7 @@ h1{
 }
 
 .header-menu input{
+    width: 200px;
     border: none;
     background: rgba(255, 255, 255, 0.4);
     border-radius: 10px;
@@ -168,28 +167,58 @@ h1{
     padding: 0px 5px 0px 40px;
 }
 
-.add{
-    background-color: rgba(0, 0, 255, 0.5)
+.header-menu .add{
+    background-color: rgba(0, 0, 255, 0.5);
+    background-image: url(/pictures/icons/addCard.png);
+    background-repeat: no-repeat;
+    background-size: 35px 35px;
+    background-position: 10px 3px;
+    padding: 10px 20px 10px 50px;
 }
 
 .add:hover{
-    background-color: rgba(13, 13, 165, 0.5)
+    background-color: rgba(13, 13, 165, 0.5);
+    background-image: url(/pictures/icons/addCard.png);
+    background-repeat: no-repeat;
+    background-size: 35px 35px;
+    background-position: 10px 3px;
+    padding: 10px 20px 10px 50px;
 }
 
-.delete{
-    background-color: rgba(255, 0, 0, 0.5)
+.header-menu .delete{
+    background-color: rgba(255, 0, 0, 0.5);
+    background-image: url(/pictures/icons/trashPin.png);
+    background-repeat: no-repeat;
+    background-size: 35px 35px;
+    background-position: 10px 3px;
+    padding: 10px 20px 10px 50px;
 }
 
 .delete:hover{
-    background-color: rgba(189, 5, 5, 0.5)
+    background-color: rgba(189, 5, 5, 0.5);
+    background-image: url(/pictures/icons/trashPin.png);
+    background-repeat: no-repeat;
+    background-size: 35px 35px;
+    background-position: 10px 3px;
+    padding: 10px 20px 10px 50px;
 }
 
-.play{
-    background-color: rgba(255, 230, 0, 0.5)
+.header-menu .play{
+    background-color: rgba(255, 230, 0, 0.5);
+    background-image: url(/pictures/icons/gameIcon.png);
+    background-repeat: no-repeat;
+    background-size: 35px 35px;
+    background-position: 10px 3px;
+    padding: 10px 20px 10px 50px;
 }
 
 .play:hover{
-    background-color: rgba(189, 170, 5, 0.5)
+    background-color: rgba(189, 170, 5, 0.5);
+    background-image: url(/pictures/icons/gameIcon.png);
+    background-repeat: no-repeat;
+    background-size: 35px 35px;
+    background-position: 10px 3px;
+    padding: 10px 20px 10px 50px;
 }
 
 .header-menu .return{
@@ -218,16 +247,21 @@ h1{
     background-color: rgba(107, 4, 167, 0.7)
 }
 
-.instruction{
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 15px;
+.instruction {
     position: fixed;
-    top:15%;
-    left: 5%;
-    padding: 15px;
-    color: rgb(78, 6, 60);
-    -webkit-box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.73);
-    -moz-box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.73);
+    top: 70px;
+    left: 20px; 
+}
+.instruction h3{
+    width: 200px;
+    height: 50px;
+    border: none;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 0.8em;
+    border-radius: 10px;
     box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.73);
 }
 
@@ -356,4 +390,13 @@ h1{
     background-color: rgba(251, 255, 1, 0.6);
     font-size: 1.2em;
     margin: 15px 30px
+}
+
+.footer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
 }

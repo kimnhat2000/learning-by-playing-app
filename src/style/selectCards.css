@@ -1,67 +1,50 @@
 
 .select-cards-cards-menu{
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-/* .select-cards-left-menu{
+.select-cards-cards{
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgba(30, 50, 200, 0.5);
-    max-width: 70%;
-    height: 100%;
-    flex: 0 0 auto;
-    flex-wrap: wrap;
-    overflow: auto;
 }
-
-.select-cards-right-menu{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgba(30, 200, 135, 0.5);
-    max-width: 50%;
-    height: 100%;
-    flex: 0 1 auto;
-    flex-wrap: wrap;
-} */
 
 .select-cards-all-cards{
     display: flex;
     flex-direction: row;
-    justify-content: center;
     flex-wrap: wrap;
-}
-
-.select-cards-select-cards{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.select-cards-buttons{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
     overflow: auto;
+    max-height: 40%;
+}
+
+.select-cards{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: auto;
+    max-height: 40%;
 }
 
 .select-cards-games-select{
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    overflow: auto;
+    justify-content: center;
 }
 
-.select-page-container .warning-show{
-    flex: 1 0 auto;
+.selectCards-instruction .instruction{
+    top: 70%;
+    left: 40%;
 }
 
-.select-cards-right-menu{
-    background-color: rgba(180, 100, 255, 0.5);
+.playGameIntruction-instruction .instruction{
+    top:70%;
+    left: 40%;
+}
+
+.cardSelectInstruction-instruction .instruction{
+    top:8%;
+    left: 10%;
+    height: 5px;
 }

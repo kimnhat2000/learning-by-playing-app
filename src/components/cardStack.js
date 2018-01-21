@@ -28,7 +28,10 @@ class CardStack extends React.Component{
             stackSearch:'',
             cancelButton:false,
             showDiv:false,
-            showIntruction:false
+            showInstruction:false,
+            stackNumber:false,
+            deleteButtonInstruction:false,
+            addStackButtonIntruction:false,
         }
     }
 
@@ -221,18 +224,35 @@ class CardStack extends React.Component{
 
                         <div 
                             className ='token-container' 
-                            onMouseOver={()=>this.setState({showIntruction:true})}
-                            onMouseOut={()=>this.setState({showIntruction:false})}
+                            onMouseOver={()=>this.setState({showInstruction:true})}
+                            onMouseOut={()=>this.setState({showInstruction:false})}
                         >
                             <div className='token'/>
                             <img className='token-img'src='pictures/myLogo.png'/>
                             <h2>{this.props.tokens}</h2>
                         </div>
                     </div>
+
+                    <div className='game-info'>
+                        <img 
+                            onMouseOver={()=>this.setState({stackNumber:true})}
+                            onMouseOut={()=>this.setState({stackNumber:false})}
+                            src='pictures/icons/cards.png'
+                        />
+                        {this.props.stacks.length !== 0 ? 
+                            <h3>{this.props.stacks.length}</h3>:
+                            <h3>please add a card stack</h3>
+                        }
+                    </div>
                     
                     <div className='header-menu'>
                         <button onClick={()=>localStorage.clear()}>emptyStorage</button>
                         <button onClick={this.test}>test</button>
+                        <button 
+                            onMouseOver={()=>this.setState({deleteButtonInstruction:true})}
+                            onMouseOut={()=>this.setState({deleteButtonInstruction:false})}
+                            onClick={this.onDeleteEveryThing} className='delete'>ALL
+                        </button>
                         <input
                             type='text'
                             placeholder='find stack by name'
@@ -240,10 +260,11 @@ class CardStack extends React.Component{
                             onChange={this.onStackSearch}
                         />
                         <button 
+                            onMouseOver={()=>this.setState({addStackButtonIntruction:true})}
+                            onMouseOut={()=>this.setState({addStackButtonIntruction:false})}
                             className='add'
                             onClick={()=>this.setState({addStackInput:!this.state.addStackInput, stackName:'', stackImg:''})}    
-                        >add stack</button>
-                        <button onClick={this.onDeleteEveryThing} className='delete'>delete all stack</button>
+                        >+</button>
                     </div>
                 </div>
 
@@ -290,11 +311,6 @@ class CardStack extends React.Component{
 
                 </div>
                 }
-
-                {this.props.stacks.length !== 0 ? 
-                    <h3>you have {this.props.stacks.length} {grammarCheck}</h3>:
-                    <h3>please add a card stack</h3>
-                }
                 
                 <Stacks
                     stacks={this.props.filteredStacks.length===0?this.props.stacks:this.props.filteredStacks}
@@ -314,9 +330,33 @@ class CardStack extends React.Component{
                     </div>
                 }
 
-                {this.state.showIntruction &&
+                <div className='addStackButtonIntruction-instruction'>
+                    {this.state.addStackButtonIntruction &&
+                        <div className='instruction'>
+                            <h3>add a new card stack</h3>
+                        </div>
+                    }
+                </div>
+
+                <div className='deleteButtonInstruction-instruction'>
+                    {this.state.deleteButtonInstruction &&
+                        <div className='instruction'>
+                            <h3>delete all of your stacks</h3>
+                        </div>
+                    }
+                </div>
+
+                <div className='stackNumber-instruction'>
+                    {this.state.stackNumber &&
+                        <div className='instruction'>
+                            <h3>your total stacks</h3>
+                        </div>
+                    }
+                </div>
+
+                {this.state.showInstruction &&
                     <div className='instruction'>
-                        <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>
+                        <h3>tokens you get from winning games, collect 100 tokens and you can buy new games</h3>
                     </div>
                 }
 

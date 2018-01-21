@@ -115,7 +115,7 @@ class LuckCheck extends React.Component{
         const r1=randomColor();
         const r2=randomColor();
         const r3=randomColor();
-        const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3}, 0.4)`}
+        const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3}, 0.6)`}
         const bigCardStyle=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
         return(
             <div>
@@ -138,6 +138,13 @@ class LuckCheck extends React.Component{
                         </div>
                     </div>
 
+                    <div className='game-info'>
+                        <img src='pictures/icons/score.png'/>
+                        <h3>{this.state.score}</h3>
+                    </div>
+
+                    <h3 className='game-end'>{this.state.warning}</h3>
+
                     <div className='header-menu'>
                             <button onClick={this.test}>test</button>
                             <button onClick={()=>this.props.dispatch(addToken(1))}>add token</button>
@@ -158,45 +165,37 @@ class LuckCheck extends React.Component{
                     </div>
                 </div> 
      
-                {this.state.targetCard&&
-                <div>
-
-                    <div className='game-info'>
-                        <h3>your score is {this.state.score}</h3>
-                        <div>
-                            <h3>the winning card is</h3>
-                            <h3>{this.state.warning}</h3>
-                        </div>
-                        <h3>your have {this.props.tokens} tokens</h3>
+                <div className='luck-check-cards'>
+                    {this.state.targetCard&&
+                    <div>
+                        <BigCard 
+                            style={bigCardStyle}
+                            card={this.state.targetCard}
+                            showButton={false}
+                            bigCardClick={this.onBigCardClick}
+                        />
                     </div>
-
-                    <BigCard 
-                        style={bigCardStyle}
-                        card={this.state.targetCard}
-                        showButton={false}
-                        bigCardClick={this.onBigCardClick}
-                    />
+                    } 
+                    
+                    <div className='random-cards'>
+                        {this.state.cards &&
+                        this.state.cards.map((c,i)=>(
+                            <div key={i} className='hide-card'>
+                                <Card
+                                    style={style}  
+                                    card={c}
+                                    cardClick={this.onCardClick}
+                                />
+                            </div>
+                            ))}
+                    </div> 
                 </div>
-                } 
                 
-                <div className='random-cards'>
-                    {this.state.cards &&
-                    this.state.cards.map((c,i)=>(
-                        <div key={i} className='hide-card'>
-                            <Card
-                                style={style}  
-                                card={c}
-                                cardClick={this.onCardClick}
-                            />
-                        </div>
-                        ))}
-                </div> 
-                
-            {this.state.showIntruction &&
-                <div className='instruction'>
-                    <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>
-                </div>
-            }
+                {this.state.showIntruction &&
+                    <div className='instruction'>
+                        <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>
+                    </div>
+                }
 
             </div>
         )
