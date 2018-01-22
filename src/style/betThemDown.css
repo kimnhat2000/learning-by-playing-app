@@ -4,98 +4,103 @@
     justify-content: space-between;
 }
 
-.battlefield h1{
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+.player-cards{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.player-cards h3{
+    color: orange;
+}
+
+.playerCards{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.computer-cards{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap
+}
+
+.computer-cards h3{
+    color: red;
+}
+
+.comCards{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+
+.battlefield{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .battle-card{
     display: flex;
     flex-direction: row;
-}
-
-.playerCards{
-    display: flex;
-    flex-direction: column;
-    height: 80%;
-    flex-wrap: wrap;
-}
-
-.comCards{
-    display: flex;
-    flex-direction: column;
-    height: 80%;
-    flex-wrap: wrap-reverse;
-}
-
-h1{
-    display: flex;
     justify-content: center;
-    font-family: 'vsfont';
+    align-items: center;
 }
 
-.buttons .attact{
-    background: #d93434;
-    background-image: -webkit-linear-gradient(top, #d93434, #b82b63);
-    background-image: -moz-linear-gradient(top, #d93434, #b82b63);
-    background-image: -ms-linear-gradient(top, #d93434, #b82b63);
-    background-image: -o-linear-gradient(top, #d93434, #b82b63);
-    background-image: linear-gradient(to bottom, #d93434, #b82b63);
-    -webkit-border-radius: 8;
-    -moz-border-radius: 8;
-    border-radius: 8px;
-    text-shadow: 2px 3px 5px #050005;
-    -webkit-box-shadow: 4px 4px 5px #666666;
-    -moz-box-shadow: 4px 4px 5px #666666;
-    box-shadow: 4px 4px 5px #666666;
-    font-family: Arial;
-    color: #ffffff;
-    font-size: 20px;
-    padding: 17px 17px 17px 17px;
-    text-decoration: none;
+.buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
-.buttons .attact:hover {
-    background: #fc3c3c;
-    background-image: -webkit-linear-gradient(top, #fc3c3c, #d9347b);
-    background-image: -moz-linear-gradient(top, #fc3c3c, #d9347b);
-    background-image: -ms-linear-gradient(top, #fc3c3c, #d9347b);
-    background-image: -o-linear-gradient(top, #fc3c3c, #d9347b);
-    background-image: linear-gradient(to bottom, #fc3c3c, #d9347b);
-    text-decoration: none;
-  }
-
-.buttons .defend {
-    background: #d9e800;
-    background-image: -webkit-linear-gradient(top, #d9e800, #a5b82c);
-    background-image: -moz-linear-gradient(top, #d9e800, #a5b82c);
-    background-image: -ms-linear-gradient(top, #d9e800, #a5b82c);
-    background-image: -o-linear-gradient(top, #d9e800, #a5b82c);
-    background-image: linear-gradient(to bottom, #d9e800, #a5b82c);
-    -webkit-border-radius: 8;
-    -moz-border-radius: 8;
-    border-radius: 8px;
-    text-shadow: 2px 3px 5px #050005;
-    -webkit-box-shadow: 4px 4px 5px #666666;
-    -moz-box-shadow: 4px 4px 5px #666666;
-    box-shadow: 4px 4px 5px #666666;
-    font-family: Arial;
-    color: #ffffff;
-    font-size: 20px;
-    padding: 17px 17px 17px 17px;
-    text-decoration: none;
-  }
-  
-.buttons .defend:hover {
-    background: #faf03c;
-    background-image: -webkit-linear-gradient(top, #faf03c, #b0d934);
-    background-image: -moz-linear-gradient(top, #faf03c, #b0d934);
-    background-image: -ms-linear-gradient(top, #faf03c, #b0d934);
-    background-image: -o-linear-gradient(top, #faf03c, #b0d934);
-    background-image: linear-gradient(to bottom, #faf03c, #b0d934);
-    text-decoration: none;
-  }
-
-  @font-face {
-    font-family: 'vsfont';
-    src: url(/pictures/fonts/SSF4.ttf) format('truetype');
+.annouce{
+    font-size: 1.3em;
+    color: red;
+    margin: 0;
+    padding: 0px 5px 0px 25px;
 }
+
+.left-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.left-card h3{
+    color: orange;
+}
+
+.right-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.right-card h3{
+    color: red;
+}
+
+.battle-card .attack{
+    padding: 15px;
+    background-color: rgba(255, 0, 0, 0.7);
+}
+
+.attack:hover{
+    padding: 15px;
+    background-color: rgba(153, 13, 13, 0.7);
+}
+
+.battle-card .defend{
+    padding: 15px;
+    background-color: rgba(255, 153, 0, 0.7);
+}
+
+.defend:hover{
+    padding: 15px;
+    background-color: rgba(161, 102, 12, 0.7);
+}
+

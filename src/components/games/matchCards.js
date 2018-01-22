@@ -16,6 +16,14 @@ class WackACard extends React.Component{
             countDown:'',
             text:'',
             playButton:'play',
+            showIntruction:false
+        }
+    }
+
+    componentDidUpdate(prevProps, prevStates){
+        if(prevProps.tokens !== this.props.tokens){
+            const json=JSON.stringify(this.props.tokens)
+            localStorage.setItem('tokens', json)
         }
     }
 
@@ -25,25 +33,24 @@ class WackACard extends React.Component{
         const hideCards=selectCards.map((c,i)=>c={...c,showCard:false,match:false});
         const doubleCards=shuffle(hideCards.concat(hideCards));
         const cards=doubleCards.map((c,i)=>c={showingId:i,...c})
-        this.setState({cards, playButton:'restart', countDown:Math.round(selectCards.length*3.5)})
+        this.setState({cards, playButton:'restart', text:'', countDown:Math.round(selectCards.length*3.5)})
     }
 
     onCardClick=(card)=>{
         const clickedCard=this.state.cards.find(c=>c.showingId===card.showingId)
         let countDown=this.state.countDown;
         const winCheck=this.state.cards.map(c=>c.showCard===false?1:0)
-        const text=`you win the game, you have ${countDown} ${countDown===1?'token':'tokens'}`;
         
         if(winCheck.includes(1)){
 
         }else {
-            this.setState({text, playButton:'play again?'})
+            this.setState({text:'you win!', playButton:'play again?'})
             this.props.dispatch(addToken(countDown))
             return;
         }
         
         if(countDown===0){
-            this.setState({text:'sorry, you lose the game', playButton:'play again?'})
+            this.setState({text:'you lose', playButton:'play again?'})
             return;
         }else if (this.state.noClick || clickedCard.showCard === true || clickedCard.match === true || countDown===0) {
             return;
@@ -83,7 +90,7 @@ class WackACard extends React.Component{
         const r1=randomColor();
         const r2=randomColor();
         const r3=randomColor();
-        const style={backgroundColor:`rgb(${r1}, ${r2}, ${r3})`}
+        const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3}, 0.6)`}
         const cards = this.state.cards.map((c,i)=>(
                 <Card
                     style={style}
@@ -97,30 +104,46 @@ class WackACard extends React.Component{
 
                 <div className='header'>
                     <div className='stack-info'>
-                        {this.props.selectedStack &&
-                            <h3>{this.props.selectedStack.name}</h3>
-                        }
+                        <div className='stack-name'>
+                            {this.props.selectedStack &&
+                                <h3>{this.props.selectedStack.name}</h3>
+                            }
+                        </div>
+
+                        <div 
+                            className ='token-container' 
+                            onMouseOver={()=>this.setState({showIntruction:true})}
+                            onMouseOut={()=>this.setState({showIntruction:false})}
+                        >
+                            <div className='token'/>
+                            <img className='token-img'src='pictures/myLogo.png'/>
+                            <h2>{this.props.tokens}</h2>
+                        </div>
                     </div>
+
+                    <div className='game-info'>
+                        <img src='pictures/icons/click.png'/>
+                        <h3>{this.state.countDown}</h3>
+                    </div>
+
+                    <h3 className='game-end'>{this.state.text}</h3>
 
                     <div className='header-menu'>
-                        <button onClick={this.onPlay}>{this.state.playButton}</button>
+                        <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
                         <button onClick={this.test}>test</button>
-                        <Link to='/selectCard'><button>return</button></Link>
+                        <Link to='/selectCard'><button className='return'>return</button></Link>
+                        <Link to='/'><button className='return-home'>return</button></Link>
                     </div>
                 </div>
-
-                {this.state.countDown&&
-                    <div className='game-info'>
-                        <h3>you can click {this.state.countDown} {grammarCheck}</h3>
-                        <h3>you have {this.props.tokens} tokens</h3>
-                    </div>
-                }
-                    <h3>{this.state.text}</h3>
-                
 
                 <div className='match-cards'>
                     {cards}
                 </div>
+                {this.state.showIntruction &&
+                    <div className='instruction'>
+                        <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>
+                    </div>
+                }
             </div>
         )
     }

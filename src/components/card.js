@@ -1,5 +1,4 @@
 import React from 'react';
-import '../style/card.css';
 
 export const Card =({cardClick, card, style})=>{
     const onCardClick=()=>cardClick && cardClick(card)
@@ -14,12 +13,14 @@ export const Card =({cardClick, card, style})=>{
                 className='card'
                 style={style}
                 onClick={onCardClick}
-            >
-                <div className='card-contents'>
-                    <img src={card.img}/>
-                    <h3>{card.name}</h3>
-                </div>
-                
+            >         
+
+                        <img src={card.img}/>
+
+                    <div className='card-name'>
+                        <h3>{card.name}</h3>
+                    </div>
+                    
             </div>:
 
             <div 
@@ -27,8 +28,6 @@ export const Card =({cardClick, card, style})=>{
                 style={style}
                 onClick={onCardClick}
             >
-                <div className='card-contents'>
-                </div>
             </div>
             }
         </div>
@@ -68,9 +67,11 @@ export const BigCard =({card, deleteCard, editCard, bigCardClick, showButtons, s
             {showButtons &&
                 <div className='card-buttons'>
                     <button
+                        className='delete'
                         onClick={()=>deleteCard(card)}
                     >delete</button>
                     <button
+                        className='edit'
                         onClick={()=>editCard(card)}
 
                     >edit</button>

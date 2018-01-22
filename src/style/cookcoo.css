@@ -1,24 +1,54 @@
-.next-card{
+.card-catch-text{
     display: flex;
-    flex-direction: column;
-    justify-content: center; 
-    align-items: center;  
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 20px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.card-catch-text img{
+    width: 50px;
+    height: 70px;
+    background: rgba(255, 0, 0, 0.8);
+}
+
+.card-catch-text h3{
+    font-size: 0.9em;
+    text-shadow: 0 0 0
+}
+
+.next-card{
+    margin: 10%;
 }
 
 .empty-card{
-    width: 200px;
-    height: 150px;
-    display: flex;
-    background: gray;
-    justify-content: center;
-    align-items: center;
+    width: 350px;
+    height: 200px;
+    background-color: gray;
     border-radius: 10px;
-    box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
+    background-image: url(/pictures/icons/ready.png);
+    background-repeat: no-repeat;
+    background-size: 70px 70px;
+    background-position: center;
+}
+
+.cookcoo-all-cards{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .cards-catched{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    align-items: center;
+    align-self: center;
+}
+
+.cookcoo-card-catched{
+    display: flex;
+    flex-direction: row;
     justify-content: center;
 }

@@ -8,9 +8,10 @@ export const addCard=({stackId='', name='', description='', variants=[], img=''}
 })
 
 //add many cards
-export const addCards=(cards)=>({
+export const addCards=(cards, newId)=>({
     type:'ADD_CARDS',
-    cards
+    cards,
+    newId
 })
 
 //remove card
@@ -51,4 +52,10 @@ export const filteredCards=(text)=>({
 export const filterStack=(stackId)=>({
     type: 'FILTER_STACK',
     stackId
+})
+
+//set new card id for saving to storage purpose
+export const setNewCardId =(newCardId)=>({
+    type: 'SET_CARD_ID',
+    newCardId
 })

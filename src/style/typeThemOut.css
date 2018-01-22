@@ -1,12 +1,29 @@
 .type-game{
+    margin: 5%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
-.type-game-form{
-    display: flex;
-    flex-direction: row;
-    margin: 15px
+form{
+    margin: 15px;
+}
+
+form input{
+    padding: 20px;
+    border-radius: 10px 0px 0px 10px;
+    box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.75);
+    font-size: 1.2ex;
+}
+
+form input[type='text']{
+    font-size: 1.2em;
+}
+
+form button{
+    padding: 20px;
+    margin: 0;
+    font-size: 1.2em;
+    border-radius: 0px 10px 10px 0px;
+    background-color: rgba(0, 0, 255, 0.6)
 }

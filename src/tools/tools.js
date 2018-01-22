@@ -35,7 +35,7 @@ export const randomPics=(picsNum, folderPath, fileExtension)=>{
 }
 
 //rezise and style big card
-export const reziseAndStyleBigCard=(cardWidth, carHeight, picsNum, folderPath, fileExtension, fontSize, margin, overflow)=>{
+export const reziseAndStyleBigCard=(cardWidth, carHeight, picsNum, folderPath, fileExtension, fontSize, margin, overflow, borderRadius)=>{
     const randomPics=(picsNum, folderPath, fileExtension)=>{
         const totalPics=picsNum
         let array=[]
@@ -60,7 +60,8 @@ export const reziseAndStyleBigCard=(cardWidth, carHeight, picsNum, folderPath, f
         height,
         fontSize,
         margin,
-        overflow
+        overflow,
+        borderRadius,
     }   
     return style
 }

@@ -2,10 +2,12 @@ import React from 'react';
 import CardList from './cardList';
 import {BigCard} from './card';
 import {connect} from 'react-redux';
-import {addCard,addCards, removeCard, cardToEditInfo, editCard, deleteAllCardsInCurrentStack, filteredCards, filterStack} from '../actions/flashCardActions';
+import {addCard, addCards, removeCard, cardToEditInfo, editCard, deleteAllCardsInCurrentStack, filteredCards, filterStack, setNewCardId} from '../actions/flashCardActions';
+import {selectedStack} from '../actions/cardStackActions';
+import {addToken, reduceToken} from '../actions/tokenActions'
 import FlashCardForm from './form';
 import {Link} from 'react-router-dom';
-import {reziseAndStyleBigCard} from '../tools/tools';
+import {reziseAndStyleBigCard, randomPics} from '../tools/tools';
 import '../style/flashCard.css';
 
 class FlashCard extends React.Component{
@@ -21,27 +23,46 @@ class FlashCard extends React.Component{
             confirmDeleteAll:false,
             cardFilter:'',
             bigCard:'',
-            text:''
+            text:'',
+            returnHome:false,
+            showIntruction:false,
+            cardNumber:false
         }
     }
 
-    // componentDidUpdate(prevProps, prevState){
-    //     if (prevProps.cards !== this.props.cards) {
-    //         const json =JSON.stringify(this.props.cards);
-    //         localStorage.setItem('cards', json);
+    // componentDidUpdate(prevProps, prevStates){
+    //     if(prevProps.tokens !== this.props.tokens){
+    //         const json=JSON.stringify(this.props.tokens)
+    //         localStorage.setItem('tokens', json)
+    //     }
+    // }
+
+    // componentWillUnmount(){
+    //     if(!this.props.selectedStack){
+    //         return;
+    //     }else if(this.props.selectedStack){
+    //         const allCards=this.props.allCards
+    //         const newCardId=this.props.newCardId
+    //         const json =JSON.stringify(allCards);
+    //         const json2 =JSON.stringify(newCardId);
+    //         localStorage.setItem('allCards', json);
+    //         localStorage.setItem('newCardId', json2); 
     //     }
     // }
 
     // componentDidMount(){
-    //     try{
-    //         const json=localStorage.getItem('cards');
-    //         const cards= JSON.parse(json);
-    //         if(cards){
-    //             this.props.dispatch(addCards(cards))
+    //     if(!this.props.selectedStack){
+    //         this.setState({returnHome:true})
+    //         return;
+    //     }else{
+    //         if(localStorage.getItem('newCardId')===null){
+    //             return;
     //         }
-    //     }catch(error){
-    //         //do nothing
+    //         const json2=localStorage.getItem('newCardId')
+    //         const newCardId=JSON.parse(json2)
+    //         this.props.dispatch(setNewCardId(newCardId))
     //     }
+        
     // }
 
     onCardClick=(card)=>{
@@ -57,33 +78,35 @@ class FlashCard extends React.Component{
     onSaveCard=(newCard)=>{
         const cardsID=this.props.cards.map(c=>c.name)
         const card=newCard.name
+        const stackId=this.props.selectedStack.stackId
+
         if(cardsID.includes(card)){
             this.setState({text:'This card already existed'})
             return;
         }
         this.setState({showForm:false})
-        this.props.dispatch(addCard({stackId:this.props.selectedStack.stackId,...newCard}))
+        this.props.dispatch(addCard({stackId,...newCard}))
         this.props.dispatch(filterStack(this.props.selectedStack.stackId))
+
     }
     onSaveEdit=(editedCard)=>{
         const id=this.props.cardToEdit.id
         const stackId=this.props.selectedStack.stackId
         const newCard={id, stackId,...editedCard, showInfo:false, selected:false, showCard:true}
-        this.props.dispatch(editCard(newCard))
-        this.props.dispatch(cardToEditInfo({}))
-        this.setState({showEditForm:false, bigCard:newCard})
+        const matchCheck=this.props.cards.map(c=>c.name)
+        if(matchCheck.includes(newCard.name)){
+            this.setState({text:'there is a card with the same name'})
+            return;
+        }else{
+            this.props.dispatch(editCard(newCard))
+            this.props.dispatch(cardToEditInfo({}))
+            this.setState({showEditForm:false, bigCard:newCard, text:''})
+            return;
+        }
     }
     cardToEdit=(card)=>{
         this.setState({showEditForm:true})
         this.props.dispatch(cardToEditInfo(card))
-    }
-
-    randomColor=()=>{
-        const r=Math.floor(Math.random()*256);
-        const g=Math.floor(Math.random()*256);
-        const b=Math.floor(Math.random()*256);
-        const rgb={r,g,b}
-        return {r, g, b}
     }
 
     onConfirm=(pass)=>{
@@ -111,11 +134,14 @@ class FlashCard extends React.Component{
     }
 
     test=()=>{
-        const {cards, cardToEdit, filteredCards, selectedStack}=this.props
+        const {cards, cardToEdit, filteredCards, selectedStack, allCards, newCardId}=this.props
         console.log('cards:', cards)
         console.log('cardToEdit:', cardToEdit)
         console.log('filteredCards:', filteredCards)
-        console.log('selectedStack:', selectedStack)
+        console.log('selectedStack:', selectedStack.stackId)
+        console.log('allCards:', allCards)
+        console.log('newCardId: ', newCardId)
+
         // localStorage.clear();
     }
 
@@ -129,41 +155,73 @@ class FlashCard extends React.Component{
                 <div className='header'>
                     
                     <div className='stack-info'>
-                        {this.props.selectedStack &&
-                            <h3>{this.props.selectedStack.name}</h3>
-                        }
+                        <div className='stack-name'>
+                            {this.props.selectedStack &&
+                                <h3>{this.props.selectedStack.name}</h3>
+                            }
+                        </div>
+
+                        <div 
+                            className ='token-container' 
+                            onMouseOver={()=>this.setState({showIntruction:true})}
+                            onMouseOut={()=>this.setState({showIntruction:false})}
+                        >
+                            <div className='token'/>
+                            <img className='token-img'src='pictures/myLogo.png'/>
+                            <h2>{this.props.tokens}</h2>
+                        </div>
+                    </div>
+
+                    <div className='game-info'>
+                        <img 
+                            onMouseOver={()=>this.setState({cardNumber:true})}
+                            onMouseOut={()=>this.setState({cardNumber:false})}
+                            src='pictures/icons/cards.png'
+                        />
+                        <div className='text'>
+                            {this.state.text && this.state.text}
+                            {this.props.cards.length > 0 && 
+                            <h3>{this.props.cards.length}</h3>
+                            }
+                        </div>
                     </div>
 
                     <div className='header-menu'>
+
                         <Link to='/test'><button>test page</button></Link>
                         <button onClick={this.test}>test</button>
-                        <Link to='/selectCard'><button>play games</button></Link>
-                        <button onClick={this.onDeleteAll}>delete all</button>
-                        <button onClick={()=>this.setState({showForm:true})}>add a card</button>
+                        <button onClick={()=>this.props.dispatch(addToken(50))}>add a token</button>
+                        <button onClick={()=>this.props.dispatch(reduceToken(50))}>remove a token</button>
+
+                        {!this.state.returnHome &&
+                        <div>
+                            <button onClick={()=>this.setState({showForm:true})} className='add'>+</button>
+                            <button onClick={this.onDeleteAll} className='delete'>ALL</button>
+                            <Link to='/selectCard'><button className='play'>></button></Link>
+                        </div>
+                        }
+
                         <input
                             type='text'
                             placeholder='find cards by name'
                             value = {this.state.cardFilter}
                             onChange= {this.onFilterTextChange}
                         />
-                        <Link to='/'><button>return</button></Link>
+                        <Link to='/'><button className='return-home'>HOME</button></Link>                       
                     </div>
-                </div>
 
-                <div className='text'>
-                    {this.state.text && this.state.text}
-                    {this.props.cards.length > 0 && 
-                    <h3>You have {this.props.cards.length} {cardCheck}</h3>
-                    }
                 </div>
+                    {this.state.returnHome &&
+                    <Link to='/'><h3>you need to choose a stack to see cards, click this to go to stacks selection page</h3></Link>
+                    }
 
                 <div>
                     {this.state.warning && 
-                    <div className='warning'>
+                    <div className='warning-show'>
                         <h3>{this.state.showWarning}</h3>
                         <div className='warning-buttons'>
-                            <button onClick={()=>this.onConfirm(true)}>yes</button>
-                            <button onClick={()=>this.onConfirm(false)}>no</button>
+                            <button onClick={()=>this.onConfirm(true)} className='yes'>yes</button>
+                            <button onClick={()=>this.onConfirm(false)} className='no'>no</button>
                         </div>
                     </div>
                     }
@@ -177,11 +235,10 @@ class FlashCard extends React.Component{
                 }    
                 {this.state.showEditForm && 
                     <FlashCardForm
-                        onCloseForm={()=>this.setState({showEditForm:false})}
+                        onCloseForm={()=>this.setState({showEditForm:false, text:''})}
                         editCardInfo={this.props.cardToEdit}
                         saveEditCard={(editedCard)=>this.onSaveEdit(editedCard)}
                     />
-
                 }
 
                 <div className='all-cards'>
@@ -202,8 +259,22 @@ class FlashCard extends React.Component{
                             showButtons={true}
                         />
                     }
-                </div>      
+                </div> 
 
+                <div className='flashCard-instruction'>
+                    {this.state.cardNumber &&
+                        <div className='instruction'>
+                            <h3>your total cards</h3>
+                        </div>
+                    }
+                </div>
+
+                {this.state.showIntruction &&
+                    <div className='instruction'>
+                        <h3>tokens you get from winning games, collect 100 tokens and you can buy new games</h3>
+                    </div>
+                }
+                     
             </div>
         )
     }
@@ -211,11 +282,17 @@ class FlashCard extends React.Component{
 }
 
 const mapStateToProps=(state)=>({
+    allCards:state.flashCardReducer.cards,
     cards:state.flashCardReducer.stackCards,
     cardToEdit:state.flashCardReducer.cardToEdit,
     filteredCards:state.flashCardReducer.filteredCards,
-    selectedStack:state.cardStackReducer.selectedStack
+    newCardId:state.flashCardReducer.newId,
+    selectedStack:state.cardStackReducer.selectedStack,
+    tokens:state.tokenReducer.totalTokens,
+    gameBought:state.tokenReducer.gamesBought,
+    gameRemain:state.tokenReducer.gamesRemain
 })
 
 
 export default connect(mapStateToProps)(FlashCard)
+

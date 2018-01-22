@@ -26,3 +26,9 @@ export const stackSearch =(text)=>({
     type: 'SEARCH_STACK',
     text
 })
+
+export const addStacks =(stacks, stackId)=>({
+    type: 'ADD_STACKS',
+    stacks,
+    stackId
+})

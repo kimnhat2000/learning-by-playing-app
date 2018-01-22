@@ -15,7 +15,15 @@ class TypeThemOut extends React.Component{
             playButton:'play',
             input:'',
             warning:'',
-            score:2
+            score:2,
+            showIntruction:false
+        }
+    }
+
+    componentDidUpdate(prevProps, prevStates){
+        if(prevProps.tokens !== this.props.tokens){
+            const json=JSON.stringify(this.props.tokens)
+            localStorage.setItem('tokens', json)
         }
     }
 
@@ -77,31 +85,45 @@ class TypeThemOut extends React.Component{
     }
 
     render(){
-        const style=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg')
+        const style=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg', '1em')
         return(
             <div>
             <div className='header'>
                 <div className='stack-info'>
-                    {this.props.selectedStack &&
-                        <h3>{this.props.selectedStack.name}</h3>
-                    }
+                    <div className='stack-name'>
+                        {this.props.selectedStack &&
+                            <h3>{this.props.selectedStack.name}</h3>
+                        }
+                    </div>
+
+                <div 
+                    className ='token-container' 
+                    onMouseOver={()=>this.setState({showIntruction:true})}
+                    onMouseOut={()=>this.setState({showIntruction:false})}
+                >
+                        <div className='token'/>
+                        <img className='token-img'src='pictures/myLogo.png'/>
+                        <h2>{this.props.tokens}</h2>
+                    </div>
                 </div>
 
+                <div className='game-info'>
+                    <img src='pictures/icons/score.png'/>
+                    <h3>{this.state.score}</h3>
+                </div>
+
+                <h3 className='game-end'>{this.state.warning}</h3>
+
                 <div className='header-menu'>
-                    <button onClick={this.onPlayClick}>{this.state.playButton}</button>
+                    <button onClick={this.onPlayClick} className='play'>{this.state.playButton}</button>
                     <button onClick={this.test}>test</button>
-                    <Link to='/selectCard'><button>return</button></Link>
+                    <Link to='/selectCard'><button className='return'>return</button></Link>
+                    <Link to='/'><button className='return-home'>return home</button></Link>    
                 </div>
             </div>
 
             {this.state.card &&
-                <div>
-                    <div className='game-info'>
-                        <h3>your score is {this.state.score}</h3>
-                        <h3>{this.state.warning}</h3>
-                        <h3>you have {this.props.tokens} tokens</h3>
-                    </div>
-
+                <div>                                        
                     <div className='type-game'>
                         <BigCard
                             style={style}
@@ -122,9 +144,16 @@ class TypeThemOut extends React.Component{
                                 >done</button>
                             </div>
                         </form>
+
                     </div>
                 </div>
             }
+            {this.state.showIntruction &&
+                <div className='instruction'>
+                    <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>
+                </div>
+            }
+
             </div>
         )
     }

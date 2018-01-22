@@ -5,9 +5,9 @@ import {Card, BigCard} from './card';
 import {editCard} from '../actions/flashCardActions';
 import {randomColor} from '../tools/tools';
 import {selectOtherApproach, storeSelectedCards} from '../actions/selectCardsActions';
-import { buyAGame } from '../actions/tokenActions';
+import { buyAGame, saveGameBought } from '../actions/tokenActions';
+import _ from 'lodash';
 import '../style/selectCards.css';
-
 
 class SelectCards extends React.Component{
     constructor(props){
@@ -24,28 +24,51 @@ class SelectCards extends React.Component{
             selectCards:[],
             warning:false,
             text:'',
-            dicisionCard:''
+            gameWant:'',
+            findCard:'',
+            showInstruction:false,   
+            buyGameInstruction:false,      
+            playGameInstruction:false,
+            cardSelectInstruction:false,  
         }
     }
 
     // componentDidUpdate(prevProps, prevState){
-    //     if (prevProps.selectCards !== this.props.selectCards) {
-    //         const json =JSON.stringify(this.props.selectCards);
-    //         localStorage.setItem('selectCards', json);
+    //     if (prevState.buyGames.length !== this.state.buyGames.length) {
+    //         const json =JSON.stringify(this.state.buyGames);
+    //         const json1 =JSON.stringify(this.state.selectGames);
+    //         localStorage.setItem('boughtGames', json);
+    //         localStorage.setItem('remainGames', json1);
+    //         return;
+    //     }
+    //     if(prevProps.tokens.totalTokens !== this.props.tokens.totalTokens){
+    //         const json=JSON.stringify(this.props.tokens.totalTokens)
+    //         localStorage.setItem('tokens', json)
+    //         return;
     //     }
     // }
 
     // componentDidMount(){
     //     try{
-    //         const json=localStorage.getItem('selectCards');
-    //         const selectCards= JSON.parse(json);
-    //         if(selectCards){
-    //             this.props.dispatch(storeSelectedCards(selectCards))
+    //         if(localStorage.getItem('boughtGames')===null){
+    //             return;
+    //         }else{
+    //         const json=localStorage.getItem('boughtGames');
+    //         const json1=localStorage.getItem('remainGames');
+    //         const gamesBought= JSON.parse(json);
+    //         const gamesRemain=JSON.parse(json1)
+    //         this.props.dispatch(saveGameBought(gamesBought, gamesRemain))
+    //         this.setState({buyGames:gamesBought, selectGames:gamesRemain})
     //         }
     //     }catch(error){
     //         //do nothing
     //     }
     // }
+
+    onFilterTextChange=(e)=>{
+        const findCard=e.target.value
+        this.setState({findCard})
+    }
 
     onCardClick=(card)=>{
         const cards=this.state.cards.filter(c=>c.id!==card.id)
@@ -78,18 +101,22 @@ class SelectCards extends React.Component{
         this.setState({
             text:`are you sure you want to buy this ${game.name} game for 100 tokens?`, 
             warning:true,
-            dicisionCard:game
+            gameWant:game
         })
     }
 
     makeDesicion=(pass)=>{
         if(pass){
             const tokens=this.state.tokens-100
-            const dicisionCard=this.state.dicisionCard
-            const selectGames=this.state.selectGames.filter(g=>g.id!==dicisionCard.id)
-            const buyGames=[...this.state.buyGames, {...dicisionCard,buy:true}]
+            const gameWant=this.state.gameWant
+            const selectGames=this.state.selectGames.filter(g=>g.id!==gameWant.id)
+            const buyGames=[...this.state.buyGames, {...gameWant,buy:true}]
             this.setState({tokens, warning:false, buyGames, selectGames})
-            this.props.dispatch(buyAGame(dicisionCard))
+            this.props.dispatch(buyAGame(gameWant))
+            // const gamesBought=JSON.stringify(this.props.tokenReducer.gamesBought)
+            // const gamesRemain=JSON.stringify(this.props.tokenReducer.gamesRemain)
+            // localStorage.setItem('gamesBought',gamesBought)
+            // localStorage.setItem('gamesRemain',gamesRemain)
             return;
         }else {
             this.setState({warning:false})
@@ -98,13 +125,15 @@ class SelectCards extends React.Component{
     }
 
     test=()=>{
-        const {totalTokens, games, gamesBought, gamesRemain}= this.props.tokens
-        const {buyGames}= this.state
-        console.log('games: ',games)
+        const {totalTokens, games, gamesBought, gamesRemain, }= this.props.tokens
+        const {buyGames, selectGames}= this.state
+        console.log('games: ',games, 'props cards: ', this.props.cards)
+        console.log('selected cards: ',this.props.selectCards)
         console.log('tokens: ',totalTokens)
         console.log('gamesBought: ',gamesBought)
         console.log('gamesRemain: ',gamesRemain)
-        console.log(this.props.cards.length===0)
+        console.log(buyGames, selectGames)
+        // console.log(this.state.selectGames)
 
         // localStorage.clear('selectCards');
     }
@@ -113,45 +142,74 @@ class SelectCards extends React.Component{
         const r1=randomColor();
         const r2=randomColor();
         const r3=randomColor();
-        const style={backgroundColor:`rgb(${r1}, ${r2}, ${r3})`}
+        const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3}, 0.8)`}
 
-        const allCards=this.state.cards.map((c,i)=>(
-            <Card
-                key={i}
-                card={c}
-                cardClick={this.onCardClick}
-            />
-        ))
+        const cards=this.state.findCard && this.state.cards.filter(c=>c.name.includes(this.state.findCard));
+        const findSelectCards=this.state.findCard && this.state.selectCards.filter(c=>c.name.includes(this.state.findCard));
 
-        const selectedCards=this.state.selectCards && this.state.selectCards.map((c,i)=>(
-            <Card
-                key={i}
-                style={style}
-                card={c}
-                cardClick={this.onSelectedCardClick}
-            />
-        ))
+        let allCards =[];
+        let selectedCards=[];
+
+        if(this.state.findCard){
+            allCards=cards.length !== 0 && cards.map((c,i)=>(
+                <Card
+                    key={i}
+                    card={c}
+                    cardClick={this.onCardClick}
+                />
+            ))
+
+            selectedCards=findSelectCards.length !== 0 && findSelectCards.map((c,i)=>(
+                <Card
+                    key={i}
+                    style={style}
+                    card={c}
+                    cardClick={this.onSelectedCardClick}
+                />
+            ))
+        }else{
+            allCards=this.state.cards.map((c,i)=>(
+                <Card
+                    key={i}
+                    card={c}
+                    cardClick={this.onCardClick}
+                />
+            ))
+
+            selectedCards=this.state.selectCards && this.state.selectCards.map((c,i)=>(
+                <Card
+                    key={i}
+                    style={style}
+                    card={c}
+                    cardClick={this.onSelectedCardClick}
+                />
+            ))
+        }
 
         const grammarCheck=this.state.selectCards.length===1?'card':'cards';
 
         const buttonGrammar=4-this.state.selectCards.length === 1? 'card': 'cards';
 
-        const boughtGames=this.state.buyGames.map((g,i)=>(
+        const boughtGames=this.state.buyGames.map((g,i)=>g.buy && (
             <div key={i}>
-                <Link to ={g.path}><button>{g.name}</button></Link>
+                <Link to ={g.path}><button className='games-button'>{g.name}</button></Link>
             </div>
         ))
     
         const buttonsShow = this.state.selectCards.length < 4  ? 
-            <h3>you need to select at least {4-this.state.selectCards.length} more {buttonGrammar} to play games</h3> : 
+            <div className='game-info'>
+                <img 
+                    onMouseOver={()=>this.setState({playGameInstruction:true})}
+                    onMouseOut={()=>this.setState({playGameInstruction:false})}
+                    src='/pictures/icons/gameIcon.png'
+                />
+                <h3>{4-this.state.selectCards.length}/{this.state.selectCards.length}</h3>
+            </div>:
             <div>
-                <h3>what games do you want to play?</h3>
-
-                <div  className='buttons'>{boughtGames}</div>
-    
+                <div  className='buttons'>{boughtGames}</div>   
             </div> 
         
-        const games=this.state.selectGames.map((g,i)=>(
+        const games=this.state.selectGames.map((g,i)=> (
             <div key={i} className='buttons'>
                 <button onClick={()=>this.onGameClick(g)}>{g.name}</button>
             </div>
@@ -161,53 +219,123 @@ class SelectCards extends React.Component{
             <div>
                 <div className='header'>
                     <div className='stack-info'>
-                        {this.props.selectedStack &&
-                            <h3>{this.props.selectedStack.name}</h3>
-                        }
+                        <div className='stack-name'>
+                            {this.props.selectedStack &&
+                                <h3>{this.props.selectedStack.name}</h3>
+                            }
+                        </div>
+
+                        <div 
+                            className ='token-container' 
+                            onMouseOver={()=>this.setState({showInstruction:true})}
+                            onMouseOut={()=>this.setState({showInstruction:false})}
+                        >
+                            <div className='token'/>
+                            <img className='token-img'src='pictures/myLogo.png'/>
+                            <h2>{this.props.tokens.totalTokens}</h2>
+                        </div>
+                    </div>
+
+                    <div className='game-info'>
+                        <img 
+                            onMouseOver={()=>this.setState({cardSelectInstruction:true})}
+                            onMouseOut={()=>this.setState({cardSelectInstruction:false})}
+                            src='pictures/icons/cards.png'
+                        />
+                        <h3>{this.state.selectCards.length}</h3>
                     </div>
 
                     <div className='header-menu'>     
                         <button onClick={this.test}>test</button>
-                        <button onClick={()=>this.selectAll(false)}>unselect all cards</button>
-                        <button onClick={()=>this.selectAll(true)}>select all cards</button>
-                        <Link to='/flashCard'><button>return home</button></Link>
+                        <input
+                            type='text'
+                            placeholder='find cards by name'
+                            value = {this.state.findCard}
+                            onChange= {this.onFilterTextChange}
+                        />
+                        <button onClick={()=>this.selectAll(true)} className='add'>select all cards</button>
+                        <button onClick={()=>this.selectAll(false)} className='delete'>unselect all cards</button>
+                        <Link to='/flashCard'><button className='return'>return</button></Link>
+                        <Link to='/'><button className='return-home'>return home</button></Link>
                     </div>
                 </div>
 
             {this.props.cards.length === 0 ?
-                <h3>you do not have any cards, please enter at least 4 cards to play games</h3>:
-                <div>
-                    <div className='game-info'> 
-                        {grammarCheck &&
-                            <h3>you have selected {this.state.selectCards.length} {grammarCheck}</h3>
-                        }
-                        <h3>you have {this.state.tokens} tokens</h3>
-                    </div>
+                <h3>create at least 4 cards to play games</h3>:
+                <div className='select-page-container'>
                 
-                    {this.state.warning && 
-                        <div>
-                            <h3>{this.state.text}</h3>
+                    <div>
+                        {this.state.warning && 
+                        <div className='warning-show'>
+                            <h3>do you want to buy this game for 100 tokens?</h3>
                             <div className='warning-buttons'>
-                                <button onClick={()=>this.makeDesicion(true)}>YES</button>
-                                <button onClick={()=>this.makeDesicion(false)}>NO</button>
+                                <button onClick={()=>this.makeDesicion(true)} className='yes'>yes</button>
+                                <button onClick={()=>this.makeDesicion(false)} className='no'>no</button>
                             </div>
                         </div>
-                    }
-
-                    <div className='cards'>{allCards}</div>
-
-                    <div className='cards'>{selectedCards}</div>
-
-                    <div className='buttons'>{buttonsShow}</div>
-                
-                    {this.state.tokens >= 100 &&
-                    <div>
-                        <h3>do you want to buy a card for 100 tokens?</h3>
-                        <div className='games-select'>{games}</div>
+                        }
                     </div>
+
+                    <div className='select-cards-cards-menu'>
+
+                        <div className='select-cards-cards'>
+                              
+                            <div className='select-cards-all-cards'>{allCards}</div>
+                            <div className='select-cards'>{selectedCards}</div>
+                        </div>
+
+                        <div
+
+                            className='footer'
+                        >
+                            {this.state.tokens >= 100 && games.length !== 0 &&
+                                <div className='game-info'>
+                                    <img 
+                                        onMouseOver={()=>this.setState({buyGameInstruction:true})}
+                                        onMouseOut={()=>this.setState({buyGameInstruction:false})} 
+                                        src='/pictures/icons/shopingCart.png'
+                                    />
+                                    <div className='select-cards-games-select'>{games}</div>
+                                </div>
+                            }
+                            <div className='select-game-buttons'>{buttonsShow}</div>
+                        
+                        </div>
+                    </div>
+            
+                </div>
+                }   
+
+                <div className='cardSelectInstruction-instruction'>
+                    {this.state.cardSelectInstruction &&
+                        <div className='instruction'>
+                            <h3>you have selected {this.state.selectCards.length} {grammarCheck}</h3>
+                        </div>
                     }
                 </div>
-            }   
+                
+                <div className='playGameIntruction-instruction'>
+                    {this.state.playGameInstruction &&
+                        <div className='instruction'>
+                            <h3>select at least 4 cards to play games with</h3>
+                        </div>
+                    }
+                </div>
+
+                <div className='selectCards-instruction'>
+                    {this.state.buyGameInstruction &&
+                        <div className='instruction'>
+                            <h3>you can buy this game for 100 tokens</h3>
+                        </div>
+                    }
+                </div>
+
+                {this.state.showInstruction &&
+                    <div className='instruction'>
+                        <h3>tokens you get from winning games, collect 100 tokens and you can buy new games</h3>
+                    </div>
+                }
+
             </div> 
         )
     }
@@ -217,7 +345,7 @@ const mapStateToProps=(state)=>({
     cards:state.flashCardReducer.stackCards,
     selectCards:state.selectCardsReducer.cards,
     selectedStack:state.cardStackReducer.selectedStack,
-    tokens:state.tokenReducer
+    tokens:state.tokenReducer,
 })
 
 export default connect(mapStateToProps)(SelectCards)

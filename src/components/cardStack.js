@@ -3,9 +3,12 @@ import _ from 'lodash';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {randomPics, reziseAndStyleBigCard} from '../tools/tools'
-import {addStack, removeStack, editStack, deleteAllStack, selectedStack, stackSearch} from '../actions/cardStackActions';
-import {filterStack, deleteAllCards} from '../actions/flashCardActions';
-import '../style/cardStack.css'
+import {addStack, addStacks, removeStack, editStack, deleteAllStack, selectedStack, stackSearch} from '../actions/cardStackActions';
+import {filterStack, deleteAllCards, addCards, addCard, deleteAllCardsInCurrentStack, setNewCardId} from '../actions/flashCardActions';
+import {changeTokenNum}from '../actions/tokenActions';
+import styled, {injectGlobal} from 'styled-components';
+import '../style/cardStack.css';
+
 
 class CardStack extends React.Component{
     constructor(props){
@@ -23,8 +26,63 @@ class CardStack extends React.Component{
             saveStack:false,
             deleteAllConfirm:false,
             stackSearch:'',
+            cancelButton:false,
+            showDiv:false,
+            showInstruction:false,
+            stackNumber:false,
+            deleteButtonInstruction:false,
+            addStackButtonIntruction:false,
         }
     }
+
+    // componentDidUpdate(prevProps, prevState){
+    //     //this if is to check if I decide to delete a stack
+    //     if (prevProps.cards.length !== this.props.cards.length){
+    //     const allCards=JSON.stringify(this.props.cards)
+    //     const json= localStorage.setItem('allCards', allCards);
+    //     }
+    //     if (prevProps.stacks !== this.props.stacks) {
+    //         const stacks =JSON.stringify(this.props.stacks);
+    //         const stackId=JSON.stringify(this.props.stackNextId);
+    //         localStorage.setItem('stacks', stacks);
+    //         localStorage.setItem('stackId', stackId);
+    //     }
+    // }
+
+    // componentDidMount(){
+    //     try{
+    //         const json=localStorage.getItem('stacks');
+    //         const json2=localStorage.getItem('stackId');
+    //         const json3=localStorage.getItem('allCards');
+    //         const json4=localStorage.getItem('newCardId');
+    //         const json5=localStorage.getItem('tokens');
+    //         const stacks= JSON.parse(json);
+    //         const stackId= JSON.parse(json2);
+    //         const allCards=JSON.parse(json3);
+    //         const newId=JSON.parse(json4);
+    //         const tokens=JSON.parse(json5);
+    //         if(stacks){
+    //             this.props.dispatch(addStacks(stacks, stackId))
+    //         }
+    //         if(allCards){
+    //             this.props.dispatch(addCards(allCards, newId))
+    //         }
+    //         if(tokens){
+    //             this.props.dispatch(changeTokenNum(tokens))
+    //         }
+
+    //     }catch(error){
+    //         // do nothing
+    //     }
+    // }
+
+    // componentWillUnmount(){
+    //     const selectedStack=JSON.stringify(this.props.selectedStack)
+    //     const json= localStorage.setItem('selectedStack', selectedStack);
+    //     const json1 =localStorage.getItem('newCardId')
+    //     const newCardId=JSON.parse(json1)
+    //     this.props.dispatch(setNewCardId(newCardId))
+    // }
 
     stackNameInput=(e)=>{
         this.setState({[e.target.name]:e.target.value})
@@ -38,8 +96,14 @@ class CardStack extends React.Component{
     }
 
     saveAStack=()=>{
+        const name=this.state.stackName
+        const names=this.props.stacks.map(s=>s.name)
+
         if(!this.state.stackName){
             this.setState({error:'you must enter stack name'})
+            return;
+        }else if(names.includes(name)){
+            this.setState({error:'this stack name is already existed, please select another name', cancelButton:true})
             return;
         }else if(!this.state.stackImg){
             this.setState({error:'you will get a random image after save', warning:true, saveStack:true, addStackInput:false})
@@ -49,6 +113,10 @@ class CardStack extends React.Component{
             this.setState({stackName:'', stackImg:'', saveStack:false, warning:false, error:'', addStackInput:false})
             this.props.dispatch(addStack(stack))
         }
+    }
+
+    cancelSaving=()=>{
+        this.setState({cancelButton:false, warning:false, error:'', addStackInput:false})
     }
 
     handleStackClick=(stack)=>{
@@ -71,9 +139,15 @@ class CardStack extends React.Component{
 
     onEditSave=(s)=>{
         const newStack={...s, name:this.state.editNameInput, showButtons:false}
-        this.props.dispatch(editStack(newStack))
-        this.setState({editNameInputShow:false})
-
+        const checkMatch=this.props.stacks.map(s=>s.name)
+        if(checkMatch.includes(newStack.name)){
+            this.setState({error:'this stack already existed'})
+            return;
+        }else{
+            this.props.dispatch(editStack(newStack))
+            this.setState({editNameInputShow:false, error:''})
+            return;
+        }       
     }
 
     openStack=(s)=>{
@@ -99,16 +173,22 @@ class CardStack extends React.Component{
             }else if (this.state.deleteAllConfirm){
                 this.props.dispatch(deleteAllStack());
                 this.props.dispatch(deleteAllCards())
+                this.props.dispatch(selectedStack())
                 this.setState({deleteAllConfirm:false, text:'', warning:false})
+                localStorage.clear();
                 return
             }
+
             const stack=this.state.stack
-            this.props.dispatch(removeStack(stack))        
+            console.log(stack.stackId)
+            this.props.dispatch(deleteAllCardsInCurrentStack(stack.stackId))  
+            this.props.dispatch(removeStack(stack))       
             this.props.dispatch(stackSearch())
+            this.props.dispatch(selectedStack())
             this.setState({warning:false})
             return
         }else {
-            this.setState({warning:false, text:''})
+            this.setState({warning:false, text:'', error:''})
             return
         }
     }
@@ -122,6 +202,9 @@ class CardStack extends React.Component{
         console.log('selectedStack: ',selectedStack)
         console.log('filteredStacks: ',filteredStacks)
         console.log('check stackSearch: ',this.state.stackSearch?true:false)
+
+        // localStorage.clear();
+
     }
 
     render(){
@@ -133,61 +216,103 @@ class CardStack extends React.Component{
 
                 <div className='header'>
                     <div className='stack-info'>
-                        {this.props.selectedStack &&
-                            <h3>{this.props.selectedStack.name}</h3>
-                        }
+                        <div className='stack-name'>
+                            {this.props.selectedStack &&
+                                <h2>{this.props.selectedStack.name}</h2>
+                            }
+                        </div>
+
+                        <div 
+                            className ='token-container' 
+                            onMouseOver={()=>this.setState({showInstruction:true})}
+                            onMouseOut={()=>this.setState({showInstruction:false})}
+                        >
+                            <div className='token'/>
+                            <img className='token-img'src='pictures/myLogo.png'/>
+                            <h2>{this.props.tokens}</h2>
+                        </div>
                     </div>
 
+                    <div className='game-info'>
+                        <img 
+                            onMouseOver={()=>this.setState({stackNumber:true})}
+                            onMouseOut={()=>this.setState({stackNumber:false})}
+                            src='pictures/icons/cards.png'
+                        />
+                        {this.props.stacks.length !== 0 ? 
+                            <h3>{this.props.stacks.length}</h3>:
+                            <h3>please add a card stack</h3>
+                        }
+                    </div>
+                    
                     <div className='header-menu'>
-                    <button onClick={this.test}>test</button>
-                    <input
-                        type='text'
-                        placeholder='find stack by name'
-                        value={this.state.stackSearch}
-                        onChange={this.onStackSearch}
-                    />
-                    <button onClick={this.onDeleteEveryThing}>delete all stack</button>
-                    <button onClick={()=>this.setState({addStackInput:true})}>add stack</button>
+                        <button onClick={()=>localStorage.clear()}>emptyStorage</button>
+                        <button onClick={this.test}>test</button>
+                        <button 
+                            onMouseOver={()=>this.setState({deleteButtonInstruction:true})}
+                            onMouseOut={()=>this.setState({deleteButtonInstruction:false})}
+                            onClick={this.onDeleteEveryThing} className='delete'>ALL
+                        </button>
+                        <input
+                            type='text'
+                            placeholder='find stack by name'
+                            value={this.state.stackSearch}
+                            onChange={this.onStackSearch}
+                        />
+                        <button 
+                            onMouseOver={()=>this.setState({addStackButtonIntruction:true})}
+                            onMouseOut={()=>this.setState({addStackButtonIntruction:false})}
+                            className='add'
+                            onClick={()=>this.setState({addStackInput:!this.state.addStackInput, stackName:'', stackImg:''})}    
+                        >+</button>
                     </div>
                 </div>
 
                 <h3>{this.state.error}</h3>
 
                 {this.state.warning &&
-                    <div>
+                    <div className='warning-show'>
                         <h3>{this.state.text}</h3>
-                        <button onClick={()=>this.confirm(true)}>yes</button>
-                        <button onClick={()=>this.confirm(false)}>no</button>
+                        <div className='warning-buttons'>
+                            <button className='yes' onClick={()=>this.confirm(true)}>yes</button>
+                            <button className='no' onClick={()=>this.confirm(false)}>no</button>
+                        </div>        
                     </div>
                 }
 
                 {this.state.addStackInput &&
-                <div>
-                    <input
-                        type='text'
-                        placeholder='new stack name'
-                        name='stackName'
-                        value={this.state.stackName}
-                        onChange={this.stackNameInput}
-                        autoFocus
-                    />
-                    <input
-                        type='text'
-                        placeholder='new stack image'
-                        name='stackImg'
-                        value={this.state.stackImg}
-                        onChange={this.stackNameInput}
-                    />
-                    <button onClick={this.saveAStack}>save</button>
+                <div className='stack-input'>
+                    <div className='inputs'>
+                        <input
+                            className='name-input'
+                            type='text'
+                            placeholder='new stack name'
+                            name='stackName'
+                            value={this.state.stackName}
+                            onChange={this.stackNameInput}
+                            autoFocus
+                        />
+                        <input
+                            className='img-input'
+                            type='text'
+                            placeholder='new stack image'
+                            name='stackImg'
+                            value={this.state.stackImg}
+                            onChange={this.stackNameInput}
+                        />
+                    </div>
+                    
+                    <div className='input-buttons'>
+                        <button className='save' onClick={this.saveAStack}>save</button>
+                        {this.state.cancelButton &&
+                        <button className='cancel' onClick={this.cancelSaving}>cancel</button>
+                        }
+                    </div>
+
                 </div>
                 }
-
-                {this.props.stacks.length !== 0 ? 
-                    <h3>you have {this.props.stacks.length} {grammarCheck}</h3>:
-                    <h3>please add a card stack</h3>
-                }
                 
-                <Test
+                <Stacks
                     stacks={this.props.filteredStacks.length===0?this.props.stacks:this.props.filteredStacks}
                     inputShow={this.state.editNameInputShow}
                     inputValue={this.state.editNameInput}
@@ -198,6 +323,42 @@ class CardStack extends React.Component{
                     editClick={(s)=>this.handleEdit(s)}
                     openClick={(s)=>this.openStack(s)}
                 />    
+
+                {this.state.showDiv &&
+                    <div style={divStyle}>
+                        <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere enim debitis sint reprehenderit rerum optio ullam possimus provident accusantium laboriosam quae blanditiis alias delectus natus, non ducimus facilis sunt similique!</h2>
+                    </div>
+                }
+
+                <div className='addStackButtonIntruction-instruction'>
+                    {this.state.addStackButtonIntruction &&
+                        <div className='instruction'>
+                            <h3>add a new card stack</h3>
+                        </div>
+                    }
+                </div>
+
+                <div className='deleteButtonInstruction-instruction'>
+                    {this.state.deleteButtonInstruction &&
+                        <div className='instruction'>
+                            <h3>delete all of your stacks</h3>
+                        </div>
+                    }
+                </div>
+
+                <div className='stackNumber-instruction'>
+                    {this.state.stackNumber &&
+                        <div className='instruction'>
+                            <h3>your total stacks</h3>
+                        </div>
+                    }
+                </div>
+
+                {this.state.showInstruction &&
+                    <div className='instruction'>
+                        <h3>tokens you get from winning games, collect 100 tokens and you can buy new games</h3>
+                    </div>
+                }
 
             </div>
         )
@@ -210,13 +371,14 @@ const mapStateToProps=(state)=>({
     tokens: state.tokenReducer.totalTokens,
     cards:state.flashCardReducer.cards,
     stackCards:state.flashCardReducer.stackCards,
+    stackNextId:state.cardStackReducer.stackId,
     filteredStacks:state.cardStackReducer.filteredStacks
 })
 
 export default connect(mapStateToProps)(CardStack)
 
 //stacks render
-const Test =({stacks, inputShow, inputValue, onInputChange, buttonClick, stackClick, deleteClick, editClick, openClick, shouldShowButtons})=>{
+const Stacks =({stacks, inputShow, inputValue, onInputChange, buttonClick, stackClick, deleteClick, editClick, openClick, shouldShowButtons})=>{
 
     const style=(stack)=>{
         const s={
@@ -230,9 +392,11 @@ const Test =({stacks, inputShow, inputValue, onInputChange, buttonClick, stackCl
         return s
     }
 
-    const teststacks=stacks && stacks.map((s,i)=>(
-        <div key={i}>
-            <div>
+    const renderStacks=stacks && stacks.map((s,i)=>(
+        <div
+            className='stack-render' 
+            key={i}>
+            <div className='stack-pic-name'>
                 <div
                     style={style(s)}
                     onClick={()=>stackClick(s)}
@@ -242,14 +406,15 @@ const Test =({stacks, inputShow, inputValue, onInputChange, buttonClick, stackCl
             </div> 
 
             {s.showButtons && 
-            <div>
-                <div>
-                    <button onClick={()=>deleteClick(s)}>delete</button>
-                    <button onClick={()=>editClick(s)}>edit</button>
-                    <Link to='/flashCard' onClick={()=>openClick(s)}><button>open</button></Link>
-                </div>  
+            <div className='edit-field'>
+                <div className='stack-buttons'>
+                    <button className='delete' onClick={()=>deleteClick(s)}>delete</button>
+                    <button className='edit' onClick={()=>editClick(s)}>edit</button>
+                    <Link to='/flashCard' onClick={()=>openClick(s)}><button className='open'>open</button></Link>
+                </div>
+                  
                 {inputShow &&
-                <div>
+                <div className='edit-stack-input'>
                     <input
                         type='text'
                         name='editNameInput'
@@ -265,6 +430,21 @@ const Test =({stacks, inputShow, inputValue, onInputChange, buttonClick, stackCl
         </div>   
     ))
     return(
-        <div className='stack'>{teststacks}</div>
+        <div className='stack'>{renderStacks}</div>
     )
 }
+
+const randomBg=randomPics(13, '/pictures/textures/', 'jpg')
+
+injectGlobal`
+body{
+    margin: 0;
+    padding: 0;
+    background: rgba(153, 127, 127, 0.7);
+    background-image: url(${randomBg});
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-attachment: fixed;
+} 
+`;

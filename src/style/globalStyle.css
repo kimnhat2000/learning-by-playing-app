@@ -1,0 +1,402 @@
+body{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+button{
+    border: none;
+    color: white;
+    background: rgb(116, 5, 116);
+    padding: 10px;
+    margin: 5px;
+    -webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.75);
+    border-radius: 10px;
+}
+
+button:hover{
+    background: rgb(85, 2, 85);
+}
+
+input{
+    border: none;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 5px;
+    padding: 0px 5px 0px 15px;
+}
+
+select{
+    border: none;
+    border-radius: 10px;
+    background:  rgba(255, 255, 255, 0.6);
+    padding: 0px 5px 0px 15px;
+}
+
+h2{
+    text-shadow: 2px 2px 1px rgba(100, 100, 100, 0.8);
+}
+
+h3{
+    font-size: 1.6em;
+    color: rgb(30, 20, 60);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-shadow: 2px 2px 4px rgba(50, 50, 50, 0.8);
+    margin: 5px;
+}
+
+h1{
+    font-family: vs-font;
+    color: red;
+    text-shadow: 3px 1px 4px #800000;
+    font-size: 2.5em;
+}
+
+@font-face {
+    font-family: vs-font;
+    src: url(/fonts/SSF4.ttf);
+}
+
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    -webkit-box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.73);
+    -moz-box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.73);
+    box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.73);
+    background-image: url(/pictures/textures/1.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    flex-wrap: wrap;
+}
+
+.stack-info{
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    margin: 0;
+    flex: 0 1 auto;
+}
+
+.stack-name{
+    display: flex;
+    justify-content: center;
+    background-color: rgba(255, 0, 191, 0.3);
+    margin: 0;
+    padding: 0 20px;
+    flex: 2 1 100px;
+}
+
+.stack-name h2{
+    margin: auto;
+}
+
+.token-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.token-img{
+    height: 40px;
+    padding: 0 10px;
+}
+
+.token-container h2{
+    color: rgb(255, 255, 14);
+    font-size: 2em;
+    margin: 5px;
+    text-shadow: 2px 2px 10px rgb(200, 200, 100);
+}
+
+.game-info img{
+    width: 50px;
+    height: 50px;
+    padding: 0px 5px 0px 5px;
+}
+
+.game-info h3{
+    font-size: 2.3em;
+    margin: 0;
+    color: red;
+    padding: 0px 5px 0px 5px;
+}
+
+.game-end{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    color: red;
+    font-size: 2em;
+    flex:10 1 auto;
+    margin: 0;
+}
+
+.header-menu{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    flex: 2 1 auto;
+    flex-wrap: wrap;
+}
+
+.header-menu button{
+    margin: 0 8px;
+    padding: 10px;
+    font-size: 1.1em;
+}
+
+.header-menu input{
+    width: 200px;
+    border: none;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 10px;
+    font-size: 1em;
+    background-image: url(/pictures/icons/searchIcon.png);
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+    background-size: 40px 40px;
+    padding: 0px 5px 0px 40px;
+}
+
+.header-menu .add{
+    background-color: rgba(0, 0, 255, 0.5);
+    background-image: url(/pictures/icons/addCard.png);
+    background-repeat: no-repeat;
+    background-size: 35px 35px;
+    background-position: 10px 3px;
+    padding: 10px 20px 10px 50px;
+}
+
+.add:hover{
+    background-color: rgba(13, 13, 165, 0.5);
+    background-image: url(/pictures/icons/addCard.png);
+    background-repeat: no-repeat;
+    background-size: 35px 35px;
+    background-position: 10px 3px;
+    padding: 10px 20px 10px 50px;
+}
+
+.header-menu .delete{
+    background-color: rgba(255, 0, 0, 0.5);
+    background-image: url(/pictures/icons/trashPin.png);
+    background-repeat: no-repeat;
+    background-size: 35px 35px;
+    background-position: 10px 3px;
+    padding: 10px 20px 10px 50px;
+}
+
+.delete:hover{
+    background-color: rgba(189, 5, 5, 0.5);
+    background-image: url(/pictures/icons/trashPin.png);
+    background-repeat: no-repeat;
+    background-size: 35px 35px;
+    background-position: 10px 3px;
+    padding: 10px 20px 10px 50px;
+}
+
+.header-menu .play{
+    background-color: rgba(255, 230, 0, 0.5);
+    background-image: url(/pictures/icons/gameIcon.png);
+    background-repeat: no-repeat;
+    background-size: 35px 35px;
+    background-position: 10px 3px;
+    padding: 10px 20px 10px 50px;
+}
+
+.play:hover{
+    background-color: rgba(189, 170, 5, 0.5);
+    background-image: url(/pictures/icons/gameIcon.png);
+    background-repeat: no-repeat;
+    background-size: 35px 35px;
+    background-position: 10px 3px;
+    padding: 10px 20px 10px 50px;
+}
+
+.header-menu .return{
+    background-image: url(/pictures/icons/return.png);
+    background-repeat: no-repeat;
+    background-size: 40px 40px;
+    background-position: 4px 2px;
+    padding: 10px 10px 10px 50px;
+    background-color: rgba(162, 0, 255, 0.7)
+}
+
+.header-menu .return:hover{
+    background-color: rgba(87, 7, 133, 0.7)
+}
+
+.header-menu .return-home{
+    background-image: url(/pictures/icons/home.png);
+    background-repeat: no-repeat;
+    background-size: 40px 40px;
+    background-position: 4px 0px;
+    padding: 10px 10px 10px 50px;
+    background-color: rgba(162, 0, 255, 0.7)
+}
+
+.header-menu .return-home:hover{
+    background-color: rgba(107, 4, 167, 0.7)
+}
+
+.instruction {
+    position: fixed;
+    top: 70px;
+    left: 20px; 
+}
+.instruction h3{
+    width: 200px;
+    height: 50px;
+    border: none;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 0.8em;
+    border-radius: 10px;
+    box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.73);
+}
+
+.warning-show{
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.warning-buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.warning-buttons .yes{
+    background-color: rgba(255, 0, 0, 0.7);
+    padding: 15px 20px 15px 20px;
+    font-size: 1em;
+    margin: 10px 30px;
+}
+
+.warning-buttons .no{
+    background-color: rgba(0, 0, 255, 0.7);
+    padding: 15px 20px 15px 20px;
+    font-size: 1em;
+    margin: 10px 30px;
+}
+
+.card{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;;
+    width: 150px;
+    height: 100px;
+    box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 15px;
+    margin: 5px;
+
+    border: solid 5px;
+    border-style:ridge;
+}
+
+.card img{
+    border-radius: 15px;
+    max-width: 50%;
+    max-height: 100;
+    overflow: hidden;
+}
+
+.card .card-name h3{
+    font-size: 0.8em;
+    flex-wrap: wrap;
+}
+
+.card-list{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    
+}
+
+.big-card-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.big-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    overflow: hidden;
+    flex: 2 1 auto
+}
+
+.big-card:hover{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    overflow: hidden;
+    flex: 2 1 auto;
+    opacity: 0.5;
+}
+
+.big-img {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.big-img img{
+    height: 60%;
+    overflow: hidden;
+}
+
+.big-img h3{
+    flex-wrap: wrap;
+    overflow: hidden;
+}
+
+.card-button{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.card-buttons .delete{
+    padding: 15px;
+    background-color: rgba(255, 0, 0, 0.6);
+    font-size: 1.2em;
+    margin: 15px 30px
+}
+
+.card-buttons .edit{
+    padding: 15px;
+    background-color: rgba(251, 255, 1, 0.6);
+    font-size: 1.2em;
+    margin: 15px 30px
+}
+
+.footer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+}

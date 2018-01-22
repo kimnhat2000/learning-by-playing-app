@@ -19,7 +19,15 @@ class BetThemDown extends React.Component{
             warning:'',
             playerScore:5,
             comScore:5,
-            showingButtons:true
+            showingButtons:true,
+            showIntruction:false
+        }
+    }
+
+    componentDidUpdate(prevProps, prevStates){
+        if(prevProps.tokens !== this.props.tokens){
+            const json=JSON.stringify(this.props.tokens)
+            localStorage.setItem('tokens', json)
         }
     }
 
@@ -158,9 +166,9 @@ class BetThemDown extends React.Component{
         const r1=randomColor();
         const r2=randomColor();
         const r3=randomColor();
-        const style={backgroundColor:`rgb(${r1}, ${r2}, ${r3})`}
+        const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3}, 0.6)`}
 
-        const cardstyle=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg', '1em', '20px', 'hidden')
+        const cardstyle=reziseAndStyleBigCard('300px', '250px', 17, 'pictures/backgroundPics/', 'jpg', '1em', '20px', 'hidden')
 
         const comCards=this.state.comCards.map((c,i)=>(
             <Card 
@@ -183,15 +191,35 @@ class BetThemDown extends React.Component{
             <div>
                 <div className='header'>
                     <div className='stack-info'>
-                        {this.props.selectedStack &&
-                            <h3>{this.props.selectedStack.name}</h3>
-                        }
+                        <div className='stack-name'>
+                            {this.props.selectedStack &&
+                                <h3>{this.props.selectedStack.name}</h3>
+                            }
+                        </div>
+
+                        <div 
+                            className ='token-container' 
+                            onMouseOver={()=>this.setState({showIntruction:true})}
+                            onMouseOut={()=>this.setState({showIntruction:false})}
+                        >
+                            <div className='token'/>
+                            <img className='token-img'src='pictures/myLogo.png'/>
+                            <h2>{this.props.tokens}</h2>
+                        </div>
                     </div>
 
+                    <h1 className='annouce'>{this.state.warning}</h1>
+
                     <div className='header-menu'>
-                        <button onClick={this.onPlay}>{this.state.playButton}</button>
+                        <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
                         <button onClick={this.test}>test</button>
-                        <Link to='/selectCard'><button>return</button></Link>
+
+                        <button onClick={()=>this.props.dispatch(addToken(1))}>add token</button>
+
+
+                        <Link to='/selectCard'><button className='return'>return</button></Link>
+                        <Link to='/'><button className='return-home'>return home</button></Link>
+
                     </div>
                 </div>
 
@@ -206,33 +234,37 @@ class BetThemDown extends React.Component{
 
                     {this.state.playerCard && 
                     <div className='battlefield'>
-                        <div className='game-info'>
-                            <h3>your score is {this.state.playerScore}</h3>                            
-                            <h3>you have {this.props.tokens} tokens</h3>
-                            <h3>computer score is {this.state.comScore}</h3>
-                        </div>
+
                         <div className='battle-card'>
-                            <BigCard
-                                style={cardstyle}
-                                card={this.state.playerCard}
-                                bigCardClick={this.onBigCardClick}
-                                showButtons={false}
-                            />
-                            <BigCard
-                                style={cardstyle}
-                                card={this.state.comCard}
-                                bigCardClick={this.onComBigCardClick}
-                                showButtons={false}
-                            />
-                        </div>
-                        <h1>VS</h1>
-                        <h3>{this.state.warning}</h3>
-                        {this.state.showingButtons &&
-                            <div className='buttons'>
-                                <button className='attact' onClick={()=>this.onBattleClick(true)}>ATTACT</button>
+                            <div className='left-card'>
+                                <h3>your score is {this.state.playerScore}</h3>  
+                                <BigCard
+                                    style={cardstyle}
+                                    card={this.state.playerCard}
+                                    bigCardClick={this.onBigCardClick}
+                                    showButtons={false}
+                                />
+                                {this.state.showingButtons &&
                                 <button className='defend' onClick={()=>this.onBattleClick(false)}>DEFEND</button>
-                            </div>  
-                        }
+                                }
+                            </div>
+
+                            <h1 className='vsfont'>VS</h1>
+                            
+                            <div className='right-card'>
+                                <h3>computer score is {this.state.comScore}</h3>
+                                <BigCard
+                                    style={cardstyle}
+                                    card={this.state.comCard}
+                                    bigCardClick={this.onComBigCardClick}
+                                    showButtons={false}
+                                />
+                                {this.state.showingButtons &&
+                                <button className='attack' onClick={()=>this.onBattleClick(true)}>ATTACT</button>
+                                }
+                            </div>
+
+                        </div>
                         
                     </div>   
                     }
@@ -245,6 +277,12 @@ class BetThemDown extends React.Component{
                     </div>
                     
                 </div>
+
+                {this.state.showIntruction &&
+                    <div className='instruction'>
+                        <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>
+                    </div>
+                }
             
             </div>
         )

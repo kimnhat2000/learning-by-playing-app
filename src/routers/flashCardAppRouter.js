@@ -12,6 +12,7 @@ import WackACard from '../components/games/WackACard';
 import Cookcoo from '../components/games/cookcoo';
 import CardStack from '../components/cardStack';
 import Test from '../references/test';
+import '../style/globalStyle.css';
 
 const FlashCardAppRouter =()=>(
     <BrowserRouter>

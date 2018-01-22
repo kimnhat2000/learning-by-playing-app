@@ -12,3 +12,14 @@ export const buyAGame =(game)=>({
     type:'BUY_A_GAME',
     game
 })
+
+export const changeTokenNum=(num)=>({
+    type:'CHANGE_TOKEN_NUM',
+    num
+})
+
+export const saveGameBought=(gamesBoughtState, gamesRemainState)=>({
+    type:'CHANGE_GAME_BOUGHT_STATE',
+    gamesBoughtState,
+    gamesRemainState
+})
