@@ -9,6 +9,14 @@ export const shuffle=(a)=> {
     return newArr;
 }
 
+//filter two arrays
+export const filter2arrays=(longArray, shortArray)=>{
+        for (let i = 0; i <= shortArray.length - 1; i++) {
+            longArray = longArray.filter(c => c.id !== select[i].id)
+        }
+    return longArray;
+}
+
 //randomNum
 export const randomNum=(num)=>{
     const r=Math.floor(Math.random()*num)

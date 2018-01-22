@@ -54,6 +54,12 @@ export const filterStack=(stackId)=>({
     stackId
 })
 
+//filter cards for stack after reload page
+export const filterCardsAfterReload=(cards)=>({
+    type: 'FILTER_CARDS_IN_STACK_AFTER_RELOAD',
+    cards
+})
+
 //set new card id for saving to storage purpose
 export const setNewCardId =(newCardId)=>({
     type: 'SET_CARD_ID',

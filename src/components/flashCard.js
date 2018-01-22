@@ -2,7 +2,7 @@ import React from 'react';
 import CardList from './cardList';
 import {BigCard} from './card';
 import {connect} from 'react-redux';
-import {addCard, addCards, removeCard, cardToEditInfo, editCard, deleteAllCardsInCurrentStack, filteredCards, filterStack, setNewCardId} from '../actions/flashCardActions';
+import { addCard, addCards, removeCard, cardToEditInfo, filterCardsAfterReload, editCard, deleteAllCardsInCurrentStack, filteredCards, filterStack, setNewCardId} from '../actions/flashCardActions';
 import {selectedStack} from '../actions/cardStackActions';
 import {addToken, reduceToken} from '../actions/tokenActions'
 import FlashCardForm from './form';
@@ -30,40 +30,51 @@ class FlashCard extends React.Component{
         }
     }
 
-    // componentDidUpdate(prevProps, prevStates){
-    //     if(prevProps.tokens !== this.props.tokens){
-    //         const json=JSON.stringify(this.props.tokens)
-    //         localStorage.setItem('tokens', json)
-    //     }
-    // }
+    componentDidUpdate(prevProps, prevStates){
+        if(prevProps.tokens !== this.props.tokens){
+            const json=JSON.stringify(this.props.tokens)
+            localStorage.setItem('tokens', json)
+        }
+    }
 
-    // componentWillUnmount(){
-    //     if(!this.props.selectedStack){
-    //         return;
-    //     }else if(this.props.selectedStack){
-    //         const allCards=this.props.allCards
-    //         const newCardId=this.props.newCardId
-    //         const json =JSON.stringify(allCards);
-    //         const json2 =JSON.stringify(newCardId);
-    //         localStorage.setItem('allCards', json);
-    //         localStorage.setItem('newCardId', json2); 
-    //     }
-    // }
+    componentWillUnmount(){
+        if(!this.props.selectedStack){
+            return;
+        }else if(this.props.selectedStack){
+            if(this.props.allCards){
+                const allCards = this.props.allCards
+                const newCardId = this.props.newCardId
+                const json = JSON.stringify(allCards);
+                const json2 = JSON.stringify(newCardId);
+                localStorage.setItem('allCards', json);
+                localStorage.setItem('newCardId', json2); 
+                return;
+            }
+        }
+    }
 
-    // componentDidMount(){
-    //     if(!this.props.selectedStack){
-    //         this.setState({returnHome:true})
-    //         return;
-    //     }else{
-    //         if(localStorage.getItem('newCardId')===null){
-    //             return;
-    //         }
-    //         const json2=localStorage.getItem('newCardId')
-    //         const newCardId=JSON.parse(json2)
-    //         this.props.dispatch(setNewCardId(newCardId))
-    //     }
-        
-    // }
+    componentDidMount(){
+        if(!this.props.selectedStack){
+            this.setState({returnHome:true})
+            return;
+        }
+        if(localStorage.getItem('newCardId')===null){
+            return;
+        }
+
+        if (localStorage.getItem('selectedStack')){
+            const json=localStorage.getItem('selectedStack')
+            const json2= localStorage.getItem('allCards')
+            const stack=JSON.parse(json)
+            const allCards=JSON.parse(json2)
+            const cardsInStack=allCards.filter(c=>c.stackId===stack.stackId)
+            return;
+        }
+
+        const json2=localStorage.getItem('newCardId')
+        this.props.dispatch(setNewCardId(newCardId))
+              
+    }
 
     onCardClick=(card)=>{
         this.setState({bigCard:card})

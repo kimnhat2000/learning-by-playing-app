@@ -3,11 +3,12 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {Card, BigCard} from './card';
 import {editCard} from '../actions/flashCardActions';
-import {randomColor} from '../tools/tools';
+import { randomColor, filter2arrays} from '../tools/tools';
 import {selectOtherApproach, storeSelectedCards} from '../actions/selectCardsActions';
 import { buyAGame, saveGameBought } from '../actions/tokenActions';
 import _ from 'lodash';
 import '../style/selectCards.css';
+import { selectedStack } from '../actions/cardStackActions';
 
 class SelectCards extends React.Component{
     constructor(props){
@@ -33,37 +34,59 @@ class SelectCards extends React.Component{
         }
     }
 
-    // componentDidUpdate(prevProps, prevState){
-    //     if (prevState.buyGames.length !== this.state.buyGames.length) {
-    //         const json =JSON.stringify(this.state.buyGames);
-    //         const json1 =JSON.stringify(this.state.selectGames);
-    //         localStorage.setItem('boughtGames', json);
-    //         localStorage.setItem('remainGames', json1);
-    //         return;
-    //     }
-    //     if(prevProps.tokens.totalTokens !== this.props.tokens.totalTokens){
-    //         const json=JSON.stringify(this.props.tokens.totalTokens)
-    //         localStorage.setItem('tokens', json)
-    //         return;
-    //     }
-    // }
+    componentDidUpdate(prevProps, prevState){
+        if (prevState.selectCards.length !== this.state.selectCards.length) {
+            const json=JSON.stringify(this.state.selectCards)
+            localStorage.setItem('selectedCardsToPlay', json)
+            console.log('selected')
+            return;
+        }
+        if (prevState.buyGames.length !== this.state.buyGames.length) {
+            const json =JSON.stringify(this.state.buyGames);
+            const json1 =JSON.stringify(this.state.selectGames);
+            localStorage.setItem('boughtGames', json);
+            localStorage.setItem('remainGames', json1);
+            console.log('buy a game')
+            return;
+        }
+        if(prevProps.tokens.totalTokens !== this.props.tokens.totalTokens){
+            const json=JSON.stringify(this.props.tokens.totalTokens)
+            localStorage.setItem('tokens', json)
+            console.log('got more token')
+            return;
+        }
+    }
 
-    // componentDidMount(){
-    //     try{
-    //         if(localStorage.getItem('boughtGames')===null){
-    //             return;
-    //         }else{
-    //         const json=localStorage.getItem('boughtGames');
-    //         const json1=localStorage.getItem('remainGames');
-    //         const gamesBought= JSON.parse(json);
-    //         const gamesRemain=JSON.parse(json1)
-    //         this.props.dispatch(saveGameBought(gamesBought, gamesRemain))
-    //         this.setState({buyGames:gamesBought, selectGames:gamesRemain})
-    //         }
-    //     }catch(error){
-    //         //do nothing
-    //     }
-    // }
+    componentDidMount(){
+        try{
+            // console.log('mounted')
+            if (localStorage.getItem('selectedCardsToPlay') !== null) {
+                const json = localStorage.getItem('selectedCardsToPlay')
+                const selectCardsState = JSON.parse(json)
+                const selectCards = selectCardsState.map(c => c = { ...c, selected:true})
+                let cards=this.state.cards
+                for(let i=0; i<=selectCards.length-1; i++){
+                    cards=cards.filter(c=>c.id !== selectCards[i].id)
+                }
+                this.setState({cards, selectCards})
+                console.log('selected: ',selectCards, 'cards: ',cards)
+            }
+            if(localStorage.getItem('boughtGames')===null){
+                return;
+            }else{
+            const json=localStorage.getItem('boughtGames');
+            const json1=localStorage.getItem('remainGames');
+            const gamesBought= JSON.parse(json);
+            const gamesRemain=JSON.parse(json1)
+            this.props.dispatch(saveGameBought(gamesBought, gamesRemain))
+            this.setState({buyGames:gamesBought, selectGames:gamesRemain})
+            }
+
+
+        }catch(error){
+            //do nothing
+        }
+    }
 
     onFilterTextChange=(e)=>{
         const findCard=e.target.value
@@ -113,10 +136,10 @@ class SelectCards extends React.Component{
             const buyGames=[...this.state.buyGames, {...gameWant,buy:true}]
             this.setState({tokens, warning:false, buyGames, selectGames})
             this.props.dispatch(buyAGame(gameWant))
-            // const gamesBought=JSON.stringify(this.props.tokenReducer.gamesBought)
-            // const gamesRemain=JSON.stringify(this.props.tokenReducer.gamesRemain)
-            // localStorage.setItem('gamesBought',gamesBought)
-            // localStorage.setItem('gamesRemain',gamesRemain)
+            const gamesBought=JSON.stringify(this.props.tokenReducer.gamesBought)
+            const gamesRemain=JSON.stringify(this.props.tokenReducer.gamesRemain)
+            localStorage.setItem('gamesBought',gamesBought)
+            localStorage.setItem('gamesRemain',gamesRemain)
             return;
         }else {
             this.setState({warning:false})

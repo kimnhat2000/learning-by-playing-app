@@ -33,6 +33,12 @@ export const flashCardReducer =(state=defaultState, action)=>{
             newId:state.newId
         }
 
+        case 'FILTER_CARDS_IN_STACK_AFTER_RELOAD':
+        return {
+            ...state,
+            stackCards:action.cards
+        }
+
         //test need, done, works fine now
         case 'REMOVE_CARD':
         return {
