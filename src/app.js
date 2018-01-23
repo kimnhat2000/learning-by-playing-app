@@ -15,6 +15,8 @@ import {tokenReducer} from './reducers/tokenReducer';
 import {cardStackReducer} from './reducers/cardStackReducer';
 import FlashCardAppRouter from './routers/flashCardAppRouter';
 
+console.log('connected')
+
 const reducers=combineReducers({
     flashCardReducer,
     selectCardsReducer,

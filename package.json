@@ -1,12 +1,13 @@
 {
-  "name": "expenditureApp",
+  "name": "flashCard",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Andrew Mead",
   "license": "MIT",
   "scripts": {
-    "serve": "live-server public/",
-    "build": "webpack",
+    "s": "live-server public/",
+    "build:dev": "webpack",
+    "build:prod": "webpack -p --env production",
     "ds": "webpack-dev-server"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "babel-preset-react": "6.24.1",
     "connect-history-api-fallback": "^1.5.0",
     "css-loader": "0.28.4",
+    "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.6",
     "firebase": "^4.7.0",
     "live-server": "^1.2.0",
