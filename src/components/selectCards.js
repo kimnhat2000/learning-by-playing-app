@@ -32,6 +32,9 @@ class SelectCards extends React.Component{
             playGameInstruction:false,
             cardSelectInstruction:false,  
             returnHome: false,
+            gamesToPlayInstruction:false,
+            addButtonIntruction:false,
+            unSelectAll:false,
         }
     }
 
@@ -42,7 +45,7 @@ class SelectCards extends React.Component{
             localStorage.setItem('boughtGames', json);
             localStorage.setItem('remainGames', json1);
             console.log('buy a game')
-            return;
+
         }
         if(prevProps.tokens.totalTokens !== this.props.tokens.totalTokens){
             const json=JSON.stringify(this.props.tokens.totalTokens)
@@ -124,8 +127,10 @@ class SelectCards extends React.Component{
             const buyGames=[...this.state.buyGames, {...gameWant,buy:true}]
             this.setState({tokens, warning:false, buyGames, selectGames})
             this.props.dispatch(buyAGame(gameWant))
-            const gamesBought=JSON.stringify(this.props.tokenReducer.gamesBought)
-            const gamesRemain=JSON.stringify(this.props.tokenReducer.gamesRemain)
+
+            const gamesBought = JSON.stringify(this.props.tokens.gamesBought)
+            const gamesRemain = JSON.stringify(this.props.tokens.gamesRemain)
+            
             localStorage.setItem('gamesBought',gamesBought)
             localStorage.setItem('gamesRemain',gamesRemain)
             return;
@@ -219,8 +224,8 @@ class SelectCards extends React.Component{
             <div className='game-info'>
                 <img
                     className='games-can-play'
-                    onMouseOver={() => this.setState({ playGameInstruction: true })}
-                    onMouseOut={() => this.setState({ playGameInstruction: false })}
+                    onMouseOver={() => this.setState({ gamesToPlayInstruction: true })}
+                    onMouseOut={() => this.setState({ gamesToPlayInstruction: false })}
                     src='/pictures/icons/gameIcon.png'
                 />
                 <div  className='buttons'>{boughtGames}</div>   
@@ -233,7 +238,7 @@ class SelectCards extends React.Component{
         ))
 
         return(
-            <div>
+            <div className='selectCards-container'> 
                 <div className='header'>
                     <div className='stack-info'>
                         <div className='stack-name'>
@@ -267,13 +272,25 @@ class SelectCards extends React.Component{
                         <div>
                             <button onClick={this.test}>test</button>
                             <input
+                                className='selectCard-input'
                                 type='text'
                                 placeholder='find cards by name'
                                 value={this.state.findCard}
                                 onChange={this.onFilterTextChange}
                             />
-                            <button onClick={() => this.selectAll(true)} className='add'>select all cards</button>
-                            <button onClick={() => this.selectAll(false)} className='delete'>unselect all cards</button>
+
+                            <button 
+                                onMouseOver={() => this.setState({ addButtonIntruction: true })}
+                                onMouseOut={() => this.setState({ addButtonIntruction: false })}
+                                onClick={() => this.selectAll(true)} className='add'
+                            >+ All</button>
+
+                            <button 
+                                onMouseOver={() => this.setState({ unSelectAll: true })}
+                                onMouseOut={() => this.setState({ unSelectAll: false })}
+                                onClick={() => this.selectAll(false)} className='delete'
+                            >- All</button>
+
                             <Link to='/flashCard'><button className='return'>return</button></Link>
                         </div>    
                         }
@@ -333,7 +350,31 @@ class SelectCards extends React.Component{
                     </div>
                 }  
 
-                <div className='cardSelectInstruction-instruction'>
+                <div className='addButtonIntruction-selectCards'>
+                    {this.state.addButtonIntruction &&
+                        <div className='instruction'>
+                            <h3>select all of your cards</h3>
+                        </div>
+                    }
+                </div>
+
+                <div className='unSelectAll-selectCards'>
+                    {this.state.unSelectAll &&
+                        <div className='instruction'>
+                            <h3>unselect all of your cards</h3>
+                        </div>
+                    }
+                </div>
+
+                <div className='gamesToPlayInstruction'>
+                    {this.state.gamesToPlayInstruction &&
+                        <div className='instruction'>
+                            <h3>games you can play</h3>
+                        </div>
+                    }
+                </div>
+
+                <div className='cardSelectInstruction'>
                     {this.state.cardSelectInstruction &&
                         <div className='instruction'>
                             <h3>you have selected {this.state.selectCards.length} {grammarCheck}</h3>
@@ -341,7 +382,7 @@ class SelectCards extends React.Component{
                     }
                 </div>
                 
-                <div className='playGameIntruction-instruction'>
+                <div className='playGameIntruction'>
                     {this.state.playGameInstruction &&
                         <div className='instruction'>
                             <h3>select at least 4 cards to play games with</h3>

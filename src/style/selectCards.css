@@ -38,13 +38,42 @@
     left: 40%;
 }
 
-.playGameIntruction-instruction .instruction{
+.playGameIntruction .instruction{
     top:70%;
     left: 40%;
 }
 
-.cardSelectInstruction-instruction .instruction{
+.cardSelectInstruction .instruction{
     top:8%;
     left: 10%;
     height: 5px;
+}
+
+.gamesToPlayInstruction .instruction{
+    top: 75%;
+    left: 20%
+}
+
+.header-menu .selectCard-input{
+    padding: 10px 5px 10px 40px;
+    font-size: 0.8em;
+}
+
+.addButtonIntruction-selectCards .instruction{
+    left: 50%;
+}
+
+.unSelectAll-selectCards .instruction{
+    left:70%;
+}
+
+.selectCards-container .header-menu .delete{
+    background-image: url(/pictures/icons/cancel.png);
+    background-color: rgba(200, 180, 70, 0.6);
+    background-size: 35px 35px;
+    background-position: 8px 5px;
+}
+
+.selectCards-container .header-menu .delete:hover{
+    background-color: rgba(204, 157, 26, 0.6);
 }

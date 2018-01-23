@@ -22,6 +22,7 @@ class BetThemDown extends React.Component{
             showingButtons:true,
             showIntruction:false,
             returnHome: false,
+            gamePlayInstruction: false,
         }
     }
 
@@ -221,6 +222,11 @@ class BetThemDown extends React.Component{
                     <div className='header-menu'>
                         {!this.state.returnHome &&
                             <div>
+                                <button
+                                    onMouseOver={() => this.setState({ gamePlayInstruction: true })}
+                                    onMouseOut={() => this.setState({ gamePlayInstruction: false })}
+                                    className='gamePlayInstruction'
+                                />
                                 <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
                                 <button onClick={this.test}>test</button>
                                 <Link to='/selectCard'><button className='return'>return</button></Link>
@@ -292,9 +298,17 @@ class BetThemDown extends React.Component{
                     </div>
                 }
 
+                <div className='gamePlayInstruction'>
+                    {this.state.gamePlayInstruction &&
+                        <div className='instruction'>
+                            <h3>if your card value is higher than our opponent card you win and get 1 score, if you are unsure you can choose defend and lost haft a point, will will get 3 tokens upon winning</h3>
+                        </div>
+                    }
+                </div>
+
                 {this.state.showIntruction &&
                     <div className='instruction'>
-                        <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>
+                        <h3>tokens you get from winning games, collect 100 tokens and you can buy new games</h3>
                     </div>
                 }
             

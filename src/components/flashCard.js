@@ -26,7 +26,10 @@ class FlashCard extends React.Component{
             text:'',
             returnHome:false,
             showIntruction:false,
-            cardNumber:false
+            cardNumber:false,
+            deleteButtonInstruction: false,
+            addButtonIntruction: false,
+            playButtonInstruction:false,
         }
     }
 
@@ -206,9 +209,25 @@ class FlashCard extends React.Component{
 
                         {!this.state.returnHome &&
                         <div>
-                            <button onClick={()=>this.setState({showForm:true})} className='add'>+</button>
-                            <button onClick={this.onDeleteAll} className='delete'>ALL</button>
-                            <Link to='/selectCard'><button className='play'>></button></Link>
+                            <button 
+                                onMouseOver={() => this.setState({ addButtonIntruction: true })}
+                                onMouseOut={() => this.setState({ addButtonIntruction: false })}
+                                className='add'
+                                onClick={()=>this.setState({showForm:true})} 
+                            >+</button>
+
+                            <button 
+                                onMouseOver={() => this.setState({ deleteButtonInstruction: true })}
+                                onMouseOut={() => this.setState({ deleteButtonInstruction: false })}
+                                className='delete'
+                                onClick={this.onDeleteAll} 
+                            >ALL</button>
+
+                            <Link to='/selectCard'
+                                onMouseOver={() => this.setState({ playButtonInstruction: true })}
+                                onMouseOut={() => this.setState({ playButtonInstruction: false })}
+                            ><button className='play'>></button></Link>
+                            
                         </div>
                         }
 
@@ -281,6 +300,30 @@ class FlashCard extends React.Component{
                     {this.state.cardNumber &&
                         <div className='instruction'>
                             <h3>your total cards</h3>
+                        </div>
+                    }
+                </div>
+
+                <div className='addButtonIntruction-flashcards'>
+                    {this.state.addButtonIntruction &&
+                        <div className='instruction'>
+                            <h3>add a new card</h3>
+                        </div>
+                    }
+                </div>
+
+                <div className='deleteButtonInstruction-flashcards'>
+                    {this.state.deleteButtonInstruction &&
+                        <div className='instruction'>
+                            <h3>delete all of your cards</h3>
+                        </div>
+                    }
+                </div>
+
+                <div className='playButtonInstruction-flashcards'>
+                    {this.state.playButtonInstruction &&
+                        <div className='instruction'>
+                            <h3>click here to play games with your cards, you must have atleast 4 cards to play games</h3>
                         </div>
                     }
                 </div>

@@ -31,7 +31,7 @@ class CardStack extends React.Component{
             showInstruction:false,
             stackNumber:false,
             deleteButtonInstruction:false,
-            addStackButtonIntruction:false,
+            addButtonIntruction:false,
         }
     }
 
@@ -217,8 +217,7 @@ class CardStack extends React.Component{
         const grammarCheck = this.props.stacks.length === 1 ? 'stack' : 'stacks'
 
         return(
-            <div>
-
+            <div className='cardStackPage'>
                 <div className='header'>
                     <div className='stack-info'>
                         <div className='stack-name'>
@@ -253,23 +252,27 @@ class CardStack extends React.Component{
                     <div className='header-menu'>
                         <button onClick={()=>localStorage.clear()}>emptyStorage</button>
                         <button onClick={this.test}>test</button>
-                        <button 
-                            onMouseOver={()=>this.setState({deleteButtonInstruction:true})}
-                            onMouseOut={()=>this.setState({deleteButtonInstruction:false})}
-                            onClick={this.onDeleteEveryThing} className='delete'>ALL
-                        </button>
+
+                        <button
+                            onMouseOver={() => this.setState({ addButtonIntruction: true })}
+                            onMouseOut={() => this.setState({ addButtonIntruction: false })}
+                            className='add'
+                            onClick={() => this.setState({ addStackInput: !this.state.addStackInput, stackName: '', stackImg: '' })}
+                        >+</button>
+
                         <input
                             type='text'
                             placeholder='find stack by name'
                             value={this.state.stackSearch}
                             onChange={this.onStackSearch}
                         />
-                        <button 
-                            onMouseOver={()=>this.setState({addStackButtonIntruction:true})}
-                            onMouseOut={()=>this.setState({addStackButtonIntruction:false})}
-                            className='add'
-                            onClick={()=>this.setState({addStackInput:!this.state.addStackInput, stackName:'', stackImg:''})}    
-                        >+</button>
+
+                        <button
+                            onMouseOver={() => this.setState({ deleteButtonInstruction: true })}
+                            onMouseOut={() => this.setState({ deleteButtonInstruction: false })}
+                            onClick={this.onDeleteEveryThing} className='delete'>ALL
+                        </button>
+
                     </div>
                 </div>
 
@@ -329,21 +332,15 @@ class CardStack extends React.Component{
                     openClick={(s)=>this.openStack(s)}
                 />    
 
-                {this.state.showDiv &&
-                    <div style={divStyle}>
-                        <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere enim debitis sint reprehenderit rerum optio ullam possimus provident accusantium laboriosam quae blanditiis alias delectus natus, non ducimus facilis sunt similique!</h2>
-                    </div>
-                }
-
-                <div className='addStackButtonIntruction-instruction'>
-                    {this.state.addStackButtonIntruction &&
+                <div className='addButtonIntruction'>
+                    {this.state.addButtonIntruction &&
                         <div className='instruction'>
                             <h3>add a new card stack</h3>
                         </div>
                     }
                 </div>
 
-                <div className='deleteButtonInstruction-instruction'>
+                <div className='deleteButtonInstruction'>
                     {this.state.deleteButtonInstruction &&
                         <div className='instruction'>
                             <h3>delete all of your stacks</h3>

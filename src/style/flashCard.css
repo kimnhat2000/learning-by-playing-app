@@ -6,3 +6,14 @@
     padding: 15px;
 }
 
+.deleteButtonInstruction-flashcards .instruction{
+    left: 60%;
+}
+
+.addButtonIntruction-flashcards .instruction{
+    left: 50%;
+}
+
+.playButtonInstruction-flashcards .instruction{
+    left: 65%;
+}

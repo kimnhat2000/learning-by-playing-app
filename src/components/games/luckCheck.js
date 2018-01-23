@@ -19,6 +19,7 @@ class LuckCheck extends React.Component{
             playButton:'play',
             showIntruction:false,
             returnHome: false,
+            gamePlayInstruction:false,
         }
     }
 
@@ -155,8 +156,13 @@ class LuckCheck extends React.Component{
                     <h3 className='game-end'>{this.state.warning}</h3>
 
                     <div className='header-menu'>
-                        {!this.state.returnHome &&
+                        !this.state.returnHome &&
                             <div>
+                                <button
+                                    onMouseOver={() => this.setState({ gamePlayInstruction: true })}
+                                    onMouseOut={() => this.setState({ gamePlayInstruction: false })}
+                                    className='gamePlayInstruction'
+                                />
                                 <button onClick={this.test}>test</button>
                                 <button onClick={() => this.props.dispatch(addToken(1))}>add token</button>
                                 <select className='selects' onChange={this.cardNum}>
@@ -209,10 +215,18 @@ class LuckCheck extends React.Component{
                         <Link to='/'><h3>you need to choose a stack to see cards, click here to go to stacks selection page</h3></Link>
                     </div>
                 }
+
+                <div className='gamePlayInstruction'>
+                    {this.state.gamePlayInstruction &&
+                        <div className='instruction'>
+                            <h3>click the correct card to win, the more cards you play, the more tokens you get if you win</h3>
+                        </div>
+                    }
+                </div>
                 
                 {this.state.showIntruction &&
                     <div className='instruction'>
-                        <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>
+                        <h3>tokens you get from winning games, collect 100 tokens and you can buy new games</h3>
                     </div>
                 }
 

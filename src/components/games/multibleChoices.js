@@ -18,6 +18,7 @@ class MultibleChoices extends React.Component{
             playButton:'play',
             showIntruction:false,
             returnHome: false,
+            gamePlayInstruction: false,
         }
     }
 
@@ -123,6 +124,11 @@ class MultibleChoices extends React.Component{
                     <div className='header-menu'>
                         {!this.state.returnHome &&
                             <div>
+                            <button
+                                onMouseOver={() => this.setState({ gamePlayInstruction: true })}
+                                onMouseOut={() => this.setState({ gamePlayInstruction: false })}
+                                className='gamePlayInstruction'
+                            />
                                 <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
                                 <button onClick={this.test}>test</button>
                                 <Link to='/selectCard'><button className='return'>return</button></Link>
@@ -152,6 +158,14 @@ class MultibleChoices extends React.Component{
                         <Link to='/'><h3>you need to choose a stack to see cards, click here to go to stacks selection page</h3></Link>
                     </div>
                 }
+
+                <div className='gamePlayInstruction'>
+                    {this.state.gamePlayInstruction &&
+                        <div className='instruction'>
+                            <h3>click the correct card and win a score</h3>
+                        </div>
+                    }
+                </div>
 
                 {this.state.showIntruction &&
                     <div className='instruction'>

@@ -17,6 +17,10 @@
     border-radius: 5%;
 }
 
+.stack-render:hover{
+    background-color: rgba(76, 18, 134, 0.5);
+}
+
 .stack-pic-name{
     display: flex;
     flex-direction: column;
@@ -133,3 +137,10 @@
     margin: 10px 30px;
 }
 
+.deleteButtonInstruction .instruction{
+    left: 85%;
+}
+
+.addButtonIntruction .instruction{
+    left: 70%;
+}
