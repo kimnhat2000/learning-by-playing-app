@@ -31,16 +31,11 @@ class SelectCards extends React.Component{
             buyGameInstruction:false,      
             playGameInstruction:false,
             cardSelectInstruction:false,  
+            returnHome: false,
         }
     }
 
     componentDidUpdate(prevProps, prevState){
-        if (prevState.selectCards.length !== this.state.selectCards.length) {
-            const json=JSON.stringify(this.state.selectCards)
-            localStorage.setItem('selectedCardsToPlay', json)
-            console.log('selected')
-            return;
-        }
         if (prevState.buyGames.length !== this.state.buyGames.length) {
             const json =JSON.stringify(this.state.buyGames);
             const json1 =JSON.stringify(this.state.selectGames);
@@ -59,18 +54,12 @@ class SelectCards extends React.Component{
 
     componentDidMount(){
         try{
-            // console.log('mounted')
-            if (localStorage.getItem('selectedCardsToPlay') !== null) {
-                const json = localStorage.getItem('selectedCardsToPlay')
-                const selectCardsState = JSON.parse(json)
-                const selectCards = selectCardsState.map(c => c = { ...c, selected:true})
-                let cards=this.state.cards
-                for(let i=0; i<=selectCards.length-1; i++){
-                    cards=cards.filter(c=>c.id !== selectCards[i].id)
-                }
-                this.setState({cards, selectCards})
-                console.log('selected: ',selectCards, 'cards: ',cards)
+
+            if (!this.props.selectedStack) {
+                this.setState({ returnHome: true })
+                return;
             }
+
             if(localStorage.getItem('boughtGames')===null){
                 return;
             }else{
@@ -81,7 +70,6 @@ class SelectCards extends React.Component{
             this.props.dispatch(saveGameBought(gamesBought, gamesRemain))
             this.setState({buyGames:gamesBought, selectGames:gamesRemain})
             }
-
 
         }catch(error){
             //do nothing
@@ -165,7 +153,7 @@ class SelectCards extends React.Component{
         const r1=randomColor();
         const r2=randomColor();
         const r3=randomColor();
-        const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3}, 0.8)`}
+        const style={backgroundColor:`rgba(${r1}, ${r2}, ${r3}, 0.9)`}
 
         const cards=this.state.findCard && this.state.cards.filter(c=>c.name.includes(this.state.findCard));
         const findSelectCards=this.state.findCard && this.state.selectCards.filter(c=>c.name.includes(this.state.findCard));
@@ -228,7 +216,13 @@ class SelectCards extends React.Component{
                 />
                 <h3>{4-this.state.selectCards.length}/{this.state.selectCards.length}</h3>
             </div>:
-            <div>
+            <div className='game-info'>
+                <img
+                    className='games-can-play'
+                    onMouseOver={() => this.setState({ playGameInstruction: true })}
+                    onMouseOut={() => this.setState({ playGameInstruction: false })}
+                    src='/pictures/icons/gameIcon.png'
+                />
                 <div  className='buttons'>{boughtGames}</div>   
             </div> 
         
@@ -268,17 +262,21 @@ class SelectCards extends React.Component{
                         <h3>{this.state.selectCards.length}</h3>
                     </div>
 
-                    <div className='header-menu'>     
-                        <button onClick={this.test}>test</button>
-                        <input
-                            type='text'
-                            placeholder='find cards by name'
-                            value = {this.state.findCard}
-                            onChange= {this.onFilterTextChange}
-                        />
-                        <button onClick={()=>this.selectAll(true)} className='add'>select all cards</button>
-                        <button onClick={()=>this.selectAll(false)} className='delete'>unselect all cards</button>
-                        <Link to='/flashCard'><button className='return'>return</button></Link>
+                    <div className='header-menu'> 
+                        {!this.state.returnHome &&
+                        <div>
+                            <button onClick={this.test}>test</button>
+                            <input
+                                type='text'
+                                placeholder='find cards by name'
+                                value={this.state.findCard}
+                                onChange={this.onFilterTextChange}
+                            />
+                            <button onClick={() => this.selectAll(true)} className='add'>select all cards</button>
+                            <button onClick={() => this.selectAll(false)} className='delete'>unselect all cards</button>
+                            <Link to='/flashCard'><button className='return'>return</button></Link>
+                        </div>    
+                        }
                         <Link to='/'><button className='return-home'>return home</button></Link>
                     </div>
                 </div>
@@ -327,7 +325,13 @@ class SelectCards extends React.Component{
                     </div>
             
                 </div>
-                }   
+                } 
+
+                {this.state.returnHome &&
+                    <div className='return-home-warning'>
+                        <Link to='/'><h3>you need to choose a stack to see cards, click here to go to stacks selection page</h3></Link>
+                    </div>
+                }  
 
                 <div className='cardSelectInstruction-instruction'>
                     {this.state.cardSelectInstruction &&

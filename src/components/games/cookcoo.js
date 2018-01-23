@@ -20,7 +20,15 @@ class Cookcoo extends React.Component{
             playButton:'play',
             test:null,
             showCard:false,
-            showIntruction:false
+            showIntruction:false,
+            returnHome: false,
+        }
+    }
+
+    componentDidMount() {
+        if (!this.props.selectedStack) {
+            this.setState({ returnHome: true })
+            return;
         }
     }
 
@@ -141,9 +149,13 @@ class Cookcoo extends React.Component{
                     <h3 className='game-end'>{this.state.text}</h3>
 
                     <div className='header-menu'>
-                        <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
-                        <button onClick={this.test}>test</button>
-                        <Link to='/selectCard'><button className='return'>return</button></Link>
+                        {!this.state.returnHome &&
+                            <div>
+                                <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
+                                <button onClick={this.test}>test</button>
+                                <Link to='/selectCard'><button className='return'>return</button></Link>
+                            </div>
+                        }
                         <Link to='/'><button className='return-home'>return home</button></Link>
                     </div>
                 </div>
@@ -167,19 +179,23 @@ class Cookcoo extends React.Component{
                         </div>
                     }
                 
-                <div className='cookcoo-card-catched'>
-                    {this.state.showinfo &&
-                        <div className='card-catch-text'>
-                            <img src='/pictures/icons/hunter.png'/>
-                            <h3>card hunt</h3>
-                        </div>   
-                    }    
-                    <div className='cards-catched'>{cards}</div>
-                </div>
-
-
+                    <div className='cookcoo-card-catched'>
+                        {this.state.showinfo &&
+                            <div className='card-catch-text'>
+                                <img src='/pictures/icons/hunter.png'/>
+                                <h3>card hunt</h3>
+                            </div>   
+                        }    
+                        <div className='cards-catched'>{cards}</div>
+                    </div>
                 </div>
                 
+                {this.state.returnHome &&
+                    <div className='return-home-warning'>
+                        <Link to='/'><h3>you need to choose a stack to see cards, click here to go to stacks selection page</h3></Link>
+                    </div>
+                }
+
                 {this.state.showIntruction &&
                     <div className='instruction'>
                         <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>

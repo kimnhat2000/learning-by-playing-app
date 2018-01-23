@@ -19,7 +19,15 @@ class WackACard extends React.Component{
             timeControl:null,
             countDownControl:null,
             playButton:'play',
-            showIntruction:false
+            showIntruction:false,
+            returnHome: false,
+        }
+    }
+
+    componentDidMount() {
+        if (!this.props.selectedStack) {
+            this.setState({ returnHome: true })
+            return;
         }
     }
 
@@ -173,18 +181,27 @@ class WackACard extends React.Component{
                     }
 
                     <div className='header-menu'>
-                        <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
-                        <button onClick={this.test}>test</button>
-                        <Link to='/selectCard'><button className='return'>return</button></Link>
+                        {!this.state.returnHome &&
+                        <div>
+                            <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
+                            <button onClick={this.test}>test</button>
+                            <Link to='/selectCard'><button className='return'>return</button></Link>
+                        </div>
+                        }
                         <Link to='/'><button className='return-home'>return home</button></Link>
                     </div>
                 </div>
-
-
                 
                 <div className='wack-game-cards'>
                     {cards}
                 </div>
+
+                {this.state.returnHome &&
+                    <div className='return-home-warning'>
+                        <Link to='/'><h3>you need to choose a stack to see cards, click here to go to stacks selection page</h3></Link>
+                    </div>
+                }
+
                 {this.state.showIntruction &&
                     <div className='instruction'>
                         <h4>tokens you get from winning games, collect 100 tokens and you can buy new games</h4>

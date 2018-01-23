@@ -1,5 +1,6 @@
 import React from 'react';
 import {randomPics} from '../tools/tools';
+import '../style/form.css';
 
 class FlashCardForm extends React.Component{
     constructor(props){
@@ -69,17 +70,19 @@ class FlashCardForm extends React.Component{
     render(){
         const addVariant=this.state.variants.map((v,i)=>(
             <div
-                className='variants'
+                className='variant'
                 key={i}
             >{i+1}. 
                 <input
+                    className ='variant-input'
                     id={i}
                     type='text'
                     value={v}
                     onChange={this.variantInput}
                     autoCorrect='off'
                 />
-                <button 
+                <button
+                    className='add-variant-button' 
                     type='button'
                     onClick={()=>this.removeVariant(i)}
                 >-</button> 
@@ -95,11 +98,13 @@ class FlashCardForm extends React.Component{
             >
                 
                 <button
+                    className='close-button'
                     type='button'
                     onClick={this.props.onCloseForm}
                 >X</button>
                 
                 <input
+                    className='name-input'
                     type='text'
                     name='name'
                     placeholder='enter card name'
@@ -121,11 +126,14 @@ class FlashCardForm extends React.Component{
 
                 <div>
                     <label>add variant</label>
-                    <button
-                        type='button'
-                        onClick={this.addVariant}
-                    >+</button>
-                    <div className='variants'>{addVariant}</div>
+                    <div className='variants'>
+                        <button
+                            className='add-variant-button'
+                            type='button'
+                            onClick={this.addVariant}
+                        >+</button>
+                        <div>{addVariant}</div>
+                    </div>
                 </div>
 
                 <div>
@@ -141,7 +149,7 @@ class FlashCardForm extends React.Component{
                     />}
                 </div>
                 {this.state.error}
-                <button>{this.state.saveButton}</button>
+                <button className='save-form-button'>{this.state.saveButton}</button>
             </form>
                 
             </div>

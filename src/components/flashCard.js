@@ -222,9 +222,12 @@ class FlashCard extends React.Component{
                     </div>
 
                 </div>
-                    {this.state.returnHome &&
-                    <Link to='/'><h3>you need to choose a stack to see cards, click this to go to stacks selection page</h3></Link>
-                    }
+
+                {this.state.returnHome &&
+                    <div className='return-home-warning'>
+                        <Link to='/'><h3>you need to choose a stack to see cards, click here to go to stacks selection page</h3></Link>                        
+                    </div>
+                }
 
                 <div>
                     {this.state.warning && 
@@ -238,19 +241,21 @@ class FlashCard extends React.Component{
                     }
                 </div>
 
-                {this.state.showForm &&
-                    <FlashCardForm
-                        onCloseForm={()=>this.setState({showForm:false, text:''})}
-                        saveCard={(newCard)=>this.onSaveCard(newCard)}
-                    />
-                }    
-                {this.state.showEditForm && 
-                    <FlashCardForm
-                        onCloseForm={()=>this.setState({showEditForm:false, text:''})}
-                        editCardInfo={this.props.cardToEdit}
-                        saveEditCard={(editedCard)=>this.onSaveEdit(editedCard)}
-                    />
-                }
+                <div className='show-form'>
+                    {this.state.showForm &&
+                        <FlashCardForm
+                            onCloseForm={() => this.setState({ showForm: false, text: '' })}
+                            saveCard={(newCard) => this.onSaveCard(newCard)}
+                        />
+                    }
+                    {this.state.showEditForm &&
+                        <FlashCardForm
+                            onCloseForm={() => this.setState({ showEditForm: false, text: '' })}
+                            editCardInfo={this.props.cardToEdit}
+                            saveEditCard={(editedCard) => this.onSaveEdit(editedCard)}
+                        />
+                    }
+                </div>
 
                 <div className='all-cards'>
                     <CardList

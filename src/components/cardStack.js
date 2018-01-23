@@ -80,6 +80,11 @@ class CardStack extends React.Component{
         const selectedStack=JSON.stringify(this.props.selectedStack)
         const json= localStorage.setItem('selectedStack', selectedStack);
         const json1 =localStorage.getItem('newCardId')
+        const allStacks=localStorage.getItem('stacks')
+        let stacks = JSON.parse(allStacks)
+        stacks=stacks.map(s=>s={...s,showButtons:false})
+        const stackJson=JSON.stringify(stacks)
+        localStorage.setItem('stacks', stackJson)
         const newCardId=JSON.parse(json1)
         this.props.dispatch(setNewCardId(newCardId))
     }

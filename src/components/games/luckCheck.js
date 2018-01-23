@@ -17,7 +17,16 @@ class LuckCheck extends React.Component{
             score:5,
             noClick:false,
             playButton:'play',
-            showIntruction:false
+            showIntruction:false,
+            returnHome: false,
+        }
+    }
+
+    componentDidMount() {
+        console.log(this.props.selectedStack)
+        if (!this.props.selectedStack) {
+            this.setState({ returnHome: true })
+            return;
         }
     }
 
@@ -146,21 +155,25 @@ class LuckCheck extends React.Component{
                     <h3 className='game-end'>{this.state.warning}</h3>
 
                     <div className='header-menu'>
-                            <button onClick={this.test}>test</button>
-                            <button onClick={()=>this.props.dispatch(addToken(1))}>add token</button>
-                            <select className='selects' onChange={this.cardNum}>
-                                <option 
-                                    onMouseOver={()=>this.setState({showIntruction:true})}
-                                    onMouseOut={()=>this.setState({showIntruction:false})}
-                                    value="1" autoFocus>cards to play</option>
-                                <option value="1" >2 'normal'</option>
-                                <option value="2">3 'I feel lucky'</option>
-                                <option value="3">4 'today is my day'</option>
-                                <option value="4">5 'I am very lucky'</option>
-                                <option value="5">6 'Luck god is smiling'</option>
-                            </select>
-                        <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>  
-                        <Link to='/selectCard'><button className='return'>return</button></Link>
+                        {!this.state.returnHome &&
+                            <div>
+                                <button onClick={this.test}>test</button>
+                                <button onClick={() => this.props.dispatch(addToken(1))}>add token</button>
+                                <select className='selects' onChange={this.cardNum}>
+                                    <option
+                                        onMouseOver={() => this.setState({ showIntruction: true })}
+                                        onMouseOut={() => this.setState({ showIntruction: false })}
+                                        value="1" autoFocus>cards to play</option>
+                                    <option value="1" >2 'normal'</option>
+                                    <option value="2">3 'I feel lucky'</option>
+                                    <option value="3">4 'today is my day'</option>
+                                    <option value="4">5 'I am very lucky'</option>
+                                    <option value="5">6 'Luck god is smiling'</option>
+                                </select>
+                                <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
+                                <Link to='/selectCard'><button className='return'>return</button></Link>
+                            </div>   
+                        }
                         <Link to='/'><button className='return-home'>return home</button></Link>
                     </div>
                 </div> 
@@ -190,6 +203,12 @@ class LuckCheck extends React.Component{
                             ))}
                     </div> 
                 </div>
+
+                {this.state.returnHome &&
+                    <div className='return-home-warning'>
+                        <Link to='/'><h3>you need to choose a stack to see cards, click here to go to stacks selection page</h3></Link>
+                    </div>
+                }
                 
                 {this.state.showIntruction &&
                     <div className='instruction'>
