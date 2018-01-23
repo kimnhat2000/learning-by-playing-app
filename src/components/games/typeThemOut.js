@@ -87,12 +87,6 @@ class TypeThemOut extends React.Component{
         }
     }
 
-    test=()=>{
-        const {card, input, showCard}=this.state
-        console.log(card, showCard)
-        // console.log(this.randomCard())
-    }
-
     render(){
         const style=reziseAndStyleBigCard('350px', '250px', 17, 'pictures/backgroundPics/', 'jpg', '1em')
         return(
@@ -132,7 +126,6 @@ class TypeThemOut extends React.Component{
                                 className='gamePlayInstruction'
                             />
                             <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
-                            <button onClick={this.test}>test</button>
                             <Link to='/selectCard'><button className='return'>return</button></Link>
                         </div>
                     }

@@ -140,20 +140,6 @@ class SelectCards extends React.Component{
         }
     }
 
-    test=()=>{
-        const {totalTokens, games, gamesBought, gamesRemain, }= this.props.tokens
-        const {buyGames, selectGames}= this.state
-        console.log('games: ',games, 'props cards: ', this.props.cards)
-        console.log('selected cards: ',this.props.selectCards)
-        console.log('tokens: ',totalTokens)
-        console.log('gamesBought: ',gamesBought)
-        console.log('gamesRemain: ',gamesRemain)
-        console.log(buyGames, selectGames)
-        // console.log(this.state.selectGames)
-
-        // localStorage.clear('selectCards');
-    }
-
     render(){
         const r1=randomColor();
         const r2=randomColor();
@@ -270,7 +256,6 @@ class SelectCards extends React.Component{
                     <div className='header-menu'> 
                         {!this.state.returnHome &&
                         <div>
-                            <button onClick={this.test}>test</button>
                             <input
                                 className='selectCard-input'
                                 type='text'

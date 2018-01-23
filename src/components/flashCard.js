@@ -147,18 +147,6 @@ class FlashCard extends React.Component{
         
     }
 
-    test=()=>{
-        const {cards, cardToEdit, filteredCards, selectedStack, allCards, newCardId}=this.props
-        console.log('cards:', cards)
-        console.log('cardToEdit:', cardToEdit)
-        console.log('filteredCards:', filteredCards)
-        console.log('selectedStack:', selectedStack.stackId)
-        console.log('allCards:', allCards)
-        console.log('newCardId: ', newCardId)
-
-        // localStorage.clear();
-    }
-
     render(){
         const style=reziseAndStyleBigCard('400px', '300px', 17, 'pictures/backgroundPics/', 'jpg', '1em', '15px', 'auto')
         const {cards, filteredCards}=this.props
@@ -201,11 +189,6 @@ class FlashCard extends React.Component{
                     </div>
 
                     <div className='header-menu'>
-
-                        <Link to='/test'><button>test page</button></Link>
-                        <button onClick={this.test}>test</button>
-                        <button onClick={()=>this.props.dispatch(addToken(50))}>add a token</button>
-                        <button onClick={()=>this.props.dispatch(reduceToken(50))}>remove a token</button>
 
                         {!this.state.returnHome &&
                         <div>

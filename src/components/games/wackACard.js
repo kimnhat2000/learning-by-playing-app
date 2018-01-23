@@ -121,11 +121,6 @@ class WackACard extends React.Component{
         }
     }
 
-    test=()=>{
-        this.randomCards()
-        console.log(this.props.selectedCards.slice(0,3));
-    }
-
     render(){
 
         const r=randomColor()
@@ -190,7 +185,6 @@ class WackACard extends React.Component{
                                 className='gamePlayInstruction'
                             />
                             <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
-                            <button onClick={this.test}>test</button>
                             <Link to='/selectCard'><button className='return'>return</button></Link>
                         </div>
                         }

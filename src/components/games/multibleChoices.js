@@ -72,12 +72,6 @@ class MultibleChoices extends React.Component{
         this.randomCard();
     }
 
-    test=()=>{
-        this.randomCard();
-        const {card, cards}= this.state
-        console.log(card, cards)
-    }
-
     render(){
         const {cards}=this.state
         const style=reziseAndStyleBigCard('250px', '150px', 17, 'pictures/backgroundPics/', 'jpg', '0.8em', '10px')
@@ -130,7 +124,6 @@ class MultibleChoices extends React.Component{
                                 className='gamePlayInstruction'
                             />
                                 <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
-                                <button onClick={this.test}>test</button>
                                 <Link to='/selectCard'><button className='return'>return</button></Link>
                             </div>
                         }

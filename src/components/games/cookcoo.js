@@ -102,10 +102,6 @@ class Cookcoo extends React.Component{
         this.setState({cardCatched})
     }
 
-    test=()=>{ 
-        const {cardCatched}=this.state
-        console.log(cardCatched)
-    }
     render(){
         const style1=reziseAndStyleBigCard('350px', '200px', 17, 'pictures/backgroundPics/', 'jpg', '0.8em', '0', 'hidden')
         const style2=reziseAndStyleBigCard('250px', '200px', 17, 'pictures/backgroundPics/', 'jpg', '0.8em', '10px', 'hidden')
@@ -158,7 +154,6 @@ class Cookcoo extends React.Component{
                                     className='gamePlayInstruction'
                                 />
                                 <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
-                                <button onClick={this.test}>test</button>
                                 <Link to='/selectCard'><button className='return'>return</button></Link>
                             </div>
                         }

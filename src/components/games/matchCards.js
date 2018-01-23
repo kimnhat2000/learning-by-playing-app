@@ -87,13 +87,6 @@ class WackACard extends React.Component{
         this.setState({cards,noClick, countDown});
     }
 
-    test=()=>{
-        const {cards, selectedCard}=this.state
-        const {selectedCards, tokens}=this.props
-        // this.props.gameCards.map(c=>console.log(c.showCard))
-        console.log(tokens)
-    }
-
     render(){
         const grammarCheck=this.state.countDown===1?'time':'times'
         const r1=randomColor();
@@ -146,7 +139,6 @@ class WackACard extends React.Component{
                                     className='gamePlayInstruction'
                                 />
                                 <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
-                                <button onClick={this.test}>test</button>
                                 <Link to='/selectCard'><button className='return'>return</button></Link>
                             </div>
                         }

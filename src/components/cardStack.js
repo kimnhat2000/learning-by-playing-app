@@ -185,7 +185,6 @@ class CardStack extends React.Component{
             }
 
             const stack=this.state.stack
-            console.log(stack.stackId)
             this.props.dispatch(deleteAllCardsInCurrentStack(stack.stackId))  
             this.props.dispatch(removeStack(stack))       
             this.props.dispatch(stackSearch())
@@ -198,19 +197,6 @@ class CardStack extends React.Component{
         }
     }
 
-    test=()=>{
-        const{stacks, tokens, cards, stackCards, selectedStack, filteredStacks}= this.props
-        console.log('stacks: ',stacks)
-        console.log('tokens: ',tokens)
-        console.log('cards: ',cards)
-        console.log('stackCards: ',stackCards)
-        console.log('selectedStack: ',selectedStack)
-        console.log('filteredStacks: ',filteredStacks)
-        console.log('check stackSearch: ',this.state.stackSearch?true:false)
-
-        // localStorage.clear();
-
-    }
 
     render(){
 
@@ -250,8 +236,6 @@ class CardStack extends React.Component{
                     </div>
                     
                     <div className='header-menu'>
-                        <button onClick={()=>localStorage.clear()}>emptyStorage</button>
-                        <button onClick={this.test}>test</button>
 
                         <button
                             onMouseOver={() => this.setState({ addButtonIntruction: true })}

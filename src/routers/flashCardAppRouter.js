@@ -11,7 +11,6 @@ import BetThemDown from '../components/games/betThemDown';
 import WackACard from '../components/games/WackACard';
 import Cookcoo from '../components/games/cookcoo';
 import CardStack from '../components/cardStack';
-import Test from '../references/test';
 import '../style/globalStyle.css';
 
 const FlashCardAppRouter =()=>(
@@ -28,7 +27,6 @@ const FlashCardAppRouter =()=>(
             <Route path='/betThemDown' component={BetThemDown}/>
             <Route path='/wackACard' component={WackACard}/>
             <Route path='/cookcoo' component={Cookcoo}/>
-            <Route path='/test' component={Test}/>
 
         </Switch>
     </BrowserRouter>

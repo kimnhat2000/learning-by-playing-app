@@ -90,12 +90,6 @@ class PairThemUp extends React.Component{
             return;
         }}
 
-    test=()=>{
-        const {cards1, cards2, score, cardsCheck}= this.state
-        const {selectedCards}=this.props
-        console.log(cardsCheck)
-    }
-
     render(){
         const style=reziseAndStyleBigCard('250px', '200px', 17, 'pictures/backgroundPics/', 'jpg', '0.8em', '15px', 'hidden')
         const cardSet1= this.state.cards1.map((c,i)=>(
@@ -161,7 +155,6 @@ class PairThemUp extends React.Component{
                                     className='gamePlayInstruction'
                                 />
                                 <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
-                                <button onClick={this.test}>test</button>
                                 <Link to='/selectCard'><button className='return'>return</button></Link>
                             </div>
                         }

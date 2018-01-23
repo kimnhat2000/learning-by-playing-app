@@ -114,13 +114,6 @@ class LuckCheck extends React.Component{
         this.setState({targetCard:{...targetCard,showInfo:!targetCard.showInfo}})
     }
 
-    test=()=>{
-        const {tokens}=this.props
-        console.log(tokens)
-        // console.log(this.props.selectedCards)
-        // console.log('the target cards is: ', this.state.targetCard.showInfo)
-    }
-
     render(){
         const r1=randomColor();
         const r2=randomColor();
@@ -156,14 +149,13 @@ class LuckCheck extends React.Component{
                     <h3 className='game-end'>{this.state.warning}</h3>
 
                     <div className='header-menu'>
-                        !this.state.returnHome &&
+                        {!this.state.returnHome &&
                             <div>
                                 <button
                                     onMouseOver={() => this.setState({ gamePlayInstruction: true })}
                                     onMouseOut={() => this.setState({ gamePlayInstruction: false })}
                                     className='gamePlayInstruction'
                                 />
-                                <button onClick={this.test}>test</button>
                                 <button onClick={() => this.props.dispatch(addToken(1))}>add token</button>
                                 <select className='selects' onChange={this.cardNum}>
                                     <option

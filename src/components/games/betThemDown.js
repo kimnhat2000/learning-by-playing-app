@@ -167,10 +167,6 @@ class BetThemDown extends React.Component{
         return
     }
 
-    test=()=>{
-        console.log(this.state.playerCards)
-    }
-
     render(){
         const r1=randomColor();
         const r2=randomColor();
@@ -228,7 +224,6 @@ class BetThemDown extends React.Component{
                                     className='gamePlayInstruction'
                                 />
                                 <button onClick={this.onPlay} className='play'>{this.state.playButton}</button>
-                                <button onClick={this.test}>test</button>
                                 <Link to='/selectCard'><button className='return'>return</button></Link>
                             </div>
                         }
