@@ -8,7 +8,7 @@ import TypeThemOut from '../components/games/typeThemOut';
 import PairThemUp from '../components/games/pairThemUp';
 import MultibleChoices from '../components/games/multibleChoices';
 import BetThemDown from '../components/games/betThemDown';
-import WackACard from '../components/games/WackACard';
+import WackACard from '../components/games/wackACard';
 import Cookcoo from '../components/games/cookcoo';
 import CardStack from '../components/cardStack';
 import '../style/globalStyle.css';
