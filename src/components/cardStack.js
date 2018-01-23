@@ -32,6 +32,7 @@ class CardStack extends React.Component{
             stackNumber:false,
             deleteButtonInstruction:false,
             addButtonIntruction:false,
+            gamePlayInstruction:false
         }
     }
 
@@ -56,12 +57,13 @@ class CardStack extends React.Component{
             const json3=localStorage.getItem('allCards');
             const json4=localStorage.getItem('newCardId');
             const json5=localStorage.getItem('tokens');
-            const stacks= JSON.parse(json);
+            let stacks= JSON.parse(json);
             const stackId= JSON.parse(json2);
             const allCards=JSON.parse(json3);
             const newId=JSON.parse(json4);
             const tokens=JSON.parse(json5);
             if(stacks){
+                stacks = stacks.map(s => s = { ...s, showButtons: false })
                 this.props.dispatch(addStacks(stacks, stackId))
             }
             if(allCards){
@@ -230,8 +232,13 @@ class CardStack extends React.Component{
                             src='pictures/icons/cards.png'
                         />
                         {this.props.stacks.length !== 0 ? 
+
                             <h3>{this.props.stacks.length}</h3>:
-                            <h3>please add a card stack</h3>
+                            <button
+                                onMouseOver={() => this.setState({ gamePlayInstruction: true })}
+                                onMouseOut={() => this.setState({ gamePlayInstruction: false })}
+                                className='gamePlayInstruction'
+                            />
                         }
                     </div>
                     
@@ -287,7 +294,7 @@ class CardStack extends React.Component{
                         <input
                             className='img-input'
                             type='text'
-                            placeholder='new stack image'
+                            placeholder='new stack image url'
                             name='stackImg'
                             value={this.state.stackImg}
                             onChange={this.stackNameInput}
@@ -315,6 +322,14 @@ class CardStack extends React.Component{
                     editClick={(s)=>this.handleEdit(s)}
                     openClick={(s)=>this.openStack(s)}
                 />    
+
+                <div className='gamePlayInstruction'>
+                    {this.state.gamePlayInstruction &&
+                        <div className='instruction'>
+                            <h3>please add a card stack to start</h3>
+                        </div>
+                    }
+                </div>
 
                 <div className='addButtonIntruction'>
                     {this.state.addButtonIntruction &&

@@ -302,7 +302,6 @@ class SelectCards extends React.Component{
                     <div className='select-cards-cards-menu'>
 
                         <div className='select-cards-cards'>
-                              
                             <div className='select-cards-all-cards'>{allCards}</div>
                             <div className='select-cards'>{selectedCards}</div>
                         </div>

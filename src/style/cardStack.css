@@ -48,14 +48,31 @@
     background-color: red;
 }
 
+.stack-buttons .delete:hover{
+    background-color:rgb(110, 3, 3) ;
+    padding:5px;
+    background-image: none;
+}
+
 .stack-buttons .edit{
     padding: 5px;
     background-color: yellowgreen;
 }
 
+.stack-buttons .edit:hover{
+    padding: 5px;
+    background-color: rgb(85, 117, 22);
+}
+
+
 .stack-buttons .open{
     padding: 5px;
     background-color: blue;
+}
+
+.stack-buttons .open:hover{
+    padding: 5px;
+    background-color: rgb(7, 7, 128);
 }
 
 .edit-stack-input{
@@ -143,4 +160,24 @@
 
 .addButtonIntruction .instruction{
     left: 70%;
+}
+
+.game-info .gamePlayInstruction{
+    background-image: url(/pictures/icons/info.png);
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+    background-position: 5px 6px;
+    width: 50px;
+    height: 45px;
+    background-color: red;
+}
+
+.game-info .gamePlayInstruction:hover{
+    background-image: url(/pictures/icons/info.png);
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+    background-position: 5px 6px;
+    width: 50px;
+    height: 45px;
+    background-color: rgb(143, 8, 8);
 }

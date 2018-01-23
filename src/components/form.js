@@ -143,7 +143,7 @@ class FlashCardForm extends React.Component{
                     <input
                         name='img'
                         type='text'
-                        placeholder='enter a img url'
+                        placeholder='enter an img url'
                         value={this.state.img}
                         onChange={this.onChange}
                     />}
