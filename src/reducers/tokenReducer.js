@@ -1,5 +1,5 @@
 const tokenDefault={
-    totalTokens:0,
+    totalTokens:800,
     games:[
         {id: 1, name:'luck check', path:'/luckCheck', buy:true},
         {id: 2, name:'match cards', path:'/matchCards', buy:false},
