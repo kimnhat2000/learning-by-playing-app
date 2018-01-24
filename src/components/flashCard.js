@@ -75,8 +75,7 @@ class FlashCard extends React.Component{
         }
 
         const json2=localStorage.getItem('newCardId')
-        this.props.dispatch(setNewCardId(newCardId))
-              
+        this.props.dispatch(setNewCardId(newCardId))             
     }
 
     onCardClick=(card)=>{
@@ -107,7 +106,8 @@ class FlashCard extends React.Component{
         const id=this.props.cardToEdit.id
         const stackId=this.props.selectedStack.stackId
         const newCard={id, stackId,...editedCard, showInfo:false, selected:false, showCard:true}
-        const matchCheck=this.props.cards.map(c=>c.name)
+        const cardsWithNoNewCard=this.props.cards.filter(c=>c.id!==newCard.id)
+        const matchCheck=cardsWithNoNewCard.map(c=>c.name)
         if(matchCheck.includes(newCard.name)){
             this.setState({text:'there is a card with the same name'})
             return;
